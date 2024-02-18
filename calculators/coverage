@@ -1,0 +1,534 @@
+#!/bin/bash
+rm *.info *.out
+make clean
+make ecm flags_coverage=--coverage
+echo -e "**** ECM ****" > coverage.out
+./ecm "10**150000" >> coverage.out
+./ecm "10**300000" >> coverage.out
+./ecm "(3-2))" >> coverage.out
+./ecm "((3-2)" >> coverage.out
+./ecm "gcd(20)" >> coverage.out
+./ecm "gcd(20, 30, 50)" >> coverage.out
+./ecm "gcd(20, 0, 50)" >> coverage.out
+./ecm "lcm(20)" >> coverage.out
+./ecm "lcm(20, 0, 50)" >> coverage.out
+./ecm "sqrt(-2)" >> coverage.out
+./ecm "2/0" >> coverage.out
+./ecm "23.8" >> coverage.out
+./ecm "10**38-1040759" >> coverage.out
+./ecm "isprime(-3)+isprime(-2)*2+isprime(-1)*4+isprime(0)*8+isprime(1)*16+isprime(2)*32+isprime(3)*64" >> coverage.out
+./ecm "187072209578355573530071658587684226515959365494067" >> coverage.out
+./ecm "10000000000000000000000000000000000000000000000013892731" >> coverage.out
+./ecm "221313+sumdigits(23,10)+numdigits(232,10)+revdigits(765,10)+gcd(8,6)+minfact(143)+totient(226)+jacobi(3,7)+modpow(3,8,29)" >> coverage.out
+./ecm "n(10^30+2)*n(3*10^30+10000)" >> coverage.out
+./ecm "10**59+213" 1 >> coverage.out
+./ecm "2**54654365465346459" 1 >> coverage.out
+./ecm "1**54654365465346459" 1 >> coverage.out
+./ecm "0**54654365465346459" 1 >> coverage.out
+./ecm "(-1)**54654365465346459" 1 >> coverage.out
+./ecm "23**54654365465346459" 1 >> coverage.out
+./ecm "265346565365436543643**54654365465346459" 1 >> coverage.out
+./ecm "lcm(1,2,3,4,5,6,7,8,9,10)" >> coverage.out
+./ecm "p(655) % 65657578" >> coverage.out
+./ecm "moddiv(90,12,101)" >> coverage.out
+./ecm "modinv(6,13)-numdivs(45)+sumdivs(343)+maxfact(765)+numfact(765)+concatfact(0,36)+concatfact(0,36)+concatfact(1,36)+concatfact(2,36)+concatfact(3,36)+isprime(811)+concatfact(2,1)" >> coverage.out
+./ecm "b(223)+n(434)+f(44)-l(56)+23!-18#" >>coverage.out
+./ecm "(23 shl 5) + (712 shr 6) + (23 OR 556) + (57 AND 21) + (NOT 15) + (38 XOR 79) + 4434/115 - 28%13" >>coverage.out
+./ecm "(6 > 5)*32 + (6 >= 5)*16 + (6 < 5)*8 + (6 <= 5)*4 + (6 == 5)*2 + (6 != 5)" >>coverage.out
+./ecm "(7 > 7)*32 + (7 >= 7)*16 + (7 < 7)*8 + (7 <= 7)*4 + (7 == 7)*2 + (7 != 7)" >>coverage.out
+./ecm "x=3; x=n(x); c<=10; x-1" >> coverage.out
+./ecm "sqrt(10^10000)-10^5000" >> coverage.out
+./ecm "modpow(10, 2, 10**23) + modpow(10, 2, 2*10**130)" >> coverage.out
+./ecm "0x43245 + 0x3434" >> coverage.out
+./ecm "10^600 / 10^300" >> coverage.out
+./ecm "3**333+1" >> coverage.out
+./ecm "2**142+1" >> coverage.out
+./ecm "5**(5*23)-1" >> coverage.out
+./ecm "7**(7*23)+1" >> coverage.out
+./ecm "2**360-1" >> coverage.out
+./ecm "10^1000/10^700" >> coverage.out
+./ecm "10^1800/10^700" >> coverage.out
+./ecm "123**12000" >> coverage.out
+./ecm "x" >> coverage.out
+./ecm "x=" >> coverage.out
+./ecm "x=23" >> coverage.out
+./ecm "x=23;13" >> coverage.out
+./ecm "x=23;x=x+1" >> coverage.out
+./ecm "x=23;x=x+1;x-10;u" >> coverage.out
+./ecm "x=23;x=x+1;x-10;x+2" >> coverage.out
+./ecm "x=23;x=x+1;23;x+2" >> coverage.out
+./ecm "x=23;x=x+1;x+;x+*" >> coverage.out
+./ecm "x=1;x=x+1;x<10000;x;sumdigits(x,10) == sumdigits(concatfact(2,x),10) and not isprime(x)" >> coverage.out
+./ecm "Modpow(32,1,9410917470681307814700409503841379824884398201229727104530371249321432053727869645683211883124351361922770493757)" >> coverage.out
+./ecm "ModPow(-1,2,2^372-177)" >> coverage.out
+./ecm "Modpow(32,1,12345678922)" >> coverage.out
+./ecm "x=sqrt(-2); x=x+1; x<10; x" >> coverage.out
+./ecm "x=2; x=x+sqrt(-2); x<10; x" >> coverage.out
+./ecm "x=-10; x=x+1; x<10; x+sqrt(-2)" >> coverage.out
+./ecm "x=-10; x=x+1; x<10; x; sqrt(-2)" >> coverage.out
+./ecm "x=-10; x=x+1; x<10; \"%d is prime: %l, %Fd\":x:isprime(x):x" >> coverage.out
+./ecm "x=-10; x=x+1; x<10; \"%d is prime: %l, %Fd\":x" >> coverage.out
+./ecm "x=30; x=x+1; x<10; \"%d is prime: %l, %Fd\":x:isprime(x):x" >> coverage.out
+./ecm "x=-10; x=x+1; x<10; \"%d=%x is prime: %l, %Fd\":x:x:isprime(x):x:x" >> coverage.out
+./ecm "x=-10; x=x+1; x<10; \"%d=%x is prime: %l, %Fd\":x" >> coverage.out
+./ecm "x=-10; x=x+1; x<10; \"%\"%d=%x%\" is prime: %l, %Fd, %Fx\":x:x:isprime(x):x:x" >> coverage.out
+./ecm "x=-10; x=x+1; x<10; \"Factors are: %Fx\":x+sqrt(-2)" >> coverage.out
+./ecm "x=-10; x=x+1; x<10; \"Factors are: %Fd\":x+sqrt(-2)" >> coverage.out
+./ecm "x=-10; x=x+1; x<10; \"Factors are: %x\":x+sqrt(-2)" >> coverage.out
+./ecm "x=-10; x=x+1; x<10; \"Factors are: %d\":x+sqrt(-2)" >> coverage.out
+./ecm "x-10; x=x+1; x<10; x" >> coverage.out
+./ecm "x=;" >> coverage.out
+./ecm "x=3" >> coverage.out
+./ecm "x=3; x+1" >> coverage.out
+./ecm "x=3; x=x+1" >> coverage.out
+./ecm "x=3; x=x+1; x<10" >> coverage.out
+./ecm "x=3; x=x+1; x<10; \"23" >> coverage.out
+./ecm "x=3; x=x+1; x<10; \"23%y\"" >> coverage.out
+./ecm "# This is a comment" >> coverage.out
+./ecm "iroot(54265656536,3)" >> coverage.out
+
+lcov --capture --directory . --output-file ecm.info
+gcovr --json run-1.json
+make clean
+make blockly flags_coverage=--coverage
+echo -e "**** BLOCKLY ****" >> coverage.out
+./blockly xml.txt 0 >> coverage.out
+./blockly xml.txt 1 >> coverage.out
+./blockly xml.txt 2 >> coverage.out
+./blockly xml.txt 3 >> coverage.out
+./blockly xml.txt 4 >> coverage.out
+./blockly xml.txt 5 >> coverage.out
+./blockly xml.txt 6 >> coverage.out
+./blockly xml.txt 7 >> coverage.out
+./blockly xml.txt 8 >> coverage.out
+./blockly xml.txt 9 >> coverage.out
+./blockly xml.txt 10 >> coverage.out
+./blockly xml.txt 11 >> coverage.out
+./blockly xml.txt 12 >> coverage.out
+./blockly xml.txt 13 >> coverage.out
+./blockly xml.txt 14 >> coverage.out
+./blockly xml.txt 15 >> coverage.out
+./blockly xml.txt 16 >> coverage.out
+./blockly xml.txt 17 >> coverage.out
+./blockly xml.txt 18 >> coverage.out
+./blockly xml.txt 19 >> coverage.out
+./blockly xml.txt 20 >> coverage.out
+lcov --capture --directory . --output-file blockly.info
+gcovr --json run-2.json
+make clean
+make polfact flags_coverage=--coverage
+echo -e "\n\n**** POLFACT ****" >> coverage.out
+./polfact 0 "x^120-1" 0 >> coverage.out
+./polfact 0 "x^120-1" 1 >> coverage.out
+./polfact 0 "x^120-1" 2 >> coverage.out
+./polfact 7 "x^10+x^5-1" 0 >> coverage.out
+./polfact 7 "x^10+x^5-1" 1 >> coverage.out
+./polfact 7 "x^10+x^5-1" 2 >> coverage.out
+./polfact 0 "x+23" 0 >> coverage.out
+./polfact 0 "x+23" 1 >> coverage.out
+./polfact 0 "x+23" 2 >> coverage.out
+./polfact 0 "(2*x+23)*(3x+5)" 0 >> coverage.out
+./polfact 0 "(2*x+23)*(3x+5)" 1 >> coverage.out
+./polfact 0 "(2*x+23)*(3x+5)" 2 >> coverage.out
+./polfact 0 "x^2+7*x+23" 0 >> coverage.out
+./polfact 0 "x^2+7*x+23" 1 >> coverage.out
+./polfact 0 "x^2+7*x+23" 2 >> coverage.out
+./polfact 0 "x^3-4*x^2+12*x+23" 0 >> coverage.out
+./polfact 0 "x^3-4*x^2+12*x+23" 1 >> coverage.out
+./polfact 0 "x^3-4*x^2+12*x+23" 2 >> coverage.out
+./polfact 0 "x^3-x^2+2x+5" 0 >> coverage.out
+./polfact 0 "x^3-x^2+2x+5" 1 >> coverage.out
+./polfact 0 "x^3-x^2+2x+5" 2 >> coverage.out
+./polfact 0 "x^3+2" 0 >> coverage.out
+./polfact 0 "x^3+2" 1 >> coverage.out
+./polfact 0 "x^3+2" 2 >> coverage.out
+./polfact 0 "x^3-2" 0 >> coverage.out
+./polfact 0 "x^3-2" 1 >> coverage.out
+./polfact 0 "x^3-2" 2 >> coverage.out
+./polfact 0 "x^3+6*x^2+18" 0 >> coverage.out
+./polfact 0 "x^3+6*x^2+18" 1 >> coverage.out
+./polfact 0 "x^3+6*x^2+18" 2 >> coverage.out
+./polfact 0 "3x**3+3x**2+x-5" 2 >> coverage.out
+./polfact 0 "x^4+7" 0 >> coverage.out
+./polfact 0 "x^4-7" 0 >> coverage.out
+./polfact 0 "x^4+x^2-2*x+1" 2 >> coverage.out
+./polfact 0 "x^3-12x^2+12x+23" 0 >> coverage.out
+./polfact 0 "x^3-12x^2+12x+23" 1 >> coverage.out
+./polfact 0 "x^3-12x^2+12x+23" 2 >> coverage.out
+./polfact 0 "x^4+3*x^2+12*x+23" 0 >> coverage.out
+./polfact 0 "x^4+3*x^2+12*x+23" 1 >> coverage.out
+./polfact 0 "x^4+3*x^2+12*x+23" 2 >> coverage.out
+./polfact 0 "x^4+4*x^2+23" 0 >> coverage.out
+./polfact 0 "x^4+4*x^2+23" 1 >> coverage.out
+./polfact 0 "x^4+4*x^2+23" 2 >> coverage.out
+./polfact 0 "x^4+4*x^2-23" 0 >> coverage.out
+./polfact 0 "x^4+4*x^2-23" 1 >> coverage.out
+./polfact 0 "x^4+4*x^2-23" 2 >> coverage.out
+./polfact 0 "x^4+18*x^2+25" 2 >> coverage.out
+./polfact 0 "x^4-18*x^2+25" 2 >> coverage.out
+./polfact 0 "x^4+18*x^2+144" 2 >> coverage.out
+./polfact 0 "x^4-18*x^2+144" 2 >> coverage.out
+./polfact 0 "x^4+18*x^2+24" 2 >> coverage.out
+./polfact 0 "x^4-18*x^2+24" 2 >> coverage.out
+./polfact 0 "x^4+18*x^2+95" 2 >> coverage.out
+./polfact 0 "x^4-18*x^2+95" 2 >> coverage.out
+./polfact 0 "x^4+18*x^2-25" 2 >> coverage.out
+./polfact 0 "x^4-18*x^2-25" 2 >> coverage.out
+./polfact 0 "x^4+18*x^2-121" 2 >> coverage.out
+./polfact 0 "x^4-18*x^2-121" 2 >> coverage.out
+./polfact 0 "x^4+18*x^2-24" 2 >> coverage.out
+./polfact 0 "x^4-18*x^2-24" 2 >> coverage.out
+./polfact 0 "x^4+18*x^2-95" 2 >> coverage.out
+./polfact 0 "x^4-18*x^2-95" 2 >> coverage.out
+./polfact 0 "x^4-18*x^2+3*x+5" 2 >> coverage.out
+./polfact 0 "x^4-18*x^2-3*x+5" 2 >> coverage.out
+./polfact 0 "x^4+3x^2+79*x+8" 2 >> coverage.out
+./polfact 0 "3x**4-3x**2+x-5" 0 >> coverage.out
+./polfact 0 "3x**4-3x**2+x-5" 1 >> coverage.out
+./polfact 0 "3x**4-3x**2+x-5" 2 >> coverage.out
+./polfact 0 "x^5+15*x+12" 0 >> coverage.out
+./polfact 0 "x^5+15*x+12" 1 >> coverage.out
+./polfact 0 "x^5+15*x+12" 2 >> coverage.out
+./polfact 0 "x^5-5*x+12" 0 >> coverage.out
+./polfact 0 "x^5-5*x+12" 1 >> coverage.out
+./polfact 0 "x^5-5*x+12" 2 >> coverage.out
+./polfact 0 "17x^5-20*x+21" 0 >> coverage.out
+./polfact 0 "17x^5-20*x+21" 1 >> coverage.out
+./polfact 0 "17x^5-20*x+21" 2 >> coverage.out
+./polfact 0 "x^4+4=x^8" 0 >> coverage.out
+./polfact 0 "x^5+20*x^3+20*x^2+30x+10" 0 >> coverage.out
+./polfact 0 "x^5+20*x^3+20*x^2+30x+10" 1 >> coverage.out
+./polfact 0 "x^5+20*x^3+20*x^2+30x+10" 2 >> coverage.out
+./polfact 0 "x^5+10*x^3-20x^2-1505x-7412" 0 >> coverage.out
+./polfact 0 "x^5+10*x^3-20x^2-1505x-7412" 1 >> coverage.out
+./polfact 0 "x^5+10*x^3-20x^2-1505x-7412" 2 >> coverage.out
+./polfact 0 "x**6+x**5+3*x**4+x**3+3*x**2+x+1" 2 >> coverage.out
+./polfact 0 "x^7+x+12" 0 >> coverage.out
+./polfact 0 "x^7+x+12" 1 >> coverage.out
+./polfact 0 "x^7+x+12" 2 >> coverage.out
+./polfact 0 "x**9+6*x**3+5" 2 >> coverage.out
+./polfact 0 "x^10+2*x^5+23" 0 >> coverage.out
+./polfact 0 "x^10+2*x^5+23" 1 >> coverage.out
+./polfact 0 "x^10+2*x^5+23" 2 >> coverage.out
+./polfact 0 "x^10+2*x^5-23" 0 >> coverage.out
+./polfact 0 "x^10+2*x^5-23" 1 >> coverage.out
+./polfact 0 "x^10+2*x^5-23" 2 >> coverage.out
+./polfact 0 "x**12+x+5" 2 >> coverage.out
+./polfact 0 "x**13+3*x+5" 2 >> coverage.out
+./polfact 0 "x^17-1" 0 >> coverage.out
+./polfact 0 "x^17-1" 1 >> coverage.out
+./polfact 0 "x^17-1" 2 >> coverage.out
+./polfact 0 "x**129+6*x**4+5" 2 >> coverage.out
+./polfact 0 "(x^2-3*x+5)^2*(x+1)^5*(x-23)*x^9" 0 >> coverage.out
+./polfact 0 "(x^2-3*x+5)^2*(x+1)^5*(x-23)*x^9" 1 >> coverage.out
+./polfact 0 "(x^2-3*x+5)^2*(x+1)^5*(x-23)*x^9" 2 >> coverage.out
+./polfact 0 "der(x^8)+gcd(x^7+x^5+2, x^3+43*x)" 0 >> coverage.out
+./polfact 0 "der(x^8)+gcd(x^7+x^5+2, x^3+43*x)" 1 >> coverage.out
+./polfact 0 "der(x^8)+gcd(x^7+x^5+2, x^3+43*x)" 2 >> coverage.out
+./polfact 0 "gcd(x+1,x)+3" 2 >> coverage.out
+./polfact 0 "lcm(x+1,x)+3" 2 >> coverage.out
+./polfact 0 "gcd(x+1,x**2-1)+2" 2 >> coverage.out
+./polfact 0 "lcm(x+1,x**2-1)+2" 2 >> coverage.out
+./polfact 0 "gcd(x+1,x*(x**2-1), x**3-1)" 2 >> coverage.out
+./polfact 0 "lcm(x+1,x**2-1, x**3-1)" 2 >> coverage.out
+./polfact 0 "gcd(x^4, x^7+x^3, x^6)" 2 >> coverage.out
+./polfact 0 "lcm(x^4, x^7+x^3, x^6)" 2 >> coverage.out
+./polfact 3 "gcd(x+1,x)+3" 2 >> coverage.out
+./polfact 3 "lcm(x+1,x)+3" 2 >> coverage.out
+./polfact 3 "gcd(x+1,x**2-1)+2" 2 >> coverage.out
+./polfact 3 "lcm(x+1,x**2-1)+2" 2 >> coverage.out
+./polfact 3 "gcd(x+1,x*(x**2-1), x**3-1)" 2 >> coverage.out
+./polfact 3 "lcm(x+1,x**2-1, x**3-1)" 2 >> coverage.out
+./polfact 3 "gcd(x^4, x^7+x^3, x^6)" 2 >> coverage.out
+./polfact 3 "lcm(x^4, x^7+x^3, x^6)" 2 >> coverage.out
+./polfact 2 "x^60-1" 2 >> coverage.out
+./polfact 11 "(x^5+x^3+1)+(2x^4+2)" 2 >> coverage.out
+./polfact 11 "(2x^4+2)+(x^5+x^3+1)" 2 >> coverage.out
+./polfact 11 "-(x^5+x^3+1)" 2 >> coverage.out
+./polfact 11 "x^5^2" 2 >> coverage.out
+./polfact 11 "x^(5*3)+x^(9/3)+x^(8%3)+lcm(0,x)+lcm(x,0)" 2 >> coverage.out
+./polfact 11 "-x^3+(x^5+x^3+1)" 2 >> coverage.out
+./polfact 11 "-x^9+(x^5+x^3+1)" 2 >> coverage.out
+./polfact 11 "random(1,4,3,6)" 2 >> coverage.out
+./polfact 0 "random(1,4,3,6)" 2 >> coverage.out
+./polfact 11 "x^2+x^7" 2 >> coverage.out
+./polfact 11 "(2x^4+2)^2" 2 >> coverage.out
+./polfact 11 "ans+x" 2 >> coverage.out
+./polfact 11 "2+x = 3-x^2" 2 >> coverage.out
+./polfact 0 "-x^5" 2 >> coverage.out
+./polfact 0 "x**5+x**4-4x**3-3x**2+3x+1" 2 >> coverage.out
+./polfact 0 "(68987*x^2+47773*x+4983)*(61415*x^2+4334*x+343)" 2 >> coverage.out
+./polfact 0 "(3789678961*x^2+545543121*x+432143141)*(678585781*x^2+43213515*x+342143153)" 2 >> coverage.out
+./polfact 0 "(678967896891*x^2+431545543121*x+43432143141)*(67567856785781*x^2+43213515*x+342143153)" 1 >> coverage.out
+./polfact 0 "(x^8-1)/(x^4+1)" 2 >> coverage.out
+./polfact 7 "(x^8-1)/(x^4+1)" 2 >> coverage.out
+./polfact 0 "(x^8-1)%(x^4+1)" 2 >> coverage.out
+./polfact 7 "(x^8-1)%(x^4+1)" 2 >> coverage.out
+./polfact 7 "der(x^8)+gcd(x^7+x^5+2, x^3+43*x)" 0 >> coverage.out
+./polfact 7 "der(x^8)+gcd(x^7+x^5+2, x^3+43*x)" 1 >> coverage.out
+./polfact 7 "der(x^8)+gcd(x^7+x^5+2, x^3+43*x)" 2 >> coverage.out
+./polfact "7^21" "x**39-1" 2 >> coverage.out
+./polfact "7^21" "x**39" 2 >> coverage.out
+./polfact "n(10**19)" "(x**2+23*x-54)*(x**2-42*x+23)" 0 >> coverage.out
+./polfact "n(10**19)" "(x**2+23*x-54)*(x**2-42*x+23)" 1 >> coverage.out
+./polfact "n(10**19)" "(x**2+23*x-54)*(x**2-42*x+23)" 2 >> coverage.out
+./polfact 0 "2.3" 2 >> coverage.out
+./polfact ".8" "2" 2 >> coverage.out
+./polfact "3.8" "6.2" 2 >> coverage.out
+./polfact 0 "1/x+1/(x-1)+1/(x+1)=1" 2 >> coverage.out
+./polfact 7 "1/x+1/(x-1)+1/(x+1)=1" 2 >> coverage.out
+./polfact 0 "LongDiv(x^8-1, x^4-1)" 2 >> coverage.out
+./polfact 7 "LongDiv(x^8-1, x^4-1)" 2 >> coverage.out
+./polfact 0 "LongDiv(x^7/3, x^6/4+3*x^5)" 2 >> coverage.out
+./polfact 0 "LongDiv(x^4, x^8)" 2 >> coverage.out
+./polfact 0 "(x+1)^3+(x-1)^3" 2 >> coverage.out
+./polfact 0 "longdiv((x+1)^3,(x-1)^6)" 2 >> coverage.out
+./polfact 0 "longdiv((x+1)^6,4*(x-1)^3)" 2 >> coverage.out
+./polfact 0 "(x+1)^6 % 26" 2 >> coverage.out
+./polfact 0 "longdiv((x+1)^6, 0)" 2 >> coverage.out
+./polfact 0 "(x+1)^6 / 0" 2 >> coverage.out
+./polfact 0 "(x+1)^6 % (26x)" 2 >> coverage.out
+./polfact 0 "(x-1)^3/(x-1)^6" 2 >> coverage.out
+./polfact 0 "longdiv(x/(x^2+1), x/(x^3+1))" 2 >> coverage.out
+./polfact 0 "x^(-3)" 2 >> coverage.out
+./polfact 0 "(x+2)^(-3)" 2 >> coverage.out
+./polfact 0 "x^(-2)/(x+2)^(-3)" 2 >> coverage.out
+./polfact "n(10**19)" "(x**2-1)*(x-1)" 2 >> coverage.out
+
+lcov --capture --directory . --output-file polfact.info
+gcovr --json run-3.json
+make clean
+make fsquares flags_coverage=--coverage
+echo -e "\n\n**** FSQUARES ****" >> coverage.out
+./fsquares "-2" >> coverage.out
+./fsquares "10**15000" >> coverage.out
+./fsquares "10**30000" >> coverage.out
+./fsquares "3**100+3**76" >> coverage.out
+./fsquares "2**60+500000**2" >> coverage.out
+./fsquares 0 >> coverage.out
+./fsquares 27 >> coverage.out
+./fsquares "10**200+54154255642" >> coverage.out
+lcov --capture --directory . --output-file fsquares.info
+gcovr --json run-4.json
+make clean
+make tsqcubes flags_coverage=--coverage
+echo -e "\n\n**** TSQCUBES ****" >> coverage.out
+./tsqcubes "-2" 0 >> coverage.out
+./tsqcubes "10**150" 0 >> coverage.out
+./tsqcubes "10**150" 1 >> coverage.out
+./tsqcubes "10**150" 2 >> coverage.out
+./tsqcubes "10**30000" 0 >> coverage.out
+./tsqcubes "3**100+3**76" 0 >> coverage.out
+./tsqcubes "2**60+500000**2" 0 >> coverage.out
+./tsqcubes 0 0 >> coverage.out
+./tsqcubes 27 0 >> coverage.out
+./tsqcubes "10**200+54154255642" 0 >> coverage.out
+lcov --capture --directory . --output-file fsquares.info
+gcovr --json run-5.json
+make clean
+make fcubes flags_coverage=--coverage
+echo -e "\n\n**** FCUBES ****" >> coverage.out
+./fcubes 0 >> coverage.out
+./fcubes 16 >> coverage.out
+./fcubes 27 >> coverage.out
+./fcubes 2414 >> coverage.out
+./fcubes 1892 >> coverage.out
+./fcubes "10**200+54154255642" >> coverage.out
+lcov --capture --directory . --output-file fcubes.info
+gcovr --json run-6.json
+make clean
+make dilog flags_coverage=--coverage
+echo -e "\n\n**** DILOG ****" >> coverage.out
+./dilog -1 4 5 >> coverage.out
+./dilog 3 -1 5 >> coverage.out
+./dilog 2 4 -1 >> coverage.out
+./dilog 3 22 23 >> coverage.out
+./dilog 3 7 29 >> coverage.out
+./dilog 7 23 8 >> coverage.out
+./dilog 28 43 "n(120000)" >> coverage.out
+./dilog 667 999 "n(10000000000)" >> coverage.out
+./dilog 2 173 226 >> coverage.out
+./dilog 2 64 226 >> coverage.out
+./dilog 34 166 774 >> coverage.out
+./dilog 32 168 811 >> coverage.out
+./dilog 34 1632173972 10779215329 >> coverage.out
+./dilog 2 2417127491429477899985762879392273445920140573547300334342743900999888057458790592924089419742390925513922941510205867199016331428593320505481033311208857985114740620125834497392020402954225388709381025496219197170126546718142841212893378397885326167327263857609817366317978224215162857904581446145152142 2644233424050979919959472773551014160896585325892159594283808864074283164412198242430622504046152302216251426005808485472118356499482789461488463475451971721075109470831515836398170407749289340517906396427118712097084818355186185714843140217934670470297724600474648108502799503321625512090834701793488115 >> coverage.out
+./dilog 2 2423072052501243993264420946146827775567704445631403974795865782059910895997138868504591041477045161686721589514120156854407528872534293238191243915370929191316393817347290803799772484045384031796250034137988702168947236501340945874745815103090057214238941603068924321095043916203234507326087230094326178 2644233424050979919959472773551014160896585325892159594283808864074283164412198242430622504046152302216251426005808485472118356499482789461488463475451971721075109470831515836398170407749289340517906396427118712097084818355186185714843140217934670470297724600474648108502799503321625512090834701793488115 >> coverage.out
+./dilog 2032414569157564 1769265429188412 4503599627324003 >> coverage.out
+lcov --capture --directory . --output-file dilog.info
+gcovr --json run-7.json
+make clean
+make quad flags_coverage=--coverage
+echo -e "\n\n**** QUAD ****" >> coverage.out
+./quad 0 0 0 0 0 0 0 >> coverage.out
+./quad 0 0 0 0 5 6 0 >> coverage.out
+./quad 0 0 0 0 5 6 1 >> coverage.out
+./quad 0 0 0 5 0 6 0 >> coverage.out
+./quad 0 0 0 5 0 6 1 >> coverage.out
+./quad 0 0 0 0 1 5 0 >> coverage.out
+./quad 0 0 0 1 0 5 0 >> coverage.out
+./quad 0 0 0 0 1 5 1 >> coverage.out
+./quad 0 0 0 1 1 5 0 >> coverage.out
+./quad 0 0 0 1 1 5 1 >> coverage.out
+./quad 1 2 3 4 5 6 0 >> coverage.out
+./quad 1 2 3 4 5 6 1 >> coverage.out
+./quad 1 0 0 0 7 -12 0 >> coverage.out
+./quad 1 0 0 0 7 -12 1 >> coverage.out
+./quad 1 2 2 0 0 -89 0 >> coverage.out
+./quad 1 2 2 0 0 -89 1 >> coverage.out
+./quad 1 3 3 0 0 -76 0 >> coverage.out
+./quad 1 3 3 0 0 -76 1 >> coverage.out
+./quad 1 0 1 0 0 -425 0 >> coverage.out
+./quad 1 0 -5 0 0 4 0 >> coverage.out
+./quad 1 0 -5 0 0 4 1 >> coverage.out
+./quad 1 0 -991 0 0 -1 0 >> coverage.out
+./quad 1 0 -991 0 0 -1 1 >> coverage.out
+./quad 5 3 -991 23 42 -1 0 >> coverage.out
+./quad 5 3 -991 23 42 -1 1 >> coverage.out
+./quad 2 3 7 0 0 -12 0 >> coverage.out
+./quad 2 3 7 0 0 -12 1 >> coverage.out
+./quad 2 -33 7 0 0 -12 0 >> coverage.out
+./quad 2 -33 7 0 0 -12 1 >> coverage.out
+./quad 1 0 0 0 -6 3 0 >> coverage.out
+./quad 1 0 0 0 -6 3 1 >> coverage.out
+./quad 1 -3 1 0 0 1 0 >> coverage.out
+./quad 1 -3 1 0 0 1 1 >> coverage.out
+./quad 2 -6 2 0 3 -11 1 >> coverage.out
+./quad 1 -1 1 -1 -1 0 1 >> coverage.out
+./quad 0 -6 -6 -5 1 5 0 >> coverage.out
+./quad 0 -6 -6 -5 1 5 1 >> coverage.out
+./quad -6 -6 0 1 -5 5 0 >> coverage.out
+./quad -6 -6 0 1 -5 5 1 >> coverage.out
+./quad 128 0 -128 184 -12 11612128 0 >> coverage.out
+./quad A B C D E F 1 >> coverage.out
+
+lcov --capture --directory . --output-file quad.info
+gcovr --json run-8.json
+make clean
+make contfrac flags_coverage=--coverage
+echo -e "\n\n**** CONTFRAC ****" >> coverage.out
+./contfrac 1 2 3 0 >> coverage.out
+./contfrac 1 0 991 0 >> coverage.out
+./contfrac 5 27 991 0 >> coverage.out
+./contfrac 1 2 3 1 >> coverage.out
+./contfrac 1 0 991 1 >> coverage.out
+./contfrac 5 27 991 1 >> coverage.out
+./contfrac 1 3 -1 1 >> coverage.out
+./contfrac 1 2 0 1 >> coverage.out
+./contfrac 1 -5 3 1 >> coverage.out
+./contfrac 1 9 3 1 >> coverage.out
+./contfrac A 9 3 1 >> coverage.out
+./contfrac 1 A 3 1 >> coverage.out
+./contfrac 1 9 A 1 >> coverage.out
+./contfrac "sqrt(2,4)" 9 A 1 >> coverage.out
+./contfrac "sqrt()" 9 A 1 >> coverage.out
+./contfrac "random(6)" 9 A 1 >> coverage.out
+lcov --capture --directory . --output-file contfrac.info
+gcovr --json run-9.json
+make clean
+make quadmod flags_coverage=--coverage
+echo -e "\n\n**** QUADMOD ****" >> coverage.out
+./quadmod 1 2 3 7 >> coverage.out
+./quadmod 1 0 991 "n(10^5)" >> coverage.out
+./quadmod 5 27 43 "n(10^20+3)" >> coverage.out
+./quadmod 5 27 82 "n(10^80+5)" >> coverage.out
+./quadmod 5 27 82 "2^8" >> coverage.out
+./quadmod 125 27 82 25 >> coverage.out
+./quadmod 3 8 5 9 >> coverage.out
+./quadmod 5 27 82 "2^256" >> coverage.out
+./quadmod 0 27 82 "2^256" >> coverage.out
+./quadmod 73 27 83 "2^16" >> coverage.out
+./quadmod 73 270 83 "2^16" >> coverage.out
+./quadmod -1 1 1 19 >> coverage.out
+./quadmod -1 2 3 105 >> coverage.out
+./quadmod 1 0 -505 361 >> coverage.out
+./quadmod -1 0 505 361 >> coverage.out
+./quadmod -1 0 324 384 >> coverage.out
+./quadmod 1 2 3 97 >> coverage.out
+./quadmod 0 0 0 0 >> coverage.out
+./quadmod 0 0 7 0 >> coverage.out
+./quadmod 0 3 7 0 >> coverage.out
+./quadmod 0 3 9 0 >> coverage.out
+./quadmod 1 3 7 0 >> coverage.out
+./quadmod 1 3 2 0 >> coverage.out
+./quadmod 0 12 24 120 >> coverage.out
+./quadmod 0 -3 6 120 >> coverage.out
+./quadmod 0 -1 -1 44 >> coverage.out
+./quadmod 23 17 20 128 >> coverage.out
+./quadmod -23 -17 -20 128 >> coverage.out
+./quadmod 1 0 12 24 >> coverage.out
+./quadmod 1 0 0 2 >> coverage.out
+./quadmod 1 0 1 2 >> coverage.out
+./quadmod 1 1 0 2 >> coverage.out
+./quadmod 1 1 1 2 >> coverage.out
+./quadmod 1 0 112 128 >> coverage.out
+./quadmod 1 0 112 243 >> coverage.out
+./quadmod 1 0 195722369727 1099511627776 >> coverage.out
+./quadmod 1 0 -1 "2**90" >> coverage.out
+./quadmod T Q R M >> coverage.out
+lcov --capture --directory . --output-file quadmod.info
+gcovr --json run-10.json
+make clean
+make gaussian flags_coverage=--coverage
+echo -e "\n\n**** GAUSSIAN ****" >> coverage.out
+./gaussian 5 1 >> coverage.out
+./gaussian 1 1 >> coverage.out
+./gaussian "232435+432i" 1 >> coverage.out
+./gaussian "10**20+45+(23i)" 1 >> coverage.out
+./gaussian "6!! + Re(12+4i) - Im(2 - 3i) * Norm(2 + 4i)" 1 >> coverage.out
+./gaussian "200! / 199! + 7# + 300 % 28 + F(24) + L(12) + N(24) + B(32) + P(5)" 1 >> coverage.out
+./gaussian "gcd(8 + 4i, 6 + 3i)" 1 >> coverage.out
+./gaussian "gcd(8, 6)" 1 >> coverage.out
+./gaussian "gcd(-13027636 + 28251126*i, 18427129 + 44161501*i)" 1 >> coverage.out
+./gaussian "isprime(23) + 2*isprime(5) + 4*isprime(1+i)" 0 >> coverage.out
+./gaussian "modpow(7,6,0) + modpow(7,6,23)" 0 >> coverage.out
+./gaussian "modinv(13,71)" 0 >> coverage.out
+./gaussian "gcd(1+i,2,4)" 0 >> coverage.out
+./gaussian "lcm(1+i,2,4) + ans" 0 >> coverage.out
+./gaussian "isprime(3)" 0 >> coverage.out
+./gaussian "isprime(5)" 0 >> coverage.out
+./gaussian "isprime(3*i)" 0 >> coverage.out
+./gaussian "isprime(5*i)" 0 >> coverage.out
+./gaussian "P(3+5*i)" 0 >> coverage.out
+./gaussian "P(-3)" 0 >> coverage.out
+./gaussian "P(3000000000)" 0 >> coverage.out
+./gaussian "P(100001)" 0 >> coverage.out
+./gaussian "gcd(0, 0)" 0 >> coverage.out
+./gaussian "gcd(3, 0)" 0 >> coverage.out
+./gaussian "gcd(0, 3)" 0 >> coverage.out
+./gaussian "lcm(0, 0)" 0 >> coverage.out
+./gaussian "lcm(3, 0)" 0 >> coverage.out
+./gaussian "lcm(0, 3)" 0 >> coverage.out
+lcov --capture --directory . --output-file gaussian.info
+gcovr --json run-11.json
+make clean
+make sumquad flags_coverage=--coverage
+echo -e "\n\n**** SUMQUAD ****" >> coverage.out
+./sumquad 100 >> coverage.out
+./sumquad 200 >> coverage.out
+./sumquad 5525 >> coverage.out
+./sumquad 422500 >> coverage.out
+./sumquad "422500*289" >> coverage.out
+lcov --capture --directory . --output-file sumquad.info
+gcovr --json run-12.json
+make clean
+make divisors flags_coverage=--coverage
+echo -e "\n\n**** DIVISORS ****" >> coverage.out
+./divisors 0 >> coverage.out
+./divisors 2 >> coverage.out
+./divisors 5525 >> coverage.out
+./divisors 422500 >> coverage.out
+./divisors "422500*289*7" >> coverage.out
+lcov --capture --directory . --output-file divisors.info
+gcovr --json run-13.json
+make clean
+make isprime flags_coverage=--coverage
+echo -e "\n\n**** ISPRIME ****" >> coverage.out
+./isprime -3 -5 -7 -9 4759 81463477561 25326001 341550071728321 1000000000000000003 >> coverage.out
+./isprime 0 1 2 3 4 15 65537 -4294967296 >> coverage.out
+lcov --capture --directory . --output-file isprime.info
+gcovr --json run-14.json
+gcovr --add-tracefile "run-*.json" --sonarqube > coverage.xml
+rm run*json
+rm *.gcda
+rm *.gcno

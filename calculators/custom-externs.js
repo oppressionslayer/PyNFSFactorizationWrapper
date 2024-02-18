@@ -1,0 +1,2 @@
+let caches;
+let localStorage;

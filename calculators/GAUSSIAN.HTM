@@ -1,0 +1,426 @@
+﻿<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
+<head>
+<meta charset="utf-8">
+<meta name="Author" content="Dario Alejandro Alpern">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Web application that factors Gaussian integers of the form (a+bi). Written by Dario Alpern.">
+<meta name="theme-color" content="#db5945">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="Gaussian integer factorization calculator">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Alpertron">
+<meta property="og:url" content="https://www.alpertron.com.ar/GAUSSIAN.HTM">
+<meta property="og:image" content="https://www.alpertron.com.ar/gaussian.png">
+<meta property="og:image:width" content="891">
+<meta property="og:image:height" content="465">
+<meta property="og:image:alt" content="Screenshot">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:description" content="This factors Gaussian integers of the form (a+bi).">
+<meta property="article:published_time" content="2023-06-08">
+<meta property="fb:app_id" content="1495228927625175">
+<link rel="alternate" hreflang="es" href="https://www.alpertron.com.ar/GAUSIANO.HTM">
+<link rel="alternate" hreflang="en" href="https://www.alpertron.com.ar/GAUSSIAN.HTM">
+<link rel="manifest" href="gaussian.webmanifest">
+<link rel="apple-touch-icon" href="gaussian-icon-180px.png">
+<link rel="canonical" href="https://www.alpertron.com.ar/GAUSSIAN.HTM">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PH40GPHC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Q7PH40GPHC');
+</script>
+<title>Gaussian integer factorization calculator</title>
+<style>
+@media print {nav, .footer {display:none;}}
+@media screen {
+nav {background-color:#000080; width:100%; margin:0px; text-align:center}
+nav ul {padding:0; margin:0 auto; list-style:none; display:inline-block} 
+nav li {float:left; position:relative; display:block; margin-top:0px; margin-bottom:0px; margin-left:5px; margin-right:5px; background-color:#000080; color:#FFFFFF; cursor: pointer; text-align:left}
+nav li[aria-expanded="true"] {background-color:#004000; color:#FFFFFF}
+nav li ul {display:none; position:absolute}
+nav li[aria-expanded="true"] ul.alignleft {display:block; height:auto}
+nav li[aria-expanded="true"] ul.alignright {display:block; height:auto; right:0px; background-color:#004000}
+nav li ul li {clear:both; white-space: nowrap; border:0px; background-color:#004000; width:100%; padding-top:1em; padding-bottom:0.5em}
+nav a:link{color:#FFFFFF; text-decoration:none}
+nav a:visited{color:#FFFFFF; text-decoration:none}
+nav a:hover{background-color:#004000; color:#FFFFFF; text-decoration:none}
+nav a:active{background-color:#004000; color:#FFFFFF; text-decoration:none}
+nav li ul li a:link{background-color:#004000; color:#FFFFFF; display:block; width:100%}
+nav li ul li a:visited{background-color:#004000;color:#FFFFFF; display:block; width:100%}
+nav li ul li a:hover{background-color:#FFFFFF; color:#004000; display:block; width:100%}
+nav li ul li a:active{background-color:#FFFFFF; color:#004000; display:block; width:100%}
+nav::after {clear:both}
+.atright {float:right;}
+@media (max-width: 400px) { nav { font-size:0.7em; } }
+@media (min-width: 400px) { nav { font-size:1em; } }
+}
+#sending, #sentOK, #notSent {display:none}
+.center {text-align:center}
+#skip a {padding:6px;	position:absolute; top:-40px; left:0px; color:white; border-right:1px solid white; border-bottom:1px solid white; border-bottom-right-radius:8px; background:#BF1722; transition:top 1s ease-out; z-index:100}
+#skip a:focus {position:absolute;	left:0px;	top:0px; outline-color:transparent; transition: top .1s ease-in}
+.bread {padding:0px;list-style:none; display:inline-block;}
+.bread li {display:inline}
+.bread li+li:before {content:"›"}
+.modal-header {padding: 2px 10px; background-color: #5cb85c; color: white;}
+.modal-body {padding: 2px 10px;}
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+body {font-family: Arial, sans-serif;margin: 0; padding: 0;}
+h1, .h2title {text-align:center}
+#actions input[type=button] {color: white; background-color: #3b3b3b}
+fieldset {display:inline}
+#functions {max-width:50%}
+.lf,.labels {padding:0.2em; clear:both;}
+.blue {color: #0000FF;}
+.inline {display:inline;}
+.pad {padding:10px;}
+.applet {margin-left: auto;margin-right: auto; border: 0px none;width:90%;text-align:center;background-color:#c0c0c0;padding:10px;}
+.funcbtn {margin:3px}
+#feedback {display:none}
+.inputfbck{width: calc(100% - 10em);float:right;padding:3px;margin:0px;}
+@media (min-width: 400px) {.input{width: calc(100% - 6em);float:right;padding:3px;margin:0px;}}
+@media (max-width: 400px) {.input{width:100%;padding:3px;margin:0px;}}
+@media (max-width: 53em) {
+.applet {display: flex; flex-direction: column;}
+#inputs {order:2}
+#actions {order:1}
+#functions {order:3; max-width:100%}
+}
+@media (min-width: 500px) {#formleft {float:left;width:50%;} #formright {float:right;width:50%;}}
+#help,#result,#status,#footer {margin: 3px; padding: 3px;}
+#more,#stop {display:none}
+@media screen and (prefers-color-scheme: dark) {
+body {color: #ddd; background-color: #121212}
+.applet {background-color:#606060; color: #fff}
+a {color: #a3d4a7}
+a:link,a:active {color: #a3d4a7}
+a:hover {color: #f5cba7}
+a:visited {color: #d7bde2}
+input, textarea {color: white; background-color: #3b3b3b}
+input:disabled {color: #808080; background-color: #606060}
+.blue {color: #E0E000}
+}
+</style>
+<noscript>
+<style>
+.applet {display:none}
+</style>
+</noscript>
+</head>
+<body>
+<div id="skip"><a href="#main">Skip to main content</a></div>
+<nav aria-label="Main navigation">
+<ul role="menubar">
+<li role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">Electronics
+<ul role="menu" class="alignleft popup">
+<li role="menuitem"><a href="INTEL.HTM" hreflang="es" title="All Intel microprocessors from the 4004 up to Pentium (Spanish only)">Intel Microprocessors</a></li>
+</ul>
+</li>
+<li role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Mathematics
+<ul role="menu" class="alignleft popup">
+<li role="menuitem"><a href="CALTORS.HTM" title="Web applications with JavaScript and WebAssembly implementing calculators">Calculators</a></li>
+<li role="menuitem"><a href="NUMBERT.HTM" title="Articles and programs about number theory">Number Theory</a></li>
+<li role="menuitem"><a href="PROBLEMS.HTM" title="Interesting math problems">Problems</a></li>
+</ul>
+</li>
+<li role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Programs
+<ul role="menu" class="alignright popup">
+<li role="menuitem"><a href="ASSEM386.HTM" title="Programs written in 80386 Assembler">Assembler 80386</a></li>
+<li role="menuitem"><a href="JAVAPROG.HTM" title="Web applications with JavaScript and WebAssembly">Web applications</a></li>
+<li role="menuitem"><a href="GAMES.HTM" title="Computer games">Games</a></li>
+</ul>
+</li>
+<li class="alignright" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Contact
+<ul role="menu" class="alignright popup">
+<li role="menuitem"><a href="EPERS.HTM" title="Personal information">Personal</a></li>
+<li role="menuitem"><a href="FORM.HTM" title="Form to send comments">Comments</a></li>
+<li role="menuitem"><a href="EGBOOK.HTM" title="Old and new guestbook">Guestbook</a></li>
+<li role="menuitem"><a href="PRIVACY.HTM" title="Privacy Policy">Privacy</a></li>
+<li role="menuitem"><a href="DONATION.HTM" title="Donations to the author of this Web site">Donations</a></li>
+</ul>
+</li>
+</ul>
+<ul class="atright"><li><a href="GAUSIANO.HTM" hreflang="es" title="Esta página Web en español">ESP</a></li></ul>
+</nav>
+<main id="main">
+<article>
+<h1>Gaussian integer factorization calculator</h1>
+<div class="pad">
+<ol class="bread" vocab="https://schema.org/" typeof="BreadcrumbList">
+<li property="itemListElement" typeof="ListItem">
+<a property="item" typeof="WebPage" href="ENGLISH.HTM"><span property="name">Alpertron</span></a>
+<meta property="position" content="1">
+</li>
+<li property="itemListElement" typeof="ListItem">
+<a property="item" typeof="WebPage" href="JAVAPROG.HTM"><span property="name">Web applications</span></a>
+<meta property="position" content="2">
+</li>
+<li property="itemListElement" typeof="ListItem">
+<span property="name">Gaussian integer factorization calculator</span>
+<meta property="position" content="3">
+</li>
+</ol>
+</div>
+<noscript><p><strong>The calculator does not work with Javascript disabled. Please check your browser settings.</strong></p></noscript>
+<div class="applet">
+<div id="inputs">
+<label for="value">Value</label><input type="text" inputmode="numeric" id="value" value="" class="input">
+</div>
+<fieldset id="actions"><legend>Actions</legend>
+<input type="button" id="more" value="More" title="Change curve number or enter a known factor">
+<input type="button" id="eval" value="Only evaluate" title="Evaluate expression but do not factor it">
+<input type="button" id="factor" value="Factor" title="Factor expression">
+<input type="button" id="stop" value="Stop" title="Stop the current computation">
+<input type="button" id="helpbtn" value="Help" title="Show help about the application and the math used">
+<input type="button" id="config" value="Config" title="Change parameters used in the application">
+</fieldset>
+<fieldset id="functions"><legend>Functions</legend>
+<label for="funccat">Category:</label> 
+<select id="funccat">
+<optgroup label="Functions or operators">
+<option value="0" selected>Basic Math</option>
+<option value="1">Divisibility</option>
+<option value="2">Recreational Math</option>
+<option value="3">Number Theory</option>
+<option value="4">Other</option>
+</optgroup>
+</select>
+<span id="funcbtns">
+<button type="button">(</button><button type="button">)</button><button type="button">i</button><button type="button">+</button><button type="button">-</button><button type="button">*</button><button type="button">/</button><button type="button">%</button><button type="button">^</button><button type="button">ans</button><button type="button">Re(</button><button type="button">Im(</button><button type="button">Norm(</button><button type="button">Random(</button>
+</span>
+</fieldset>
+</div>
+<div id="help" aria-live="polite">
+<p>This Web application factors Gaussian integers as a product of Gaussian primes.</p>
+<p>The Gaussian integers are complex numbers of the form <var>a</var> + <var>b</var>i, where both <var>a</var> and <var>b</var> are integer numbers and i is the square root of -1.</p>
+<p>The factorization is unique, if we do not consider the order of the factors and associated primes. Each prime number has three associated prime numbers that are obtained by multiplying by a power of i. This issue disappears by selecting prime numbers <var>a</var> + <var>b</var>i such that <var>a</var> &gt;= |<var>b</var>|.</p>
+<h2>Factoring Gaussian integers</h2>
+<p>An important concept needed for Gaussian integer factorization is the norm. This is defined as: <span role="math" aria-label="norm of a plus b times i equals a squared plus b squared">N(<var>a</var>+<var>b</var>i) = <var>a</var><sup>2</sup> + <var>b</var><sup>2</sup></span>.</p>
+<p>The product of the norm of two Gaussian integers is equal to the norm of the products of these numbers as can be easily seen as follows:</p>
+<p>N(<var>a</var>+<var>b</var>i) N(<var>c</var>+<var>d</var>i) =
+(<var>a</var><sup>2</sup> + <var>b</var><sup>2</sup>) (<var>c</var><sup>2</sup> + <var>d</var><sup>2</sup>) =
+(<var>a</var><var>c</var>)<sup>2</sup> + (<var>b</var><var>d</var>)<sup>2</sup> + (<var>a</var><var>d</var>)<sup>2</sup> + (<var>b</var><var>c</var>)<sup>2</sup> = 
+(<var>a</var><var>c</var>)<sup>2</sup> - 2<var>a</var><var>b</var><var>c</var><var>d</var> + (<var>b</var><var>d</var>)<sup>2</sup> + (<var>a</var><var>d</var>)<sup>2</sup> + 2<var>a</var><var>b</var><var>c</var><var>d</var> + (<var>b</var><var>c</var>)<sup>2</sup> = 
+(<var>a</var><var>c</var>-<var>b</var><var>d</var>)<sup>2</sup> + (<var>a</var><var>d</var>+<var>b</var><var>c</var>)<sup>2</sup> =
+N((<var>a</var><var>c</var>-<var>b</var><var>d</var>)+(<var>a</var><var>d</var>+<var>b</var><var>c</var>)i) =
+N(<var>a</var>(<var>c</var>+<var>d</var>i) + <var>b</var>(-<var>d</var>+<var>c</var>i)) =
+N(<var>a</var>(<var>c</var>+<var>d</var>i) + <var>b</var>i(<var>c</var>+<var>d</var>i)) =
+N((<var>a</var>+<var>b</var>i) (<var>c</var>+<var>d</var>i))</p>
+
+<p>In the next to last expression we used the fact that i<sup>2</sup> = -1.</p>
+
+<p>This means that the first step when trying to factor a Gaussian integer is to factor its norm into integer primes, so we get the norm of the factors of the original number.</p>
+<p>The second step is to obtain the factors from the norm of the factor.</p>
+<p>There are three cases:</p>
+<ol>
+<li>The prime factor <var>p</var> of the norm is 2: This means that the factor of the Gaussian integer is 1+i or 1-i.</li>
+<li>The prime factor <var>p</var> of the norm is multiple of 4 plus 3: this value cannot be expressed as a sum of two squares, so <var>p</var> is not a norm, but <var>p</var><sup>2</sup> is.
+Since <var>p</var><sup>2</sup> = <var>p</var><sup>2</sup> + 0<sup>2</sup>, and there is no prime norm that divides <var>p</var><sup>2</sup>, the number <var>p</var> + 0i is a Gaussian prime, and the repeated factor <var>p</var> must be discarded.</li>
+<li>The prime factor <var>p</var> of the norm is multiple of 4 plus 1: this number can be expressed as a sum of two squares, by using the methods explained in the <a href="https://www.alpertron.com.ar/4SQUARES.HTM">sum of squares</a> page.
+If <var>p</var> = <var>m</var><sup>2</sup> + <var>n</var><sup>2</sup>, then you can check whether <var>m</var> + <var>n</var>i or <var>m</var> &minus; <var>n</var>i are divisors of the original Gaussian number.</li>
+</ol>
+<p>Why does a number which is multiple of 4 plus 3 cannot be expressed as a sum of two squares? This is because the square of an even number is multiple of 4, and the square of an odd number is multiple of 4 plus 1. So we get:</p>
+<ul>
+<li>even<sup>2</sup> + even<sup>2</sup> = multiple of 4</li>
+<li>even<sup>2</sup> + odd<sup>2</sup> = multiple of 4 plus 1</li>
+<li>odd<sup>2</sup> + even<sup>2</sup> = multiple of 4 plus 1</li>
+<li>odd<sup>2</sup> + odd<sup>2</sup> = multiple of 4 plus 2</li>
+</ul>
+<p>So under no circumstances a sum of two squares can be multiple of 4 plus 3.</p>
+<p>Of course the first step is a lot more difficult than the second step. This is because we do not know efficient integer factorization for huge numbers.</p>
+<p>Example: factor the Gaussian integer 440 &minus; 55i</p>
+<p>The norm is 440<sup>2</sup> + 55<sup>2</sup> = 196625 = 5 &times; 5 &times; 5 &times; 11 &times; 11 &times; 13</p>
+<p>Both 5 and 13 are multiples of 4 plus 1 while 11 is a multiple of 4 plus 3. We can use the fact the 5 = 2<sup>2</sup> + 1<sup>2</sup> and 13 = 3<sup>2</sup> + 2<sup>2</sup></p>
+<p>Since 11 is a Gaussian prime, we can divide the original number by 11 and get 40&nbsp;&minus;&nbsp;5i.</p>
+<p>For the three factors of the norm equal to 5, we have to divide the result of the previous step 40&nbsp;&minus;&nbsp;5i by 2&nbsp;&minus;&nbsp;i or 2&nbsp;+&nbsp;i. So we get: 40 &minus; 5i = (2&nbsp;+&nbsp;i)<sup>2</sup> &times; (2&nbsp;&minus;&nbsp;i) &times; (3&nbsp;&minus;&nbsp;2i)</p>
+<p>For the factor 13 we have to divide the result of the previous step 3&nbsp;&minus;&nbsp;2i by 3&nbsp;+&nbsp;2i or 3&nbsp;&minus;&nbsp;2i. Of course only 3&nbsp;&minus;&nbsp;2i divides 3&nbsp;&minus;&nbsp;2i.</p>
+<p>The complete factorization is: 440 &minus; 55i = 11 &times; (2&nbsp;+&nbsp;i)<sup>2</sup> &times; (2&nbsp;&minus;&nbsp;i) &times; (3&nbsp;&minus;&nbsp;2i).</p>
+<h2>Expressions</h2>
+<p>In order to enter the imaginary part of a Gaussian integer you can use the symbol i, as in the next example: 3+4i.</p>
+<p>You can also enter expressions that use the following operators, functions and parentheses:</p>
+<ul>
+<li> + for addition</li>
+<li> - for subtraction</li>
+<li> * for multiplication</li>
+<li> / for integer division (the dividend must be multiple of the divisor)</li>
+<li> % for modulus (remainder of the integer division)</li>
+<li> ^ for exponentiation (the exponent must be real and greater than or equal to zero).</li>
+<li> <strong>Ans</strong>: retrieves the last answer.</li>
+<li> <strong>n!</strong>: factorial (<var>n</var> must be real and greater than or equal to zero).</li>
+<li> <strong>n!! ... !</strong>: multiple factorial (<var>n</var> must be real and greater than or equal to zero). It is the product of <var>n</var> times <var>n</var> &minus; <var>k</var> times <var>n</var> &minus; <var>2k</var> ... (all numbers greater than zero) where <var>k</var> is the number of exclamation marks. Example: 7!! = 7 &times; 5 &times; 3 &times; 1 = 105.</li>
+<li> <strong>p#</strong>: primorial (product of all primes less or equal than <var>p</var>).</li>
+<li> <strong>F(n)</strong>: Fibonacci number F<sub>n</sub></li>
+<li> <strong>L(n)</strong>: Lucas number L<sub>n</sub> = F<sub><var>n</var>-1</sub> + F<sub><var>n</var>+1</sub></li>
+<li> <strong>P(n)</strong>: Unrestricted Partition Number (number of decompositions of <var>n</var> into sums of integers without regard to order).</li>
+<li> <strong>Re(n)</strong>: Real part of <var>n</var>.</li>
+<li> <strong>Im(n)</strong>: Imaginary part of <var>n</var>.</li>
+<li> <strong>Norm(n)</strong>: Norm of <var>n</var>, it equals Re(<var>n</var>)<sup>2</sup> + Im(<var>n</var>)<sup>2</sup>.</li>
+<li> <strong>Gcd(m,n, ...)</strong>: Greatest common divisor of these gaussian integers. Example: GCD(1+i, 2) = 1+i.</li>
+<li> <strong>Lcm(m,n, ...)</strong>: Least common multiple of these gaussian integers. Example: LCM(1+i, 2, 4) = 4.</li>
+<li> <strong>Modinv(m,n)</strong>: inverse of <var>m</var> modulo <var>n</var>, only valid when gcd(m,n)=1.</li>
+<li> <strong>Modpow(m,n,r)</strong>: finds <var>m</var><sup><var>n</var></sup> modulo <var>r</var> (<var>n</var> must be real).</li>
+<li> <strong>Random(m,n)</strong>: Gaussian integer random number whose real and imaginary parts are between the real and imaginary part of <var>m</var> and <var>n</var> respectively.</li>
+<li> <strong>isPrime(n)</strong>: Checks whether the Gaussian integer is probable prime. In this case it returns &minus;1, otherwise, zero.</li>
+</ul>
+<p>You can use the prefix <em>0x</em> for hexadecimal numbers, for example 0x38 is equal to 56.</p>
+<div class="noand">
+<h2>Source code</h2>
+<p>You can download the source of the current program and the old sum polynomial factorization applet from <a href="https://github.com/alpertron/calculators">GitHub</a>. Notice that the source code is in C language and you need the <a href="https://emscripten.org/docs/getting_started/downloads.html">Emscripten</a> environment in order to generate JavaScript.</p>
+</div>
+<p>Written by Dario Alpern. Last updated 16 February 2024.</p>
+</div>
+<div id="helphelp"></div>
+<div id="result" aria-live="polite"></div>
+<div id="status"></div>
+<div class="footer">
+<p>If you find any error or you have a comment, please fill in the <a href="#" id="formlink">form</a>.</p>
+<p>If you like these calculators and you want to support free software with no annoying advertisements, you can <a href="https://www.PayPal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MR65QPWZM5JT6&source=url">donate through PayPal</a>.</p>
+</div>
+</article>
+</main>
+<div id="modal-more" class="modal" role="dialog" aria-labelledby="moreopt">
+<div class="modal-content">
+<div class="modal-header"><span id="close-more" aria-label="close" class="atright">×</span><p id="moreopt">More options</p></div>
+<div class="modal-body">
+<div class="applet">
+<p><label for="curve">New curve number or factor:</label></p><input type="number" id="curve" value="" class="input" min="0" step="1">
+<input type="button" id="ncurve" value="New curve" title="Change curve number for the algorithm ECM. Set to zero to change to algorithm SIQS.">
+<input type="button" id="nfactor" value="New factor" title="Enter a known factor">
+</div>
+</div></div></div>
+<div id="modal-config" class="modal" role="dialog" aria-labelledby="conf">
+<div class="modal-content">
+<div class="modal-header"><span id="close-config" aria-label="close" class="atright">×</span><p id="conf">Configuration</p></div>
+<div class="modal-body">
+<div class="applet">
+<p><label for="digits">Digits per group</label> <input type="number" id="digits" value="6" min="0" max="10000" step="1"></p>
+<p><input type="checkbox" id="batch"><label for="batch">Batch mode</label></p>
+<p><input type="checkbox" id="verbose"><label for="verbose">Verbose mode</label></p>
+<p><input type="checkbox" id="pretty"><label for="pretty">Pretty print</label></p>
+<p><input type="checkbox" id="cunnin"><label for="cunnin">Use Cunningham tables on server</label></p>
+<p><input type="button" id="save-config" value="Save" title="Save configuration"><input type="button" id="cancel-config" value="Cancel" title="Discard changes to configuration"></p>
+</div>
+</div></div></div>
+<aside id="feedback" aria-label="Feedback form">
+<h2 class="h2title">Feedback form</h2>
+<form class="applet" id="formfeedback">
+<input type="hidden" name="subject" value="Gaussian integer factorization calculator feedback">
+<div id="formleft">
+<div class="labels"><label for="name">Your name is:</label><input class="inputfbck" type="text" name="name" maxlength="40" id="name" autocomplete="name"></div>
+<div class="labels"><label for="age">Age:</label><input class="inputfbck" type="number" name="age" min="0" max="999" id="age"></div>
+<div class="labels"><label for="city">City:</label><input class="inputfbck" type="text" name="city" maxlength="70" id="city" autocomplete="address-level2"></div>
+<div class="labels"><label for="province">Province/State:</label><input class="inputfbck" type="text" name="province" maxlength="70" id="province" autocomplete="address-level1"></div>
+<div class="labels"><label for="country">Country:</label><input class="inputfbck" type="text" name="country" maxlength="70" id="country" autocomplete="country-name"></div>
+<div class="labels"><label for="reply">E-mail address:</label><input class="inputfbck" type="email" name="reply" maxlength="70" id="reply" autocomplete="email"></div>
+<p>All fields are optional. Enter your e-mail address if you want a reply from the author of this application.</p>
+<p><input type="checkbox" id="adduserdata"><label for="adduserdata">Send expression to factor</label></p>
+<input type="hidden" name="userdata" value="" id="userdata">
+</div>
+<div id="formright">
+<label for="comments">Please feel free to add comments:</label><br>
+<textarea name="Comments" rows="7" cols="40" id="comments"></textarea>
+<p><label for="how">How did you find my page?</label><br>
+<select name="how" title="How did you find my page?" id="how">
+<optgroup label="Select response">
+<option value="from a search engine" selected>From a search engine</option>
+<option value="from a friend">From a friend</option>
+<option value="from a link">From a link</option>
+<option value="from Wikipedia">From Wikipedia or another reference</option>
+<option value="other">Other</option>
+</optgroup>
+</select></p>
+<fieldset><legend>Are the programs instructive?</legend>
+<input type="radio" name="Instructive" value="Yes" id="insyes"><label for="insyes">Yes</label>
+<input type="radio" name="Instructive" value="No" id="insno"><label for="insno">No</label>
+</fieldset>
+<fieldset><legend>Are the programs interesting?</legend>
+<input type="radio" name="Interesting" value="Yes" id="intyes"><label for="intyes">Yes</label>
+<input type="radio" name="Interesting" value="No" id="intno"><label for="intno">No</label>
+</fieldset>
+<p><input type="submit" disabled="disabled" value="Send it in!" id="formsend" title="Deliver this form">
+<input type="reset" value="Reset">
+<input type="button" value="Cancel" id="formcancel" title="Do not deliver this form"></p>
+</div>
+<div class="lf"></div>
+</form>
+</aside>
+<aside id="sending">
+<p>Sending comments...</p>
+</aside>
+<aside id="sentOK">
+<p>Feedback sent successfully.</p>
+<div class="center"><button type="button" id="btnSentOK">Go back</button></div>
+</aside>
+<aside id="notSent">
+<p>Feedback could not be sent.</p>
+<div class="center"><button type="button" id="btnNotSent">Go back</button></div>
+</aside>
+<script type="text/wasmb64" id="wasmb64">
+</script>
+<script type="text/js-worker" id="worker">
+<!--
+//-->
+</script>
+<script>
+<!--
+//-->
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "browserRequirements": "Requires HTML5. Requires Javascript.",
+  "name": "Gaussian integer factorization calculator",
+  "description": "Web application that factors Gaussian integers of the form (a+bi).",
+  "image": ["https://www.alpertron.com.ar/gaussian.png"],
+  "datePublished": "2023-06-08",
+  "dateModified": "2023-06-08",
+  "operatingSystem": "Any",
+  "applicationCategory": "EducationalApplication",
+  "author": {
+    "@type": "Person",
+    "name": "Dario Alpern"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.5",
+    "ratingCount": "53"
+  },
+  "inLanguage": "en",
+  "license": "https://www.gnu.org/licenses/gpl-3.0.en.html",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "availability": "https://schema.org/OnlineOnly",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</body>
+</html>

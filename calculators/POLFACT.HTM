@@ -1,0 +1,742 @@
+﻿<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
+<head>
+<meta charset="utf-8">
+<meta name="Author" content="Dario Alejandro Alpern">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Web application that factors and finds exact roots of integer polynomials and factors polynomials modulo a power of a prime number. Written by Dario Alpern.">
+<meta name="theme-color" content="#db5945">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="Polynomial factorization and roots calculator">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Alpertron">
+<meta property="og:url" content="https://www.alpertron.com.ar/POLFACT.HTM">
+<meta property="og:image" content="https://www.alpertron.com.ar/polfact.png">
+<meta property="og:image:width" content="1073">
+<meta property="og:image:height" content="542">
+<meta property="og:image:alt" content="Screenshot">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:description" content="Works with integer and modulo p^n polynomials.">
+<meta property="article:published_time" content="2023-06-08">
+<meta property="fb:app_id" content="1495228927625175">
+<link rel="alternate" hreflang="es" href="https://www.alpertron.com.ar/FACTPOL.HTM">
+<link rel="alternate" hreflang="en" href="https://www.alpertron.com.ar/POLFACT.HTM">
+<link rel="manifest" href="polfact.webmanifest">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" href="polfact-icon-180px.png">
+<link rel="canonical" href="https://www.alpertron.com.ar/POLFACT.HTM">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PH40GPHC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Q7PH40GPHC');
+</script>
+<title>Polynomial factorization and roots calculator</title>
+<style>
+@media screen {
+nav {background-color:#000080; width:100%; margin:0px; text-align:center}
+nav ul {padding:0; margin:0 auto; list-style:none; display:inline-block} 
+nav li {float:left; position:relative; display:block; margin-top:0px; margin-bottom:0px; margin-left:5px; margin-right:5px; background-color:#000080; color:#FFFFFF; cursor: pointer; text-align:left}
+nav li[aria-expanded="true"] {background-color:#004000; color:#FFFFFF}
+nav li ul {display:none; position:absolute}
+nav li[aria-expanded="true"] ul.alignleft {display:block; height:auto}
+nav li[aria-expanded="true"] ul.alignright {display:block; height:auto; right:0px; background-color:#004000}
+nav li ul li {clear:both; white-space: nowrap; border:0px; background-color:#004000; width:100%; padding-top:1em; padding-bottom:0.5em}
+nav a:link{color:#FFFFFF; text-decoration:none}
+nav a:visited{color:#FFFFFF; text-decoration:none}
+nav a:hover{background-color:#004000; color:#FFFFFF; text-decoration:none}
+nav a:active{background-color:#004000; color:#FFFFFF; text-decoration:none}
+nav li ul li a:link{background-color:#004000; color:#FFFFFF; display:block; width:100%}
+nav li ul li a:visited{background-color:#004000;color:#FFFFFF; display:block; width:100%}
+nav li ul li a:hover{background-color:#FFFFFF; color:#004000; display:block; width:100%}
+nav li ul li a:active{background-color:#FFFFFF; color:#004000; display:block; width:100%}
+nav::after {clear:both}
+.inputfbck{width: calc(100% - 10em);float:right;padding:3px;margin:0px;}
+@media (max-width: 400px) { nav { font-size:0.7em;  } }
+@media (min-width: 400px) { nav { font-size:1em;  } }
+@media (min-width: 500px) {#formleft {float:left;width:50%;} #formright {float:right;width:50%;}}
+}
+@media print {nav .footer {display:none;}}
+#sending, #sentOK, #notSent {display:none}
+.center {text-align:center}
+#skip a {padding:6px;	position:absolute; top:-40px; left:0px; color:white; border-right:1px solid white; border-bottom:1px solid white; border-bottom-right-radius:8px; background:#BF1722; transition:top 1s ease-out; z-index:100}
+#skip a:focus {position:absolute;	left:0px;	top:0px; outline-color:transparent; transition: top .1s ease-in}
+kbd {font-size:120%}
+.bread {padding:0px;list-style:none; display:inline-block;}
+.bread li {display:inline}
+.bread li+li:before {content:"›"}
+h2 > button {background-color:#eee; color:#444; cursor:pointer; padding:18px; font-weight:bold; font-size: 100%; width:100%; text-align:left; border:none; transition:0.4s}
+h2 > button.active,h2 > button:hover {background-color:#ccc;}
+h2 > button:after {content:"\002B"; color:#777; font-weight:bold; float:right; margin-left:5px;}
+h2 > button.active:after {content:"\2212";}
+.panel {padding: 0 10px; display:none; overflow:hidden;}
+body {font-family: Arial, sans-serif; margin: 0; padding: 0;}
+h1, .h2title {text-align:center}
+input[type=button] {color: white; background-color: #3b3b3b}
+fieldset {display:inline}
+.lf,.labels {padding:0.2em; clear:both; width:100%}
+.nolf {white-space: nowrap;}
+.atright {float:right;}
+.pad {padding:10px;}
+.applet {margin-left: auto;margin-right: auto; border: 0px none;width:90%;text-align:center;background-color:#c0c0c0;padding:10px;}
+#feedback {display:none}
+#digits {width:5em}
+@media (min-width: 400px) { .input{width: calc(100% - 8em);float:right;padding:3px;margin:0px;}}
+@media (max-width: 400px) { .input{width:100%;padding:3px;margin:0px;}}
+#result ul {margin:0;padding:0px 20px 0px 20px;}
+sup::before {content:" raised to the power ";position:absolute;top:-9999px;left:-9999px}
+.inputfbck{width: calc(100% - 10em);float:right;padding:3px;margin:0px;}
+.input{width: calc(100% - 8em);float:right;padding:3px;margin:0px;}
+.root,.root2dig,.root3dig{display: inline-block; vertical-align:middle; border-top: 1px solid; border-left: 1px solid; transform: skew(-15deg); transform-origin: bottom left; position: relative;}
+.root {margin:2px 10px}
+.root2dig {margin:2px 10px 2px 18px}
+.root3dig {margin:2px 10px 2px 26px}
+.root:before,.root2dig:before,.root3dig:before {content: ""; position:absolute; bottom:0; height:40%; width:5px; left:-5px; border-right:1px solid; transform:skew(30deg); transform-origin:bottom right;}
+.root:after,.root2dig:after,.root3dig:after {content: " end root ";position:absolute;top:-9999px;left:-9999px}
+.radicand2, .radicand3, .radicand4, .radicand5{display: inline-block; padding-left:0.5em; transform:skew(15deg);}
+.radicand2:before{content: " square root of "; position:absolute;top:-9999px;left:-9999px}
+.radicand3,.radicand4,.radicand5 {top:-0.2em; left:-0.7em;}
+.radicand3:before{content: " cubic root of "; position:absolute;top:-9999px;left:-9999px}
+.radicand4:before{content: " fourth root of "; position:absolute;top:-9999px;left:-9999px}
+.radicand5:before{content: " fifth root of "; position:absolute;top:-9999px;left:-9999px}
+.root>.befrad{position:absolute; font-size:80%; top:-0.2em; left: -1em; transform: skew(15deg);}
+.root2dig>.befrad{position:absolute; font-size:80%; top:-0.2em; left: -1.5em; transform: skew(15deg);}
+.root3dig>.befrad{position:absolute; font-size:80%; top:-0.2em; left: -2em; transform: skew(15deg);}
+.befrad:after {content:" root of ";position:absolute;top:-9999px;left:-9999px}
+.fraction{display: inline-flex; flex-direction:column; padding:0.3em; align-items:center; vertical-align:middle;}
+.fraction:before {content:" start fraction ";position:absolute;top:-9999px;left:-9999px}
+.fraction:after {content:" end fraction ";position:absolute;top:-9999px;left:-9999px}
+.numerator {border-bottom: 2px solid grey; margin:-1px;}
+.denominator {border-top: 2px solid grey; margin:-1px;}
+.denominator:before {content:" over ";position:absolute;top:-9999px;left:-9999px}
+.paren{padding-left:8px; padding-right:8px; position:relative; display:inline-block; margin-left:5px}
+.paren:before{border-left:2px solid black; border-radius:50%; bottom:0; content:''; position:absolute; top:0; width:8px; left:-3px;}
+.paren:after{border-right:2px solid black; border-radius:50%; bottom:0; content:''; position:absolute; top:0; width:8px; right:3px;}
+.hide {position:absolute;top:-9999px;left:-9999px}
+@media screen and (prefers-color-scheme: dark) {
+body {color: #ddd; background-color: #121212}
+.applet {background-color:#606060; color: #fff}
+.paren:before{border-left:2px solid #ddd}
+.paren:after{border-right:2px solid #ddd}
+h2 > button {background-color:#333; color:#eee;}
+h2 > button.active,h2 > button:hover {background-color:#555;}
+h2 > button:after {color:#777}
+a {color: #a3d4a7}
+a:link,a:active {color: #a3d4a7}
+a:hover {color: #f5cba7}
+a:visited {color: #d7bde2}
+input, textarea, select {color: white; background-color: #3b3b3b}
+input:disabled {color: #808080; background-color: #606060}
+}
+</style>
+<noscript>
+<style>
+.applet {display:none}
+</style>
+</noscript>
+</head>
+<body>
+<div id="skip"><a href="#main">Skip to main content</a></div>
+<nav aria-label="Main navigation">
+<ul role="menubar">
+<li role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">Electronics
+<ul role="menu" class="alignleft popup">
+<li role="menuitem"><a href="INTEL.HTM" hreflang="es" title="All Intel microprocessors from the 4004 up to Pentium (Spanish only)">Intel Microprocessors</a></li>
+</ul>
+</li>
+<li role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Mathematics
+<ul role="menu" class="alignleft popup">
+<li role="menuitem"><a href="CALTORS.HTM" title="Web applications with JavaScript and WebAssembly implementing calculators">Calculators</a></li>
+<li role="menuitem"><a href="NUMBERT.HTM" title="Articles and programs about number theory">Number Theory</a></li>
+<li role="menuitem"><a href="PROBLEMS.HTM" title="Interesting math problems">Problems</a></li>
+</ul>
+</li>
+<li role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Programs
+<ul role="menu" class="alignright popup">
+<li role="menuitem"><a href="ASSEM386.HTM" title="Programs written in 80386 Assembler">Assembler 80386</a></li>
+<li role="menuitem"><a href="JAVAPROG.HTM" title="Web applications with JavaScript and WebAssembly">Web applications</a></li>
+<li role="menuitem"><a href="GAMES.HTM" title="Computer games">Games</a></li>
+</ul>
+</li>
+<li class="alignright" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Contact
+<ul role="menu" class="alignright popup">
+<li role="menuitem"><a href="EPERS.HTM" title="Personal information">Personal</a></li>
+<li role="menuitem"><a href="FORM.HTM" title="Form to send comments">Comments</a></li>
+<li role="menuitem"><a href="EGBOOK.HTM" title="Old and new guestbook">Guestbook</a></li>
+<li role="menuitem"><a href="PRIVACY.HTM" title="Privacy Policy">Privacy</a></li>
+<li role="menuitem"><a href="DONATION.HTM" title="Donations to the author of this Web site">Donations</a></li>
+</ul>
+</li>
+</ul>
+<ul class="atright"><li><a href="FACTPOL.HTM" hreflang="es" title="Esta página Web en español">ESP</a></li></ul>
+</nav>
+<main id="main">
+<article>
+<h1>Polynomial factorization and roots calculator</h1>
+<div class="pad">
+<ol class="bread" vocab="https://schema.org/" typeof="BreadcrumbList">
+<li property="itemListElement" typeof="ListItem">
+<a property="item" typeof="WebPage" href="ENGLISH.HTM"><span property="name">Alpertron</span></a>
+<meta property="position" content="1">
+</li>
+<li property="itemListElement" typeof="ListItem">
+<a property="item" typeof="WebPage" href="JAVAPROG.HTM"><span property="name">Web applications</span></a>
+<meta property="position" content="2">
+</li>
+<li property="itemListElement" typeof="ListItem">
+<span property="name">Polynomial factorization calculator</span>
+<meta property="position" content="3">
+</li>
+</ol>
+</div>
+<noscript><p><strong>The calculator does not work with Javascript disabled. Please check your browser settings.</strong></p></noscript>
+<div class="applet">
+<label for="poly">Polynomial</label><input type="text" id="poly" value="" class="input" autocomplete="off" autocapitalize="off" spellcheck="false">
+<div class="lf"></div>
+<label for="mod">Modulus</label><input type="text" id="mod" value="0" class="input">
+<div class="lf"></div>
+<input type="button" id="eval" value="Evaluate">
+<input type="button" id="factor" value="Factor">
+<input type="button" id="stop" value="Stop">
+<input type="button" id="helpbtn" value="Help"><br>
+<div class="lf"></div>
+<label for="digits">Digits per group</label> <input type="number" id="digits" value="6">
+<span class="nolf"><label for="out">Output</label> <select id="out"><optgroup label="Select output type"><option value="0" selected>Pretty print</option><option value="1">TeX</option><option value="2">Pari/GP</option></optgroup></select></span>
+</div>
+<div id="help" aria-live="polite" class="pad">
+<p>This Web application can evaluate and factor expressions resulting in quotients of polynomials modulo a prime number or a power of a prime number.
+It can also evaluate, factor, and find exact roots of quotients of polynomials by entering zero in the <em>Modulus</em> input box.</p>
+<p>You can enter polynomials quickly by using <em>dot notation</em>. For example, to enter 2<var>x</var><sup>4</sup> + 3<var>x</var><sup>2</sup> + 1, you can type: <kbd>2.4 + 3.2 + 1</kbd></p>
+<h2><button type="button">Integer polynomials</button></h2>
+<div class="panel">
+<p>Integer polynomials in one variable are expressions that include a variable named <var>x</var>, integer numbers and the addition, subtraction and multiplication operators.</p>
+<p>They can be expressed in the form: <var>f</var>(<var>x</var>) = <var>f</var><sub>0</sub> + <var>f</var><sub>1</sub>&#8290;<var>x</var> + <var>f</var><sub>2</sub>&#8290;<var>x</var><sup>2</sup> + ... + <var>f</var><sub>n</sub>&#8290;<var>x</var><sup>n</sup>.</p>
+<p>The number <var>n</var> is the degree of the polynomial. The coefficient <var>f</var><sub>n</sub> is the leading coefficient and the coefficient <var>f</var><sub>0</sub> is the trailing coefficient.
+They can be written as deg(<var>f</var>), lc(<var>f</var>) and tc(<var>f</var>) respectively.</p>
+<p>Let <var>f</var>(<var>x</var>) and <var>g</var>(<var>x</var>) be two polynomials such that deg(<var>f</var>) &ge; deg(<var>g</var>). We can define addition, subtraction and multiplication as follows:</p>
+<p><var>f</var>(<var>x</var>) + <var>g</var>(<var>x</var>) = <var>h</var>(<var>x</var>) means <var>h</var><sub><var>i</var></sub> = <var>f</var><sub><var>i</var></sub> + <var>g</var><sub><var>i</var></sub> if <var>i</var> &le; deg(<var>g</var>) and <var>h</var><sub><var>i</var></sub> = <var>f</var><sub>i</sub> otherwise.</p>
+<p><var>f</var>(<var>x</var>) &minus; <var>g</var>(<var>x</var>) = <var>h</var>(<var>x</var>) means <var>h</var><sub><var>i</var></sub> = <var>f</var><sub><var>i</var></sub> &minus; <var>g</var><sub><var>i</var></sub> if <var>i</var> &le; deg(<var>g</var>) and <var>h</var><sub><var>i</var></sub> = <var>f</var><sub>i</sub> otherwise.</p>
+<p><var>g</var>(<var>x</var>) &minus; <var>f</var>(<var>x</var>) = <var>h</var>(<var>x</var>) means <var>h</var><sub><var>i</var></sub> = <var>g</var><sub><var>i</var></sub> &minus; <var>f</var><sub><var>i</var></sub> if <var>i</var> &le; deg(<var>g</var>) and <var>h</var><sub><var>i</var></sub> = &minus;<var>f</var><sub>i</sub> otherwise.</p>
+<p><var>f</var>(<var>x</var>) &#8290; <var>g</var>(<var>x</var>) = <var>h</var>(<var>x</var>) means
+<var>h</var><sub><var>i</var></sub> = <var>f</var><sub>0</sub> &#8290; <var>g</var><sub><var>i</var></sub> + <var>f</var><sub>1</sub> &#8290; <var>g</var><sub><var>i</var> &minus; 1</sub> + ... + <var>f</var><sub>i</sub> &#8290; <var>g</var><sub>0</sub> if <var>i</var> &le; deg(<var>g</var>),
+<var>h</var><sub><var>i</var></sub> = <var>f</var><sub><var>i</var> &minus; deg(<var>g</var>)</sub> &#8290; <var>g</var><sub>deg(<var>g</var>)</sub> + <var>f</var><sub><var>i</var> + 1 &minus; deg(<var>g</var>)</sub> &#8290; <var>g</var><sub>deg(<var>g</var>) &minus; 1</sub> + ... + <var>f</var><sub>i</sub> &#8290; <var>g</var><sub>0</sub> otherwise.</p>
+<p>The factorization of integer polynomials is a process to find one or more irreducible polynomials whose product is the original polynomial. An irreducible polynomial cannot be expressed as a product of two or more integer polynomials.</p>
+<p>For example: <var>x</var><sup>4</sup> &minus; 1 = (<var>x</var><sup>2</sup> + 1) &#8290; (<var>x</var> + 1) &#8290; (<var>x</var> &minus; 1)</p>
+<p>It can be shown that any integer polynomial can be factored in only one way in irreducible polynomials.</p>
+</div>
+<h2><button type="button">Polynomials modulo a prime number</button></h2>
+<div class="panel">
+<p>Multiplication of polynomials modulo a prime number can be performed in the usual way by multiplying the different terms of the polynomial
+and then adding the coefficients of the same degree. Finally, the coefficients are reduced modulo that prime.</p>
+<p>For example, the product of 3x<sup>2</sup> + 5x + 1 and 6x<sup>2</sup> + 4x + 3 modulo 7 is 18x<sup>4</sup> + (30+12)x<sup>3</sup> + (9+20+6)x<sup>2</sup> + (15+4)x + 3 modulo 7 which equals 4x<sup>4</sup> + 5x + 3</p>
+<p>It can be shown that the polynomials modulo a prime can be factored into the leading coefficient and monic prime polynomials in only one way (monic polynomials have the leading coefficient equal to one.)</p>
+<p>It can also be shown that if there are no repeated factors, the polynomial can be factored modulo a power of that prime in only one way.</p>
+</div>
+<h2><button type="button">Application usage</button></h2>
+<div class="panel">
+<p>Use the upper input box to enter the polynomial expression and the lower input box to enter a numerical expression for the modulus,
+which must be either zero or an integer number greater than 1 of the form prime number raised to an exponent.
+You can just evaluate the polynomial or evaluate and factor it, by pressing the corresponding button.</p>
+<p>Example for integer polynomial factorization: to factor <var>x</var><sup>30</sup> &minus; 1, type <kbd>x<span class="hide">caret</span><span aria-hidden="true">^</span>30<span class="hide">minus</span><span aria-hidden="true">-</span>1</kbd> in the upper input box and 0 in the lower input box.
+Then press the factor button.</p>
+<p>Example for polynomial modulo a prime factorization: copy any of the expressions below in the upper input box and type the number 211 (a prime number) in the lower input box.
+Then press the button "Factor expression".</p>
+<ul>
+<li><kbd>6x<span class="hide"> caret</span><span aria-hidden="true">^</span>8+x<span class="hide"> caret</span><span aria-hidden="true">^</span>5+3</kbd></li>
+<li><kbd>2*<span class="hide">left parenthesis</span><span aria-hidden="true">(</span>x+6<span class="hide">right parenthesis</span><span aria-hidden="true">)</span>*<span class="hide">left parenthesis</span><span aria-hidden="true">(</span>x-5<span class="hide">right parenthesis</span><span aria-hidden="true">)</span>+xx<span class="hide"> caret</span><span aria-hidden="true">^</span>4+23x</kbd></li>
+</ul>
+<p>The exponentiation symbol is not present in some mobile devices, so two asterisks ** can by typed as the exponentiation operator.
+So, equivalent expressions would be:</p>
+<ul>
+<li><kbd>6x**8+x**5+3</kbd></li>
+<li><kbd>2*<span class="hide">left parenthesis</span><span aria-hidden="true">(</span>x+6<span class="hide">right parenthesis</span><span aria-hidden="true">)</span>*<span class="hide">left parenthesis</span><span aria-hidden="true">(</span>x-5<span class="hide">right parenthesis</span><span aria-hidden="true">)</span>+xx**4+23x</kbd></li>
+</ul>
+<p>You can type a dot (.) and the application will replace it by &quot;x<span class="hide"> caret</span><span aria-hidden="true">^</span>&quot;. This saves a lot of time in mobile devices because there is no
+need to switch between alphabetical and numerical keyboards for simple polynomials.</p>
+<p>For the first example you would type:</p>
+<ul><li><kbd>6.8+.5+3</kbd></li></ul>
+<p>Notice that factoring large degree polynomials will take a lot of time.
+That's why the applet accepts polynomials of degree up to 1000.</p>
+<p>The program has three options for output: with the option <em>Pretty print</em> you can see the exponents as superscripts
+and the roots have the traditional, printed format; the option <em>TeX</em> shows the output in this format, which is used in many mathematical forums;
+finally, the option <em>Pari-GP</em> is used when you have to copy the data to another application. The output is compatible with the application Pari-GP, only minor changes are required to copy the data to other math programs.</p>
+<p>After the applet finishes factoring, it multiplies the factors in order to validate if they are equal to the input polynomial.</p>
+<p>When the modulus box is zero, the application finds the roots of the polynomial factors using radical expressions. The program supports degrees up to 5.
+By Abel-Ruffini theorem, some polynomials of degree 5 cannot be expressed by radical expressions.</p>
+</div>
+<h2><button type="button">Expressions</button></h2>
+<div class="panel">
+<p>You can use any letter to represent the variable. Multiple variables are not accepted. The program always use the letter <var>x</var> to show the output.</p>
+<p>You can also enter expressions that use the following operators and parentheses:</p>
+<ul>
+<li><span class="hide">plus sign</span><strong aria-hidden="true">+</strong> for addition</li>
+<li><span class="hide">minus sign</span><strong aria-hidden="true">-</strong> for subtraction</li>
+<li><span class="hide">asterisk</span><strong aria-hidden="true">*</strong> for multiplication</li>
+<li><span class="hide">slash</span><strong aria-hidden="true">/</strong> for division</li>
+<li><span class="hide">percent symbol</span><strong aria-hidden="true">%</strong> for remainder of polynomial long division</li>
+<li><span class="hide">caret or two asterisks</span><span aria-hidden="true"><strong>^</strong> or <strong>**</strong></span> for exponentiation</li>
+<li><strong>Ans</strong>: retrieves the last answer.</li>
+</ul>
+<p>Operators and functions for the polynomial (upper box) only:</p>
+<ul>
+<li><strong>Gcd(f,g, ...)</strong>: Greatest common divisor of these polynomials. Example: GCD(x-1, x^2-1) = x-1.</li>
+<li><strong>Lcm(f,g, ...)</strong>: Least common multiple of these polynomials. Example: LCM(x+1, x-1, x^2-1) = x^2-1.</li>
+<li><strong>Der(f)</strong>: Derivative of this polynomial.</li>
+<li><strong>LongDiv(f, g)</strong>: Long division of these polynomials.</li>
+<li><strong>Random(a,b,c,d)</strong>: Random polynomial whose degree is selected between the first two parameters and the coefficients between the last two parameters.</li>
+</ul>
+<p>Operators and functions for the modulus (lower box) only:</p>
+<ul>
+<li> <strong>&lt;</strong>, <strong>==</strong>, <strong>&gt;</strong>; <strong>&lt;=</strong>, <strong>&gt;=</strong>, != for comparisons. The operators return zero for false and -1 for true.</li>
+<li> <strong>AND</strong>, <strong>OR</strong>, <strong>XOR</strong>, <strong>NOT</strong> for binary logic. The operations are done in binary (base 2). Positive (negative) numbers are prepended with an infinite number of bits set to zero (one).</li>
+<li> <strong>SHL</strong> or <strong>&lt;&lt;</strong>: When <var>b</var> &ge; 0, <var>a</var> SHL <var>b</var> shifts <var>a</var> left the number of bits specified by <var>b</var>. This is equivalent to <var>a</var> &times; 2<sup><var>b</var></sup>. Otherwise, <var>a</var> SHL <var>b</var> shifts <var>a</var> right the number of bits specified by &minus;<var>b</var>. This is equivalent to floor(<var>a</var> / 2<sup>&minus;<var>b</var></sup>). Example: 5 SHL 3 = 40.</li>
+<li> <strong>SHR</strong> or <strong>&gt;&gt;</strong>: When <var>b</var> &ge; 0, <var>a</var> SHR <var>b</var> shifts <var>a</var> right the number of bits specified by <var>b</var>. This is equivalent to floor(<var>a</var> / 2<sup><var>b</var></sup>). Otherwise, <var>a</var> SHR <var>b</var> shifts <var>a</var> left the number of bits specified by &minus;<var>b</var>. This is equivalent to <var>a</var> &times; 2<sup>&minus;<var>b</var></sup>. Example: -19 SHR 2 = -5.</li>
+<li> <strong>n!</strong>: factorial (<var>n</var> must be greater than or equal to zero). Example: 6! = 6 &times; 5 &times; 4 &times; 3 &times; 2 = 720.</li>
+<li> <strong>n!! ... !</strong>: multiple factorial (<var>n</var> must be greater than or equal to zero). It is the product of <var>n</var> times <var>n</var> &minus; <var>k</var> times <var>n</var> &minus; <var>2k</var> ... (all numbers greater than zero) where <var>k</var> is the number of exclamation marks. Example: 7!! = 7 &times; 5 &times; 3 &times; 1 = 105.</li>
+<li> <strong>p#</strong>: primorial (product of all primes less or equal than <var>p</var>). Example: 12# = 11 &times; 7 &times; 5 &times; 3 &times; 2 = 2310.</li>
+<li> <strong>B(n)</strong>: Previous probable prime before <em>n</em>. Example: B(24) = 23.</li>
+<li> <strong>F(n)</strong>: Fibonacci number F<sub>n</sub> from the sequence 0, 1, 1, 2, 3, 5, 8, 13, 21, etc. where each element equals the sum of the previous two members of the sequence. Example: F(7) = 13.</li>
+<li> <strong>L(n)</strong>: Lucas number L<sub>n</sub> = F<sub><var>n</var>-1</sub> + F<sub><var>n</var>+1</sub></li>
+<li> <strong>N(n)</strong>: Next probable prime after <em>n</em>. Example: N(24) = 29.</li>
+<li> <strong>P(n)</strong>: Unrestricted Partition Number (number of decompositions of <var>n</var> into sums of integers without regard to order). Example: P(4) = 5 because the number 4 can be partitioned in 5 different ways: 4 = 3+1 = 2+2 = 2+1+1 = 1+1+1+1.</li>
+<li> <strong>Gcd(m,n, ...)</strong>: Greatest common divisor of these integers. Example: GCD(12, 16) = 4.</li>
+<li> <strong>Lcm(m,n, ...)</strong>: Least common multiple of these integers. Example: LCM(12, 16, 24) = 48.</li>
+<li> <strong>Modinv(m,n)</strong>: inverse of <var>m</var> modulo <var>n</var>, only valid when <var>m</var> and <var>n</var> are coprime, meaning that they do not have common factors. Example: Modinv(3,7) = 5 because 3 &times; 5 &equiv; 1 (mod 7)</li>
+<li> <strong>Modpow(m,n,r)</strong>: finds <var>m</var><sup><var>n</var></sup> modulo <var>r</var>. Example: Modpow(3, 4, 7) = 4, because 3<sup>4</sup> &equiv; 4 (mod 7).</li>
+<li> <strong>Jacobi(m,n)</strong>: obtains the Jacobi symbol of <var>m</var> and <var>n</var>. When the second argument is prime, the result is zero when <var>m</var> is multiple of <var>n</var>, it is one if there is a solution of <var>x</var>&sup2; &equiv; <var>m</var> (mod <var>n</var>) and it is equal to &minus;1 when the mentioned congruence has no solution.</li>
+<li> <strong>Random(m,n)</strong>: integer random number between <var>m</var> and <var>n</var>.</li>
+<li> <strong>Abs(n)</strong>: absolute value of <var>n</var>.</li>
+<li> <strong>Sign(n)</strong>: returns zero if <var>n</var> is zero, &minus;1 if negative or 1 if positive.</li>
+<li> <strong>IsPrime(n)</strong>: returns zero if <var>n</var> is not probable prime, &minus;1 if it is. Example: IsPrime(5) = &minus;1.</li>
+<li> <strong>Sqrt(n)</strong>: Integer part of the square root of the argument.</li>
+<li> <strong>Iroot(n,r)</strong>: Integer r-root of the first argument. Example: Iroot(8, 3) = 2.</li>
+<li> <strong>NumDigits(n,r)</strong>: Number of digits of <var>n</var> in base <var>r</var>. Example: NumDigits(13, 2) = 4 because 13 in binary (base 2) is expressed as 1101.</li>
+<li> <strong>SumDigits(n,r)</strong>: Sum of digits of <var>n</var> in base <var>r</var>. Example: SumDigits(213, 10) = 6 because the sum of the digits expressed in decimal is 2+1+3 = 6.</li>
+<li> <strong>RevDigits(n,r)</strong>: finds the value obtained by writing backwards the digits of <var>n</var> in base <var>r</var>. Example: RevDigits(213, 10) = 312.</li>
+</ul>
+<p>You can use the prefix <em>0x</em> for hexadecimal numbers, for example 0x38 is equal to 56.</p>
+</div>
+<h2><button type="button">Long division</button></h2>
+<div class="panel">
+<h3>Division of polynomials modulo a prime number</h3>
+<p>The polynomial division requires multiple modular divisions where the divisor is the leading coefficient of the divisor polynomial.</p>
+<p>To compute the modular division <var>a</var> / <var>b</var> (mod <var>p</var>), first the modular multiplicative inverse <var>c</var> is found.
+This number has the property <var>b</var>&#8290;<var>c</var> &equiv; 1 (mod <var>p</var>) and it can be found using the extended Euclidean algorithm as follows:</p>
+<p><code>
+function modInv(value, modulus)<br>
+{<br>
+&nbsp;&nbsp;V1 &larr; 1; V3 &larr; value;<br>
+&nbsp;&nbsp;U1 &larr; 0; U3 &larr; modulus;<br>
+&nbsp;&nbsp;while V3 &ne; 0<br>
+&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;QQ &larr; U3 / V3;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;T1 &larr; U1 &minus; V1 * QQ;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;T3 &larr; U3 &minus; V3 * QQ;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;U1 &larr; V1; U3 &larr; V3;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;V1 &larr; T1; V3 &larr; T3;<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;return U1;<br>
+}
+</code></p>
+<p>Then the division is equal to the product <var>a</var>&#8290;<var>c</var> (mod <var>p</var>).</p>
+<p>To minimize the number of modular divisions (which are expensive), we can multiply all coefficients of both polynomials (dividend and divisor) by the multiplicative inverse of the leading coefficient of the divisor polynomial.
+In this way, we will divide by a monic polynomial, that is, a polynomial whose leading coefficient equals 1. This will not change the quotient, but the remainder will need to be multiplied by the leading coefficient of the divisor polynomial.</p>
+<p>Example: perform the division (3&#8290;<var>x</var><sup>3</sup> + 7&#8290;<var>x</var><sup>2</sup> + 5&#8290;<var>x</var> + 6) / (4&#8290;<var>x</var><sup>2</sup> + 3&#8290;<var>x</var> + 10) (mod 11):</p>
+<p>First we have to find the multiplicative inverse of 4 (mod 11), which equals 3, because 4 &times; 3 = 12 &equiv; 1 (mod 11). Multiplying all coefficients by 3 we get:</p>
+<p>(9&#8290;<var>x</var><sup>3</sup> + 10&#8290;<var>x</var><sup>2</sup> + 4&#8290;<var>x</var> + 7) / (<var>x</var><sup>2</sup> + 9&#8290;<var>x</var> + 8) (mod 11)</p>
+<p>Dividing the leading coefficient of the dividend polynomial over the leading coefficient of the divisor polynomial: 9&#8290;<var>x</var><sup>3</sup> / <var>x</var><sup>2</sup> &equiv; 9&#8290;<var>x</var> (mod 11).</p>
+<p>Now we subtract the product of what we have just found by the divisor polynomial from the dividend polynomial. We obtain:</p>
+<p>9&#8290;<var>x</var><sup>3</sup> + 10&#8290;<var>x</var><sup>2</sup> + 4&#8290;<var>x</var> + 7 - 9&#8290;<var>x</var>(<var>x</var><sup>2</sup> + 9&#8290;<var>x</var> + 8) &equiv; 6&#8290;<var>x</var><sup>2</sup> + 9&#8290;<var>x</var> + 7 (mod 11). Notice that 10 &minus; 9 &times; 9 &equiv; 6 (mod 11) and 4 &minus; 9 &times; 8 (mod 11) &equiv; 9 (mod 11).</p>
+<p>Dividing the leading coefficient of the remainder polynomial we just found over the leading coefficient of the divisor polynomial: 6&#8290;<var>x</var><sup>2</sup> / <var>x</var><sup>2</sup> &equiv; 6 (mod 11).</p>
+<p>Now we subtract the product of what we have just found by the divisor polynomial from the remainder polynomial. We obtain:</p>
+<p>(6&#8290;<var>x</var><sup>2</sup> + 9&#8290;<var>x</var> + 7) &minus; 6&#8290;(<var>x</var><sup>2</sup> + 9&#8290;<var>x</var> + 8) &equiv; 10<var>x</var> + 3 (mod 11). Notice that 9 &minus; 6 &times; 9 &equiv; 10 (mod 11) and 7 &minus; 6 &times; 8 &equiv; 3 (mod 11).</p>
+<p>The quotient polynomial equals 9&#8290;<var>x</var> + 6 and the remainder polynomial equals 4&#8290;(10<var>x</var> + 3) &equiv; 7 <var>x</var> + 1 (mod 11).</p>
+<h3>Division of integer polynomials</h3>
+<p>The division proceeds in the same way as in the previous subsection, with the difference that there is no multiplicative inverse of the leading coefficient of the divisor polynomial. So, for each iteration of the algorithm, a division is required.
+If the divisor polynomial is not monic, sometimes the division cannot be performed. This occurs when the leading coefficient of the remainder is not multiple of the leading coefficient of the divisor.</p>
+</div>
+<h2><button type="button">Greatest common divisor of polynomials</button></h2>
+<div class="panel">
+<p>The greatest common divisor of two polynomials is the polynomial of the highest possible degree, that divides both polynomials.</p>
+<p>For example: gcd(<var>x</var><sup>2</sup> + 6&#8290;<var>x</var> + 5, 2&#8290;<var>x</var><sup>2</sup> + 13&#8290;<var>x</var> + 15) = <var>x</var> + 5</p>
+<h3>GCD of polynomials modulo a prime number</h3>
+<p>The greatest common divisor can be found using the Euclidean algorithm as follows:</p>
+<p><code>
+function gcdm(poly1, poly2, p)<br>
+{<br>
+&nbsp;&nbsp;a &larr; poly1;<br>
+&nbsp;&nbsp;b &larr; poly2;<br>
+&nbsp;&nbsp;while b ≠ 0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;t &larr; b;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;b &larr; remainder(a, b) (mod p);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a &larr; t;<br>
+&nbsp;&nbsp;return a;<br>
+}<br>
+</code></p>
+
+<h3>GCD of integer polynomials</h3>
+<p>While the same algorithm could be used for finding the gcd of two integer polynomials, the coefficients of the intermediate polynomials increase very quickly, so this is not useful.</p>
+<p>There are two methods to find the gcd: the subresultant algorithm and the modular algorithm. The latter, invented by William Brown, uses gcd of polynomials modulo a prime, so this is better for our purposes.</p>
+<p><code>
+function gcdp(poly1, poly2)<br>
+{<br>
+&nbsp;&nbsp;c<sub>1</sub> &larr; cont(poly1);<br>
+&nbsp;&nbsp;c<sub>2</sub> &larr; cont(poly2);<br>
+&nbsp;&nbsp;c &larr; gcd(c<sub>1</sub>, c<sub>2</sub>);<br>
+&nbsp;&nbsp;a &larr; poly1 / c<sub>1</sub>;<br>
+&nbsp;&nbsp;b &larr; poly2 / c<sub>2</sub>;<br>
+&nbsp;&nbsp;h &larr; gcd(lc(poly1), lc(poly2));<br>
+&nbsp;&nbsp;d &larr; min(deg(poly1), deg(poly2));<br>
+&nbsp;&nbsp;m &larr; 1;<br>
+&nbsp;&nbsp;g<sub>m</sub> &larr; 0;<br>
+&nbsp;&nbsp;repeat<br>
+&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;do<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;do<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p &larr; nextPrime();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} while remainder(m*h, p) = 0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r &larr; poly1 (mod p);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s &larr; poly2 (mod p);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g<sub>p</sub> &larr; gcdm(r, s, p);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if deg(g<sub>p</sub>) = 0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;output c; stop;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;} while deg(g<sub>p</sub>) &gt; d;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;g<sub>p</sub> &larr; (h mod p)/lc(g<sub>p</sub>) * g<sub>p</sub>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if deg(g<sub>p</sub>) &lt; d<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m &larr; 1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g<sub>m</sub> &larr; 0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d &larr; deg(g<sub>p</sub>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;h &larr; CRA([g<sub>p</sub>, p], [g<sub>m</sub>, m]);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if h = g<sub>m</sub><br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h &larr; h / cont(h);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if remainder(a, h) = 0 and remainder(b, h) = 0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;output c*h; stop;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;m &larr; p * m;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;g<sub>m</sub> &larr; h;<br>
+&nbsp;&nbsp;}<br>
+}
+</code></p>
+<p>The content of a polynomial is the greatest common divisor of all coefficients of that polynomial. The sign of the content matches the sign of the leading coefficient. It is expressed as cont(f) in the previous algorithm.</p>
+<p>The coefficients of the result of the Chinese Remainder Algorithm (function CRA) computed modulo <var>m</var><var>p</var>, must be in the range &minus;<var>m</var><var>p</var>/2 to <var>m</var><var>p</var>/2.</p>
+<p>The idea behind this algorithm is to compute several gcd of the input polynomials modulo different primes. We can see that their degrees are greater or equal than the degree of the polynomial gcd.</p>
+<p>There are three cases:</p>
+<ul>
+<li>The degree of the modular gcd is greater than the degree of previous modular gcd: the new result is discarded because it has incorrect degree.</li>
+<li>The degree of the modular gcd is less than the degree of previous modular gcd: the old result is discarded because it has incorrect degree. The new result is used instead.</li>
+<li>Both degrees are equal: the coefficients of both gcds are merged using the Chinese Remainder Theorem. This algorithm computes <var>g</var> (mod <var>m</var><var>p</var>) given <var>g</var><sub>m</sub> (mod <var>m</var>) and <var>g</var><sub>p</sub> (mod <var>p</var>).</li>
+</ul>
+<p>The algorithm continues until the computed polynomial divides both input polynomials.</p>
+</div>
+<h2><button type="button">Factoring polynomials modulo a prime number</button></h2>
+<div class="panel">
+<p>The factoring algorithm can be divided in four steps: square-free factorization, distinct degree factorization, equal degree factorization and factor lift. All steps require monic polynomials, so before starting, we will have to multiply all coefficients by the modular multiplicative inverse of the leading coefficient of the polynomial.</p>
+<h3>Square-free factorization</h3>
+<p>The next steps do not work if there are repeated factors, so the first step is to factor the polynomial in such a way that there are no repeated factors.</p>
+<p>The derivative of the polynomial <var>f</var>(<var>x</var>) = <var>f</var><sub>0</sub> + <var>f</var><sub>1</sub>&#8290;<var>x</var> + <var>f</var><sub>2</sub>&#8290;<var>x</var><sup>2</sup> + ... + <var>f</var><sub>n</sub>&#8290;<var>x</var><sup>n</sup> is
+<var>f</var>'(<var>x</var>) = <var>f</var><sub>1</sub> + 2&#8290;<var>f</var><sub>2</sub>&#8290;<var>x</var> + ... + <var>n</var>&#8290;<var>f</var><sub>n</sub>&#8290;<var>x</var><sup>n &minus; 1</sup></p>
+<p>The recursive algorithm is:</p>
+<p><code>
+function SFF(f)<br>
+{<br>
+&nbsp;&nbsp;i &larr; 1; g &larr; f';<br>
+&nbsp;&nbsp;if g &ne; 0<br>
+&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;c &larr; gcd(f, g);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;w &larr; f / c;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;while w &ne; 1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y &larr; gcd(w, c); z &larr; w / y;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Output(z<sup>i</sup>); i &larr; i + 1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;w &larr; y; c &larr; c / y;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if c &ne; 1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c &larr; c<sup>1/p</sup>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Output(SFF(c)<sup>p</sup>);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;else<br>
+&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;f &larr; f<sup>1/p</sup>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Output(SFF(f)<sup>p</sup>);<br>
+&nbsp;&nbsp;}<br>
+}
+</code></p>
+<p>For each polynomial on the output of this algorithm we have to perform the next steps.</p>
+<h3>Distinct degree factorization</h3>
+<p>This is a method that exploits the fact that the product of all monic irreducible polynomials of degrees that divide <var>d</var> (mod <var>p</var>) equals <var>x</var><sup>e</sup> &minus; <var>x</var> where <var>e</var> = <var>p</var><sup><var>d</var></sup>.</p>
+<p><code>
+function DDF(f, p)<br>
+{<br>
+&nbsp;&nbsp;i &larr; 1;<br>
+&nbsp;&nbsp;h &larr; f;<br>
+&nbsp;&nbsp;j &larr; x;<br>
+&nbsp;&nbsp;q &larr; 0;<br>
+&nbsp;&nbsp;while deg(h) &ge; 2&#8290;i<br>
+&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;j &larr; j<sup>p</sup> (mod h);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;g &larr; gcdm(h, j &minus; x);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if g &ne; 1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Output(g, i);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;q &larr; 1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h &larr; h / g;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;if h &ne; 1<br>
+&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Output(h, deg(h));<br>
+&nbsp;&nbsp;&nbsp;&nbsp;q &larr; 1;<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;if q = 0<br>
+&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Output(f, 1);<br>
+&nbsp;&nbsp;}<br>
+}
+</code></p>
+<p>The pairs that form the output of this function are the input for the next step. The first element of the pair is a factor of <var>f</var> which is the product of all factors of the degree specified in the second element of the pair.</p>
+<h3>Equal degree factorization</h3>
+<p>This is a probabilistic method due to David Cantor and Hans Zassenhaus that finds all factors of the same degree from the output of the previous algorithm:</p>
+<p><code>
+function EDF(f, d, p)<br>
+{<br>
+&nbsp;&nbsp;n &larr; deg(f);<br>
+&nbsp;&nbsp;set list of factors to f;<br>
+&nbsp;&nbsp;while size(list of factors) &lt; n/d<br>
+&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;h &larr; random polynomial with deg(h) &lt; n;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;e &larr; (q<sup>d</sup> &minus; 1) / 2;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;g &larr; h<sup>e</sup> &minus; 1 (mod f);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for each element u of list of factors<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if deg(u) &gt; d<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j &larr; gcdm(g, u);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if j &ne; 1 and j &ne; u<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;discard u from list of factors;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add j and u/j to list of factors;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;Output list of factors<br>
+}
+</code></p>
+<h3>Polynomial lift</h3>
+<p>Once all irreducible factors of the polynomial modulo <var>p</var> are found, we can find the factor of the polynomial modulo <var>p</var><sup>n</sup> if there are no repeated factors. The following algorithm can lift from modulo <var>m</var> to <var>m</var><sup>2</sup>, so we can execute it several times until the complete lifting is done.</p>
+<p>On input: f = g*h (mod m), s*g + t*h = 1 (mod m)</p>
+<p>On output: f = g'*h' (mod m<sup>2</sup>), s'*g' + t'*h' = 1 (mod m<sup>2</sup>) with deg(s') &lt; deg(h'), deg(t') &lt; deg(g')</p>
+<p>All calculations below are performed mod m<sup>2</sup>.</p>
+<p><code>
+&nbsp;&nbsp;e &larr; f - g*h<br>
+&nbsp;&nbsp;Compute q, r such that s*e = q*h + r<br>
+&nbsp;&nbsp;g' &larr; g + t*e + q*g<br>
+&nbsp;&nbsp;h' &larr; h + r<br>
+<br>
+&nbsp;&nbsp;e &larr; s*g' + t*h' &minus; 1<br>
+&nbsp;&nbsp;Compute q, r such that s*e = q*h + r<br>
+&nbsp;&nbsp;s' &larr; s &minus; r<br>
+&nbsp;&nbsp;t' &larr; t &minus; t*e &minus; q*g'
+</code></p>
+<p>The initial values of <var>s</var> and <var>t</var> are obtained from <var>g</var> and <var>h</var> using Extended Euclidean algorithm.</p>
+</div>
+<h2><button type="button">Factoring integer polynomials</button></h2>
+<div class="panel">
+<p>We can use the output of the previous section to factor integer polynomials.</p>
+<p>First of all, we need to divide the polynomial by its content (the greatest common divisor of all coefficients with the sign of the leading coefficient). The result is the principal part, named pp(<var>f</var>).</p>
+<p>The methods shown below do not work if the factors are repeated. To separate them, we can use Yun's algorithm as follows:</p>
+<p>Let <var>f</var> = <var>a</var><sub>1</sub> &#8290; <var>a</var><sub>2</sub>&sup2; &#8290; <var>a</var><sub>3</sub>&sup3; &#8290; ... &#8290; <var>a</var><sub><var>n</var></sub><sup>n</sup></p>
+<p><code>a[0] = gcd(f, der(f));<br>
+b[1] = f / a[0];<br>
+c[1] = der(f) / a[0];<br>
+d[1] = c[1] - der(f[1]);<br>
+i = 1;<br>
+repeat<br>
+&nbsp;&nbsp;a[i] = gcd(b[i], d[i]);<br>
+&nbsp;&nbsp;b[i+1] = b[i] / a[i];<br>
+&nbsp;&nbsp;c[i+1] = d[i] / a[i];<br>
+&nbsp;&nbsp;i = i + 1;<br>
+&nbsp;&nbsp;d[i] = c[i] - der(b[i]);<br>
+until b = 1;<br>
+output a[1], ..., a[i-1];
+</code></p>
+<p>At this moment we know that there are no repeated factors. We have to find a small prime <var>p</var> for which the polynomial has no repeated factors. This can be easily found by checking that gcd(<var>f</var>, <var>f'</var>) &equiv; 1 (mod <var>p</var>).</p>
+<p>We need to find a bound of the coefficient of factors. The Knuth-Cohen bound for coefficients of polynomial factors can be computed as follows:</p>
+<p>If polynomial <var>G</var> divides <var>F</var> we have for all <var>j</var>:</p>
+<p>|<var>G</var><sub><var>j</var></sub>| &le; binomial(<var>n</var> &minus; 1, j)*(&Sigma;<sub><var>i</var></sub> |<var>F</var><sub><var>i</var></sub>|<sup>2</sup>)<sup>1/2</sup> + binomial(<var>n</var> &minus; 1, <var>j</var> &minus;1) * |<var>F</var><sub><var>m</var></sub>|</p>
+<p>where <var>m</var> is the degree of <var>F</var> and <var>n</var> is the degree of <var>G</var>. The maximum degree to be considered is <var>n</var> = ceil(<var>m</var>/2).</p>
+<p>Once the bound <var>B</var> is found, we have to compute the least value of <var>e</var> such that 2&#8290;B &lt; <var>p</var><sup>e</sup>.</p>
+<p>Now we factor the polynomial mod <var>p</var><sup>e</sup> which has <var>r</var> different factors. If <var>r</var> &gt; 10, we can try a different value of <var>p</var>, so we minimize the number of factors found. The application tries up to 5 different primes.</p>
+<p>We will now combine the factors found modulo <var>p</var><sup>e</sup> to get integer polynomial factors. There are 2<sup>r</sup> possible combinations, but most of them can be easily discarded.</p>
+<p>Let the combination of factors found are <var>f</var><sub>0</sub>, <var>f</var><sub>1</sub>, ..., <var>f</var><sub>s</sub>. Compute <var>a</var> &equiv; lc(<var>f</var>) &#8290; tc(<var>f</var><sub>0</sub>)&#8290; tc(<var>f</var><sub>1</sub>) &#8290; ... &#8290;tc(<var>f</var><sub>s</sub>) (mod <var>p</var><sup>e</sup>) and <var>b</var> &equiv; lc(<var>f</var>) &#8290; tc(<var>f</var>) (mod <var>p</var><sup>e</sup>). In both cases the products must be in the range &minus;<var>p</var><sup>e</sup>/2 to <var>p</var><sup>e</sup>/2.
+If <var>a</var> does not divide <var>b</var>, we can discard that combination.</p>
+<p>For the very few combinations that remain, compute a &equiv; lc (<var>f</var>) &#8290; <var>f</var><sub>0</sub> &#8290; <var>f</var><sub>1</sub> &#8290; ... &#8290; <var>f</var><sub>s</sub> (mod <var>p</var><sup>e</sup>). Again, this time the coefficients of this polynomial must be in the range &minus;<var>p</var><sup>e</sup>/2 to <var>p</var><sup>e</sup>/2.
+Compute <var>b</var> = gcdp(<var>a</var>, lc(<var>f</var>) &#8290; <var>f</var>). If the degree of <var>b</var> is zero, discard this combination. Otherwise, the polynomial <var>b</var> is a proper factor of <var>f</var>.</p>
+<p>Even though the steps are very fast, for some polynomials the number of combinations is very huge. So, the program uses Van Hoeij algorithm which uses LLL algorithm to determine quickly the combinations to use.</p>
+</div>
+<h2><button type="button">Roots</button></h2>
+<div class="panel">
+<p>The program finds the roots from the irreducible polynomials obtained in the previous section.</p>
+<p>For polynomials of degrees up to 4, the standard formulas are used. No cube roots of complex numbers are used. In these cases (named <em>casus irreducibilis</em>), the program uses trigonometric functions.</p>
+<p>For polynomials of degree 5, the application uses the results of D. S. Dummit's paper <em><a href="https://www.ams.org/journals/mcom/1991-57-195/S0025-5718-1991-1079014-X/S0025-5718-1991-1079014-X.pdf">Solving Solvable Quintic</a></em>, Mathematics of Computation volume 57, number 195, July 1991, pp. 387-401.</p>
+<p>The program can determine whether an irreducible polynomial is cyclotomic, i. e., a divisor of <var>x</var><sup><var>n</var></sup> &minus; 1. In this case the program shows the complex roots of 1:</p>
+<p><span aria-hidden="true">cos</span> <span class="hide">cosine of </span><span class="fraction"><span class="numerator"><var>m</var><span class="hide"> times pi</span><span aria-hidden="true"> &pi;</span></span><span class="denominator"><var>n</var></span></span> +
+i <span aria-hidden="true">sin</span> <span class="hide">times sine of </span><span class="fraction"><span class="numerator"><var>m</var><span class="hide"> times pi</span><span aria-hidden="true"> &pi;</span></span><span class="denominator"><var>n</var></span></span></p>
+<p>where <var>m</var> and <var>n</var> are coprime.</p>
+<p>If <var>n</var> = 2<sup><var>q</var></sup> &times; 3<sup><var>r</var></sup> &times; 5<sup><var>s</var></sup> &times; 17<sup><var>t</var></sup>
+where <var>r</var> &lt; 2, <var>s</var> &lt; 2 and <var>t</var> &lt; 2, the program can find the roots as radical expressions.</p>
+<p>For irreducible polynomials of the form <var>a</var> <var>x</var><sup>n</sup> + <var>b</var>, the roots can be computed as the product of a real number by a complex root of 1, so the method used in the previous paragraph is used.</p>
+<p>For <var>a</var> <var>x</var><sup>2n</sup> + <var>b</var> <var>x</var><sup>n</sup> + <var>c</var> there are two cases. If the quadratic polynomial (discarding the variable <var>n</var>) has real roots, again we can use the methods of the previous paragraph.
+Otherwise, only trigonometric functions are shown.</p>
+<p>For almost all polynomials with degree 5 or greater, the roots cannot be expressed as radical expressions. To detect these cases with high probability, the program uses the results of two papers about Galois theory:</p>
+<ul>
+<li>J.H. Davenport, G.C. Smith, <em><a href="https://www.sciencedirect.com/science/article/pii/S002240499900078X">Fast recognition of alternating and symmetric Galois groups</a></em>, Journal of Pure and Applied Algebra 153 (2000) 17-25.</li>
+<li>K. Conrad, <em><a href="https://kconrad.math.uconn.edu/blurbs/galoistheory/galoisSnAn.pdf">Recognizing Galois groups <var>S</var><sub><var>n</var></sub> and <var>A</var><sub><var>n</var></sub></a></em></li>
+</ul>
+</div>
+<div class="noand">
+<h2><button type="button">Source code</button></h2>
+</div>
+<div class="panel">
+<div class="noand">
+<p>You can download the source of the current program and the old sum polynomial factorization applet from <a href="https://github.com/alpertron/calculators">GitHub</a>. Notice that the source code is in C language and you need the <a href="https://emscripten.org/docs/getting_started/downloads.html">Emscripten</a> environment in order to generate JavaScript.</p>
+</div>
+</div>
+<p>Written by Dario Alpern. Last updated 16 February 2024.</p>
+</div>
+<div id="result" aria-live="polite" class="pad"></div>
+<div>
+<div class="footer pad">
+<p>If you find any error or you have a comment, please fill in the <a href="#" id="formlink">form</a>.</p>
+<p>If you like these calculators and you want to support free software with no annoying advertisements, you can <a href="https://www.PayPal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MR65QPWZM5JT6&source=url">donate through PayPal</a>.</p>
+</div>
+</div>
+</article>
+</main>
+<aside id="feedback" aria-label="Feedback form">
+<h2 class="h2title">Feedback form</h2>
+<form class="applet" id="formfeedback">
+<input type="hidden" name="subject" value="Polynomial factorization calculator feedback">
+<div id="formleft">
+<div class="labels"><label for="name">Your name is:</label><input class="inputfbck" type="text" name="name" maxlength="40" id="name" autocomplete="name"></div>
+<div class="labels"><label for="age">Age:</label><input class="inputfbck" type="number" name="age" min="0" max="999" id="age"></div>
+<div class="labels"><label for="city">City:</label><input class="inputfbck" type="text" name="city" maxlength="70" id="city" autocomplete="address-level2"></div>
+<div class="labels"><label for="province">Province/State:</label><input class="inputfbck" type="text" name="province" maxlength="70" id="province" autocomplete="address-level1"></div>
+<div class="labels"><label for="country">Country:</label><input class="inputfbck" type="text" name="country" maxlength="70" id="country" autocomplete="country-name"></div>
+<div class="labels"><label for="reply">E-mail address:</label><input class="inputfbck" type="email" name="reply" maxlength="70" id="reply" autocomplete="email"></div>
+<p>All fields are optional. Enter your e-mail address if you want a reply from the author of this application.</p>
+<p><input type="checkbox" id="adduserdata"><label for="adduserdata">Send polynomial to factor</label></p>
+<input type="hidden" name="userdata" value="" id="userdata">
+</div>
+<div id="formright">
+<label for="comments">Please feel free to add comments:</label><br>
+<textarea name="Comments" rows="7" cols="40" id="comments"></textarea>
+<p><label for="how">How did you find my page?</label><br>
+<select name="how" title="How did you find my page?" id="how">
+<optgroup label="Select response">
+<option value="from a search engine" selected>From a search engine</option>
+<option value="from a friend">From a friend</option>
+<option value="from a link">From a link</option>
+<option value="from Wikipedia">From Wikipedia or another reference</option>
+<option value="other">Other</option>
+</optgroup>
+</select></p>
+<fieldset><legend>Are the programs instructive?</legend>
+<input type="radio" name="Instructive" value="Yes" id="insyes"><label for="insyes">Yes</label>
+<input type="radio" name="Instructive" value="No" id="insno"><label for="insno">No</label>
+</fieldset>
+<fieldset><legend>Are the programs interesting?</legend>
+<input type="radio" name="Interesting" value="Yes" id="intyes"><label for="intyes">Yes</label>
+<input type="radio" name="Interesting" value="No" id="intno"><label for="intno">No</label>
+</fieldset>
+<p><input type="submit" disabled="disabled" value="Send it in!" id="formsend">
+<input type="reset" value="Reset">
+<input type="button" value="Cancel" id="formcancel"></p>
+</div>
+<div class="lf"></div>
+</form>
+</aside>
+<aside id="sending">
+<p>Sending comments...</p>
+</aside>
+<aside id="sentOK">
+<p>Feedback sent successfully.</p>
+<div class="center"><button type="button" id="btnSentOK">Go back</button></div>
+</aside>
+<aside id="notSent">
+<p>Feedback could not be sent.</p>
+<div class="center"><button type="button" id="btnNotSent">Go back</button></div>
+</aside>
+<script type="text/wasmb64" id="wasmb64">
+</script>
+<script type="text/js-worker" id="worker">
+</script>
+<script>
+<!--
+//-->
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "browserRequirements": "Requires HTML5. Requires Javascript.",
+  "name": "Polynomial factorization calculator",
+  "description": "Web application that factors integer polynomials and polynomials modulo a power of a prime number. It also shows roots using radical expressions.",
+  "image": ["https://www.alpertron.com.ar/polfact.png"],
+  "datePublished": "2023-06-08",
+  "dateModified": "2023-06-08",
+  "operatingSystem": "Any",
+  "applicationCategory": "EducationalApplication",
+  "author": {
+    "@type": "Person",
+    "name": "Dario Alpern"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.7",
+    "ratingCount": "97"
+  },
+  "inLanguage": "en",
+  "license": "https://www.gnu.org/licenses/gpl-3.0.en.html",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "availability": "https://schema.org/OnlineOnly",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["MathSolver", "LearningResource"],
+  "name": "Polynomial factorization and roots calculator",
+  "url": "https://www.alpertron.com.ar/POLFACT.HTM",
+  "usageInfo": "https://www.alpertron.com.ar/PRIVACY.HTM",
+  "image": ["https://www.alpertron.com.ar/polfact.png"],
+  "inLanguage": "en",
+  "potentialAction": [{
+     "@type": "SolveMathAction",
+     "target": "https://www.alpertron.com.ar/POLFACT.HTM?q={math_expression_string}",
+     "mathExpression-input": "required name=math_expression_string",
+     "eduQuestionType": ["Polynomial Equation", "Polynomial Expression", "Biquadratic Equation", "Quadratic Equation", "Quadratic Expression", "Rational Expression", "Rational Equation", "Linear Equation"]
+   }],
+  "learningResourceType": "Math solver"
+}
+</script>
+</body>
+</html>

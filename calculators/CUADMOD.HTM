@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="es" prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
+<head>
+<meta charset="utf-8">
+<meta name="Author" content="Dario Alejandro Alpern">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Aplicación Web que halla soluciones de la ecuación ax^2 + bx + c (mod n). Hecho por Dario Alpern.">
+<meta name="theme-color" content="#db5945">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="Resolución de ecuaciones cuadráticas modulares">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Alpertron">
+<meta property="og:url" content="https://www.alpertron.com.ar/CUADMOD.HTM">
+<meta property="og:image" content="https://www.alpertron.com.ar/quadmod.png">
+<meta property="og:image:width" content="833">
+<meta property="og:image:height" content="437">
+<meta property="og:image:alt" content="Captura de pantalla">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:description" content="Halla soluciones de la ecuación ax^2 + bx + c (mod n).">
+<meta property="article:published_time" content="2023-06-08">
+<meta property="fb:app_id" content="1495228927625175">
+<link rel="alternate" hreflang="es" href="https://www.alpertron.com.ar/CUADMOD.HTM">
+<link rel="alternate" hreflang="en" href="https://www.alpertron.com.ar/QUADMOD.HTM">
+<link rel="manifest" href="cuadmod.webmanifest">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" href="quadmod-icon-180px.png">
+<link rel="canonical" href="https://www.alpertron.com.ar/CUADMOD.HTM">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PH40GPHC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Q7PH40GPHC');
+</script>
+<title>Resolución de ecuaciones cuadráticas modulares</title>
+<style>
+@media only screen {
+nav {background-color:#000080; width:100%; margin:0px; text-align:center}
+nav ul {padding:0; margin:0 auto; list-style:none; display:inline-block} 
+nav li {float:left; position:relative; display:block; margin-top:0px; margin-bottom:0px; margin-left:5px; margin-right:5px; background-color:#000080; color:#FFFFFF; cursor: pointer; text-align:left}
+nav li[aria-expanded="true"] {background-color:#004000; color:#FFFFFF}
+nav li ul {display:none; position:absolute}
+nav li[aria-expanded="true"] ul.alignleft {display:block; height:auto}
+nav li[aria-expanded="true"] ul.alignright {display:block; height:auto; right:0px; background-color:#004000}
+nav li ul li {clear:both; white-space: nowrap; border:0px; background-color:#004000; width:100%; padding-top:1em; padding-bottom:0.5em}
+nav a:link{color:#FFFFFF; text-decoration:none}
+nav a:visited{color:#FFFFFF; text-decoration:none}
+nav a:hover{background-color:#004000; color:#FFFFFF; text-decoration:none}
+nav a:active{background-color:#004000; color:#FFFFFF; text-decoration:none}
+nav li ul li a:link{background-color:#004000; color:#FFFFFF; display:block; width:100%}
+nav li ul li a:visited{background-color:#004000;color:#FFFFFF; display:block; width:100%}
+nav li ul li a:hover{background-color:#FFFFFF; color:#004000; display:block; width:100%}
+nav li ul li a:active{background-color:#FFFFFF; color:#004000; display:block; width:100%}
+nav::after {clear:both}
+.inputfbck{width: calc(100% - 10em);float:right;padding:3px;margin:0px}
+@media (max-width: 400px) {nav {font-size:0.7em}}
+@media (min-width: 400px) {nav {font-size:1em}}
+@media (min-width: 500px) {#formleft {float:left;width:50%} #formright {float:right;width:50%}}
+}
+@media only print {nav {display:none}}
+#sending, #sentOK, #notSent {display:none}
+.center {text-align:center}
+#skip a {padding:6px;	position:absolute; top:-40px; left:0px; color:white; border-right:1px solid white; border-bottom:1px solid white; border-bottom-right-radius:8px; background:#BF1722; transition:top 1s ease-out; z-index:100}
+#skip a:focus {position:absolute;	left:0px;	top:0px; outline-color:transparent; transition: top .1s ease-in}
+.bread {padding:0px;list-style:none; display:inline-block}
+.bread li {display:inline}
+.bread li+li:before {content:"›"}
+body {font-family: Arial, sans-serif; margin: 0; padding: 0; background-color:#FFFFFF; color:#000000}
+main {padding:10px;}
+h1, .h2title {text-align:center}
+#actions input[type=button] {color: white; background-color: #3b3b3b}
+fieldset {display:inline}
+#functions {max-width:50%}
+.lf,.labels {padding:0.2em; clear:both;}
+.i {font-style:italic}
+.inline {display:inline}
+.atright {float:right}
+.funcbtn {margin:3px}
+#help,#result,#status,#footer {margin:3px; padding:3px}
+#feedback {display:none}
+.applet {margin-left: auto;margin-right: auto; border: 0px none;width:90%;text-align:center;background-color:#c0c0c0;padding:10px}
+@media (min-width: 400px) { .input{width: calc(100% - 7em);float:right;padding:3px;margin:0px}}
+@media (max-width: 400px) { .input{width:100%;padding:3px;margin:0px}}
+@media (max-width: 53em) {
+.applet {display: flex; flex-direction: column}
+#equation {order:1}
+#inputs {order:3}
+#actions {order:2}
+#functions {order:4; max-width:100%}
+}
+@media screen and (prefers-color-scheme: dark) {
+body {color: #ddd; background-color: #121212}
+.applet {background-color:#606060; color: #fff}
+a {color: #a3d4a7}
+a:link,a:active {color: #a3d4a7}
+a:hover {color: #f5cba7}
+a:visited {color: #d7bde2}
+input, textarea {color: white; background-color: #3b3b3b}
+input:disabled {color: #808080; background-color: #606060}
+}
+</style>
+<noscript>
+<style>
+.applet {display:none}
+</style>
+</noscript>
+</head>
+<body>
+<div id="skip"><a href="#main">Ir al contenido principal</a></div>
+<nav aria-label="Navegación principal">
+<ul role="menubar">
+<li role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">Electrónica
+<ul role="menu" class="alignleft popup">
+<li role="menuitem"><a href="INTEL.HTM" title="Todos los microprocesadores de Intel desde el 4004 al Pentium">Microprocesadores Intel</a></li>
+</ul>
+</li>
+<li role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Matemáticas
+<ul role="menu" class="alignleft popup">
+<li role="menuitem"><a href="CALDORAS.HTM" title="Aplicaciones web que implementan calculadoras">Calculadoras</a></li>
+<li role="menuitem"><a href="TNUMEROS.HTM" title="Artículos y programas sobre teoría de números">Teoría de números</a></li>
+<li role="menuitem"><a href="PROBLEMAS.HTM" title="Problemas matemáticos interesantes">Problemas</a></li>
+</ul>
+</li>
+<li role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Programas
+<ul role="menu" class="alignright popup">
+<li role="menuitem"><a href="ENSAM386.HTM" title="Programas escritos en lenguaje ensamblador del 80386">Assembler 80386</a></li>
+<li role="menuitem"><a href="PROGJAVA.HTM" title="Aplicaciones web con JavaScript y WebAssembly">Aplicaciones web</a></li>
+<li role="menuitem"><a href="JUEGOS.HTM" title="Juegos en línea y para descargar">Juegos</a></li>
+</ul>
+</li>
+<li class="alignright" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Contacto
+<ul role="menu" class="alignright popup">
+<li role="menuitem"><a href="PERSONAL.HTM" title="Información personal">Personal</a></li>
+<li role="menuitem"><a href="FORMULAR.HTM" title="Formulario para enviar comentarios">Comentarios</a></li>
+<li role="menuitem"><a href="GBOOK.HTM" title="Viejo y nuevo libro de visitas">Libro de invitados</a></li>
+<li role="menuitem"><a href="PRIVACIDAD.HTM" title="Política de privacidad">Privacidad</a></li>
+<li role="menuitem"><a href="DONACIONES.HTM" title="Donaciones al autor de este sitio Web">Donaciones</a></li>
+</ul> 
+</li>
+</ul>
+<ul class="atright"><li><a href="QUADMOD.HTM" hreflang="en" title="This Web page in English">ENG</a></li></ul>
+</nav>
+<main id="main">
+<article>
+<h1>Resolución de ecuaciones cuadráticas modulares</h1>
+<ol class="bread" vocab="https://schema.org/" typeof="BreadcrumbList">
+<li property="itemListElement" typeof="ListItem">
+<a property="item" typeof="WebPage" href="/"><span property="name">Alpertron</span></a>
+<meta property="position" content="1">
+</li>
+<li property="itemListElement" typeof="ListItem">
+<a property="item" typeof="WebPage" href="PROGJAVA.HTM"><span property="name">Aplicaciones web</span></a>
+<meta property="position" content="2">
+</li>
+<li property="itemListElement" typeof="ListItem">
+<span property="name">Resolución de ecuaciones cuadráticas modulares</span>
+<meta property="position" content="3">
+</li>
+</ol>
+<noscript><p><strong>La calculadora no funciona con Javascript deshabilitado. Por favor revise la configuración de su navegador.</strong></p></noscript>
+<div class="applet">
+<div id="equation">
+<var>a</var>&#8290;<var>x</var>&sup2; + <var>b</var>&#8290;<var>x</var> + <var>c</var> &equiv; 0 (mod&nbsp;<var>n</var>)
+</div>
+<div id="inputs">
+<label for="quad">a</label>&nbsp;<input type="text" id="quad" inputmode="numeric" value="" class="input" aria-label="Quadratic coefficient">
+<div class="lf"></div>
+<label for="lin">b</label>&nbsp;<input type="text" id="lin" inputmode="numeric" value="" class="input" aria-label="Linear coefficient">
+<div class="lf"></div>
+<label for="const">c</label>&nbsp;<input type="text" id="const" inputmode="numeric" value="" class="input" aria-label="Constant coefficient">
+<div class="lf"></div>
+<label for="mod">n</label>&nbsp;<input type="text" id="mod" inputmode="numeric" value="" class="input">
+</div>
+<fieldset id="actions"><legend>Acciones</legend>
+<input type="button" id="solve" value="Resolver" title="Obtener los valores de x">
+<input type="button" id="stop" value="Detener" title="Detener el cálculo">
+<input type="button" id="helpbtn" value="Ayuda" title="Leer información sobre esta calculadora">
+<div class="lf"></div>
+<label for="digits">Dígitos por grupo</label>&nbsp;<input type="number" id="digits" value="6">
+</fieldset>
+<fieldset id="functions"><legend>Funciones</legend>
+<label for="funccat">Categorías:</label> 
+<select id="funccat">
+<optgroup label="Funciones u operadores">
+<option value="0" selected>Matemática básica</option>
+<option value="1">Comparaciones</option>
+<option value="2">Lógica</option>
+<option value="3">Divisibilidad</option>
+<option value="4">Matemática recreativa</option>
+<option value="5">Teoría de números</option>
+<option value="6">Otros</option>
+</optgroup>
+</select>
+<span id="funcbtns">
+<button type="button">(</button><button type="button">)</button><button type="button">+</button><button type="button">-</button><button type="button">*</button><button type="button">/</button><button type="button">%</button><button type="button">^</button><button type="button">ans</button><button type="button">sqrt(</button><button type="button">iroot(</button><button type="button">Random(</button><button type="button">Abs(</button><button type="button">Sign(</button>
+</span>
+</fieldset>
+</div>
+<div id="help" aria-live="polite">
+<p>Esta aplicación Web resuelve ecuaciones de la forma <strong><var>a</var>&#8290;<var>x</var>&sup2; + <var>b</var>&#8290;<var>x</var> + <var>c</var> &equiv; 0 (mod&nbsp;<var>n</var>)</strong> donde la incógnita entera <var>x</var> se encuentra en el rango 0 &le; <var>x</var> &lt; <var>n</var>. En particular, puede hallar raíces cuadradas modulares si ingresa <var>a</var> = -1, <var>b</var> = 0, <var>c</var> = <span class="i">número cuya raíz se desea hallar</span> y <var>n</var> = <var>módulo</var>.</p>
+<p>El programa acepta números de hasta 10000 dígitos, pero se debe factorizar el módulo <var>n</var> (algunos números grandes no se pueden factorizar en un tiempo razonable). El motor de factorización utilizado es el de la aplicación de <a href="ECM.HTM">factorización de números enteros</a>, que usa los métodos ECM y SIQS.</p>
+<p>Cuando <var>a</var> no es cero, la cantidad de soluciones depende de la cantidad de factores primos distintos del módulo, así que si el módulo tiene muchos factores primos pequeños (más de 14), el programa se puede quedar sin memoria y no mostrará ninguna solución.</p>
+<h2>Expresiones</h2>
+<p>Puedes ingresar expresiones que usen los siguientes operadores y paréntesis:</p>
+<ul>
+<li> + para suma</li>
+<li> - para resta</li>
+<li> * para multiplicación</li>
+<li> / para división entera</li>
+<li> % para el resto de la división entera</li>
+<li> ^ o ** para exponenciación (el exponente debe ser mayor o igual que cero).</li>
+<li> <strong>&lt;</strong>, <strong>==</strong>, <strong>&gt;</strong>; <strong>&lt;=</strong>, <strong>&gt;=</strong>, != para comparaciones. Los operadores devuelven cero si es falso y -1 si es verdadero.</li>
+<li> <strong>Ans</strong>: obtiene la última respuesta.</li>
+<li> <strong>AND</strong>, <strong>OR</strong>, <strong>XOR</strong>, <strong>NOT</strong> para lógica binaria. Las operaciones se hacen en binario (base 2). Se agregan infinitos ceros (unos) a la izquerda de los números positivos (negativos).</li>
+<li> <strong>SHL</strong> o <strong>&lt;&lt;</strong>: Si <var>b</var> &ge; 0, <var>a</var> SHL <var>b</var> desplaza el valor <var>a</var> a la izquierda la cantidad de bits especificada por <var>b</var>. Esto equivale a <var>a</var> &times; 2<sup><var>b</var></sup>. En caso contrario, <var>a</var> SHL <var>b</var> desplaza el valor <var>a</var> a la derecha la cantidad de bits especificada por &minus;<var>b</var>. Esto equivale a floor(<var>a</var> / 2<sup>&minus;<var>b</var></sup>). Ejemplo: 5 SHL 3 = 40.</li>
+<li> <strong>SHR</strong> o <strong>&gt;&gt;</strong>: Si <var>b</var> &ge; 0, <var>a</var> SHR <var>b</var> desplaza el valor <var>a</var> a la derecha la cantidad de bits especificada por <var>b</var>. Esto equivale a floor(<var>a</var> / 2<sup><var>b</var></sup>). En caso contrario, <var>a</var> SHR <var>b</var> desplaza el valor <var>a</var> a la izquierda la cantidad de bits especificada por &minus;<var>b</var>. Esto equivale a <var>a</var> &times; 2<sup>&minus;<var>b</var></sup>. Ejemplo: -19 SHR 2 = -5.</li>
+<li> <strong>n!</strong>: factorial (<var>n</var> debe ser mayor o igual que cero). Ejemplo: 6! = 6 &times; 5 &times; 4 &times; 3 &times; 2 = 720.</li>
+<li> <strong>n!! ... !</strong>: factorial múltiple (<var>n</var> debe ser mayor o igual que cero). Es el producto de <var>n</var> por <var>n</var> &minus; <var>k</var> por <var>n</var> &minus; <var>2k</var> ... (todos los números son mayores que cero) donde <var>k</var> es la cantidad de signos de exclamación. Ejemplo: 7!! = 7 &times; 5 &times; 3 &times; 1 = 105.</li>
+<li> <strong>p#</strong>: primorial (producto de todos los primos menores o iguales a <var>p</var>). Ejemplo: 12# = 11 &times; 7 &times; 5 &times; 3 &times; 2 = 2310.</li>
+<li> <strong>B(n)</strong>: Número probablemente primo anterior a <var>n</var>. Ejemplo: B(24) = 23.</li>
+<li> <strong>F(n)</strong>: Número de Fibonacci F<sub>n</sub> que corresponde a la secuencia 0, 1, 1, 2, 3, 5, 8, 13, 21, etc. donde cada elemento es igual a la suma de los dos anteriores. Ejemplo: F(7) = 13.</li>
+<li> <strong>L(n)</strong>: Número de Lucas L<sub>n</sub> = F<sub><var>n</var>-1</sub> + F<sub><var>n</var>+1</sub></li>
+<li> <strong>N(n)</strong>: Número probablemente primo posterior a <var>n</var>. Ejemplo: N(24) = 29.</li>
+<li> <strong>P(n)</strong>: particiones irrestrictas (cantidad de descomposiciones de <var>n</var> en sumas de números enteros sin tener en cuenta el orden). Ejemplo: P(4) = 5 porque el número 4 se puede particionar de 5 formas distintas: 4 = 3+1 = 2+2 = 2+1+1 = 1+1+1+1.</li>
+<li> <strong>Gcd(m,n, ...)</strong>: Máximo común divisor de estos números enteros. Ejemplo: GCD(12,16) = 4.</li>
+<li> <strong>Lcm(m,n, ...)</strong>: Mínimo común múltiplo de estos números enteros. Ejemplo: LCM(12,16,24) = 48.</li>
+<li> <strong>Modinv(m,n)</strong>: inverso de <var>m</var> modulo <var>n</var>, sólo válido cuando <var>m</var> y <var>n</var> son coprimos, es decir que no tienen factores en común. Ejemplo: Modinv(3,7) = 5 porque 3 &times; 5 &equiv; 1 (mod 7)</li>
+<li> <strong>Modpow(m,n,r)</strong>: halla <var>m</var><sup><var>n</var></sup> módulo <var>r</var>. Ejemplo: Modpow(3, 4, 7) = 4, porque 3<sup>4</sup> &equiv; 4 (mod 7).</li>
+<li> <strong>Totient(n)</strong>: cantidad de enteros positivos menores que <var>n</var> coprimos con <var>n</var>. Ejemplo: Totient(6) = 2 porque 1 y 5 no tienen factores en común con 6.</li>
+<li> <strong>Jacobi(m,n)</strong>: obtiene el símbolo de Jacobi de <var>m</var> y <var>n</var>. Cuando el segundo argumento es primo, el resultado es cero si <var>m</var> es múltiplo de <var>n</var>, es uno si hay una solución a <var>x</var>&sup2; &equiv; <var>m</var> (mód <var>n</var>) y es igual a &minus;1 cuando la congruencia mencionada no tiene soluciones.</li>
+<li> <strong>Random(m,n)</strong>: número entero aleatorio entre <var>m</var> y <var>n</var>.</li>
+<li> <strong>Abs(n)</strong>: valor absoluto de <var>n</var>.</li>
+<li> <strong>Sign(n)</strong>: retorna cero si <var>n</var> es zero, &minus;1 si es negativo o 1 si es positivo.</li>
+<li> <strong>IsPrime(n)</strong>: retorna cero si <var>n</var> no es un primo probable y &minus;1 si lo es. Ejemplo: IsPrime(5) = &minus;1.</li>
+<li> <strong>Sqrt(n)</strong>: parte entera de la raíz cuadrada del argumento.</li>
+<li> <strong>Iroot(n,r)</strong>: Raíz r-ésima entera del primer argumento. Ejemplo: Iroot(8, 3) = 2.</li>
+<li> <strong>NumDigits(n,r)</strong>: cantidad de dígitos de <var>n</var> en base <var>r</var>. Ejemplo: NumDigits(13, 2) = 4 porque 13 en binario (base 2) se expresa como 1101.</li>
+<li> <strong>SumDigits(n,r)</strong>: suma de dígitos de <var>n</var> en base <var>r</var>. Ejemplo: SumDigits(213, 10) = 6 porque la suma de los dígitos expresados en decimal es 2+1+3 = 6.</li>
+<li> <strong>RevDigits(n,r)</strong>: halla el valor que se obtiene escribiendo para atrás los dígitos de <var>n</var> en base <var>r</var>. Ejemplo: RevDigits(213, 10) = 312.</li>
+</ul>
+<p>Puedes usar el prefijo <em>0x</em> para números hexadecimales, por ejemplo 0x38 es igual a 56.</p>
+<div class="noand">
+<h2>Código fuente</h2>
+<p>Puedes bajar el código fuente de esta aplicación y del viejo applet de ecuaciones cuadráticas modulares desde <a href="https://github.com/alpertron/calculators">GitHub</a>. El código fuente está escrito en lenguaje C, por lo que es necesario <a href="https://emscripten.org/docs/getting_started/downloads.html">Emscripten</a> para generar JavaScript.</p>
+</div>
+<p>Escrito por Dario Alpern. Actualizado el 16 de febrero de 2024.</p>
+</div>
+<div id="result" aria-live="polite"></div>
+<div>
+<p>Si encuentra algún error o tiene algún comentario, por favor llene el <a href="#" id="formlink">formulario</a>.</p>
+<p>Si le gustan estas calculadoras y desea soportar el software libre sin propagandas molestas, puede <a href="https://www.PayPal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MR65QPWZM5JT6&source=url&locale.x=es_ES">donar a través de PayPal</a>.</p>
+</div>
+</article>
+</main>
+<aside id="feedback" aria-label="Formulario de comentarios">
+<h2 class="h2title">Formulario de comentarios</h2>
+<form class="applet" id="formfeedback">
+<input type="hidden" name="subject" value="Comentario de calculadora de ecuaciones cuadráticas modulares">
+<div id="formleft">
+<div class="labels"><label for="name">Nombre:</label><input class="inputfbck" type="text" name="name" maxlength="40" id="name" autocomplete="name"></div>
+<div class="labels"><label for="age">Edad:</label><input class="inputfbck" type="number" name="age" min="0" max="999" id="age"></div>
+<div class="labels"><label for="city">Ciudad:</label><input class="inputfbck" type="text" name="city" maxlength="70" id="city" autocomplete="address-level2"></div>
+<div class="labels"><label for="province">Provincia:</label><input class="inputfbck" type="text" name="province" maxlength="70" id="province" autocomplete="address-level1"></div>
+<div class="labels"><label for="country">País:</label><input class="inputfbck" type="text" name="country" maxlength="70" id="country" autocomplete="country-name"></div>
+<div class="labels"><label for="reply">Su e-mail:</label><input class="inputfbck" type="email" name="reply" maxlength="70" id="reply" autocomplete="email"></div>
+<p>Todos los campos son opcionales. Ingrese su dirección de correo electrónico si desea una respuesta del autor de esta aplicación.</p>
+<p><input type="checkbox" id="adduserdata"><label for="adduserdata">Enviar coeficientes</label></p>
+<input type="hidden" name="userdata" value="" id="userdata">
+</div>
+<div id="formright">
+<label for="comments">Por favor, ingrese sus comentarios o sugerencias:</label><br>
+<textarea name="Comments" rows="7" cols="40" id="comments"></textarea>
+<p><label for="how">¿Cómo encontró mi página?</label><br>
+<select name="how" title="¿Cómo encontró mi página?" id="how">
+<optgroup label="Seleccione respuesta">
+<option value="from a search engine" selected>Por un buscador</option>
+<option value="from a friend">Por un amigo</option>
+<option value="from a link">Por un enlace</option>
+<option value="from Wikipedia">De Wikipedia u otra referencia</option>
+<option value="other">Otros</option>
+</optgroup>
+</select></p>
+<p>¿Le parecieron interesantes los programas?
+<input type="radio" name="Instructive" value="Yes" id="insyes"><label for="insyes">Sí</label>
+<input type="radio" name="Instructive" value="No" id="insno"><label for="insno">No</label></p>
+<p>¿Le parecieron instructivos los programas?
+<input type="radio" name="Interesting" value="Yes" id="intyes"><label for="intyes">Sí</label>
+<input type="radio" name="Interesting" value="No" id="intno"><label for="intno">No</label></p>
+<p><input type="submit" disabled="disabled" value="Enviar el comentario" id="formsend">
+<input type="reset" value="Entrar otra vez">
+<input type="button" value="Cancelar" id="formcancel"></p>
+</div>
+<div class="lf"></div>
+</form>
+</aside>
+<aside id="sending">
+<p>Enviando comentario...</p>
+</aside>
+<aside id="sentOK">
+<p>Comentario enviado correctamente.</p>
+<div class="center"><button type="button" id="btnSentOK">Volver</button></div>
+</aside>
+<aside id="notSent">
+<p>No se pudo enviar el comentario.</p>
+<div class="center"><button type="button" id="btnNotSent">Volver</button></div>
+</aside>
+<script type="text/wasmb64" id="wasmb64">
+</script>
+<script type="text/js-worker" id="worker">
+<!--
+//-->
+</script>
+<script>
+<!--
+//-->
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "browserRequirements": "Requires HTML5. Requires Javascript.",
+  "name": "Resolución de ecuaciones cuadráticas modulares",
+  "description": "Applicación Javascript que halla soluciones a ecuaciones cuadráticas modulares.",
+  "image": ["https://www.alpertron.com.ar/quadmod.png"],
+  "datePublished": "2023-06-08",
+  "dateModified": "2023-06-08",
+  "operatingSystem": "Any",
+  "applicationCategory": "EducationalApplication",
+  "author": {
+    "@type": "Person",
+    "name": "Dario Alpern"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.0",
+    "ratingCount": "26"
+  },
+  "inLanguage": "es",
+  "license": "https://www.gnu.org/licenses/gpl-3.0.en.html",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "availability": "https://schema.org/OnlineOnly",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+</body>
+</html>

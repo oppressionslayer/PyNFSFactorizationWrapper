@@ -1,0 +1,1204 @@
+<!doctype html>
+<html lang="es" prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
+<head>
+<meta charset="utf-8">
+<meta name="Author" content="Dario Alejandro Alpern">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Aplicación Web que factoriza números enteros utilizando los algoritmos ECM y SIQS. Escrito por Dario Alpern.">
+<meta name="theme-color" content="#db5945">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="Calculadora de factorización de números enteros">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Alpertron">
+<meta property="og:url" content="https://www.alpertron.com.ar/ECMC.HTM">
+<meta property="og:image" content="https://www.alpertron.com.ar/ecmc.png">
+<meta property="og:image:width" content="833">
+<meta property="og:image:height" content="437">
+<meta property="og:image:alt" content="Captura de pantalla">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:description" content="Factoriza números enteros utilizando los algoritmos ECM y SIQS.">
+<meta property="article:published_time" content="2023-06-08">
+<meta property="fb:app_id" content="1495228927625175">
+<link rel="alternate" hreflang="es" href="https://www.alpertron.com.ar/ECMC.HTM">
+<link rel="alternate" hreflang="en" href="https://www.alpertron.com.ar/ECM.HTM">
+<link rel="manifest" href="/ecmc.webmanifest">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" href="ecm-icon-180px.png">
+<link rel="canonical" href="https://www.alpertron.com.ar/ECMC.HTM">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7PH40GPHC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Q7PH40GPHC');
+</script>
+<title>Calculadora de factorización de números enteros</title>
+<style>
+@media print {nav, #footer {display:none}}
+@media screen {
+nav {background-color:#000080; width:100%; margin:0px; text-align:center}
+nav ul {padding:0; margin:0 auto; list-style:none; display:inline-block} 
+nav li {float:left; position:relative; display:block; margin-top:0px; margin-bottom:0px; margin-left:5px; margin-right:5px; background-color:#000080; color:#FFFFFF; cursor: pointer; text-align:left}
+nav li[aria-expanded="true"] {background-color:#004000; color:#FFFFFF}
+nav li ul {display:none; position:absolute}
+nav li[aria-expanded="true"] ul.alignleft {display:block; height:auto}
+nav li[aria-expanded="true"] ul.alignright {display:block; height:auto; right:0px; background-color:#004000}
+nav li ul li {clear:both; white-space: nowrap; border:0px; background-color:#004000; width:100%; padding-top:1em; padding-bottom:0.5em}
+nav a:link{color:#FFFFFF; text-decoration:none}
+nav a:visited{color:#FFFFFF; text-decoration:none}
+nav a:hover{background-color:#004000; color:#FFFFFF; text-decoration:none}
+nav a:active{background-color:#004000; color:#FFFFFF; text-decoration:none}
+nav li ul li a:link{background-color:#004000; color:#FFFFFF; display:block; width:100%}
+nav li ul li a:visited{background-color:#004000;color:#FFFFFF; display:block; width:100%}
+nav li ul li a:hover{background-color:#FFFFFF; color:#004000; display:block; width:100%}
+nav li ul li a:active{background-color:#FFFFFF; color:#004000; display:block; width:100%}
+nav::after {clear:both}
+@media (max-width: 400px) {nav {font-size:0.7em}}
+@media (min-width: 400px) {nav {font-size:1em}}
+}
+#sending, #sentOK, #notSent {display:none}
+.center {text-align:center}
+#skip a {padding:6px; position:absolute; top:-40px; left:0px; color:white; border-right:1px solid white; border-bottom:1px solid white; border-bottom-right-radius:8px; background:#BF1722; transition:top 1s ease-out; z-index:100}
+#skip a:focus {position:absolute; left:0px; top:0px; outline-color:transparent; transition: top .1s ease-in}
+.bread {padding:0px;list-style:none; display:inline-block}
+.bread li {display:inline}
+.bread li+li:before {content:"›"}
+.newline {clear:both}
+.bmodebuttons {text-align:center}
+h2 > button {background-color:#eee; color:#444; cursor:pointer; padding:18px; font-weight:bold; font-size: 100%; width:100%; text-align:left; border:none; transition:0.4s}
+h2 > button.active,h2 > button:hover {background-color:#ccc}
+h2 > button:after {content:"\002B"; color:#777; font-weight:bold; float:right; margin-left:5px}
+h2 > button.active:after {content:"\2212"}
+.panel {padding: 0 10px; display:none; overflow:hidden}
+.atright {float:right}
+html {height:100%}
+body {font-family: Arial, sans-serif; margin: 0; padding: 0; background-color:#FFFFFF; color:#000000; min-height:100%}
+h1, .h2title {text-align:center}
+#actions input[type=button] {color: white; background-color: #3b3b3b}
+fieldset {display:inline; padding-inline-start:0.3em; padding-inline-end:0.3em}
+#functions {max-width:50%}
+.lf,.labels {padding:0.2em; clear:both}
+.blue {color: #0000FF}
+.red {color: #FF0000}
+.new {color: #0000FF; font-weight:bold}
+#blockmode {height:100%; width:100%; display:none; flex-direction: column}
+#firstRow {width:100%}
+#firstRow > h2 {float:left; margin-block-start:inherit; margin-block-end:inherit;}
+#blocklyArea {flex-grow:1; height:99%}
+#blocklyDiv {position:absolute; color:initial; background-color:initial}
+#bfilename {width: 10em}
+.applet {margin-left: auto;margin-right: auto; border: 0px none;width:90%;text-align:center;background-color:#c0c0c0;padding:10px}
+#savefile,#getFile,#lgetFile,#cont,#wizard,#feedback,#more,#stop,#sktest,#sharediv,#BlocklyErrors {display:none}
+#digits {width:5em}
+#value {white-space:pre;overflow-wrap:normal;overflow:auto}
+.inline {display:inline}
+.pad {padding:10px}
+.hex {font-family: Courier, "Lucida Console", monospace}
+.und {text-decoration: underline}
+.verbose {display:none}
+.terse {display:inline}
+fieldset button, fieldset input {margin:3px}
+#explan,#wzdexam {margin-block-start:0; margin-block-end:0}
+#tableCurves {max-width:700px; margin-left:auto; margin-right:auto}
+#help,#result,#status,#footer {margin:3px; padding:3px}
+#comments {width:90%}
+.inputfbck{width: calc(100% - 10em);float:right;padding:3px;margin:0px}
+@media (min-width: 400px) {.input {width: calc(100% - 6em);float:right;padding:3px;margin:0px}}
+@media (max-width: 400px) {.input {width:100%;padding:3px;margin:0px}}
+@media (max-width: 50em) {
+#valueapp {display: flex; flex-direction: column;}
+#value1 {order:2}
+#actions {order:1}
+#functions {order:3; max-width:100%}
+#explan {order:4}
+}
+@media screen and (min-width: 500px) {#formleft {float:left;width:50%} #formright {float:right;width:50%}}
+.modal-header {padding: 2px 10px; background-color: #5cb85c; color: white}
+.modal-body {padding: 2px 10px}
+.modal-content {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  background-color: #fefefe;
+  padding: 0;
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+#close {float:right}
+#modal-header-text {font-size:1.5em}
+table, td, th {border: 1px solid gray}
+.blockly_missing1 {width:1px; height:0}
+.blockly_missing2 {position:fixed; top:0; left:0; display:flex}
+.geras-renderer.classic-theme .blocklyText, 
+.geras-renderer.classic-theme .blocklyFlyoutLabelText {
+font: normal 11pt sans-serif;
+}
+.geras-renderer.classic-theme .blocklyText {
+fill: #fff;
+}
+.geras-renderer.classic-theme .blocklyNonEditableText>rect,
+.geras-renderer.classic-theme .blocklyEditableText>rect {
+fill: #fff;
+fill-opacity: .6;
+stroke: none;
+}
+.geras-renderer.classic-theme .blocklyNonEditableText>text,
+.geras-renderer.classic-theme .blocklyEditableText>text {
+fill: #000;
+}
+.geras-renderer.classic-theme .blocklyFlyoutLabelText {
+fill: #000;
+}
+.geras-renderer.classic-theme .blocklyText.blocklyBubbleText {
+fill: #000;
+}
+.geras-renderer.classic-theme .blocklyEditableText:not(.editing):hover>rect {
+stroke: #fff;
+stroke-width: 2;
+}
+.geras-renderer.classic-theme .blocklyHtmlInput {
+font-family: sans-serif;
+font-weight: normal;
+}
+.geras-renderer.classic-theme .blocklySelected>.blocklyPath {
+stroke: #fc3;
+stroke-width: 3px;
+}
+.geras-renderer.classic-theme .blocklyHighlightedConnectionPath {
+stroke: #fc3;
+}
+.geras-renderer.classic-theme .blocklyReplaceable .blocklyPath {
+fill-opacity: .5;
+}
+.geras-renderer.classic-theme .blocklyReplaceable .blocklyPathLight,
+.geras-renderer.classic-theme .blocklyReplaceable .blocklyPathDark {
+display: none;
+}
+.geras-renderer.classic-theme .blocklyInsertionMarker>.blocklyPath {
+fill-opacity: 0.2;
+stroke: none;
+}
+.geras-renderer.classic-theme .blocklyInsertionMarker>.blocklyPathLight,
+.geras-renderer.classic-theme .blocklyInsertionMarker>.blocklyPathDark {
+fill-opacity: 0.2;
+stroke: none;
+}
+.blocklySvg {
+background-color: #fff;
+outline: none;
+overflow: hidden;
+position: absolute;
+display: block;
+}
+.blocklyWidgetDiv {
+display: none;
+position: absolute;
+z-index: 99999;
+}
+.injectionDiv {
+height: 100%;
+position: relative;
+overflow: hidden;
+touch-action: none;
+}
+.blocklyNonSelectable {
+user-select: none;
+}
+.blocklyWsDragSurface {
+display: none;
+position: absolute;
+top: 0;
+left: 0;
+}
+.blocklyWsDragSurface.blocklyOverflowVisible {
+overflow: visible;
+}
+.blocklyBlockDragSurface {
+display: none;
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+overflow: visible !important;
+z-index: 50;
+}
+.blocklyBlockCanvas.blocklyCanvasTransitioning,
+.blocklyBubbleCanvas.blocklyCanvasTransitioning {
+transition: transform .5s;
+}
+.blocklyTooltipDiv {
+background-color: #ffffc7;
+border: 1px solid #ddc;
+box-shadow: 4px 4px 20px 1px rgba(0,0,0,.15);
+color: #000;
+display: none;
+font: 9pt sans-serif;
+opacity: .9;
+padding: 2px;
+position: absolute;
+z-index: 100000;
+}
+.blocklyDropDownDiv {
+position: absolute;
+left: 0;
+top: 0;
+z-index: 1000;
+display: none;
+border: 1px solid;
+border-color: #dadce0;
+background-color: #fff;
+border-radius: 2px;
+padding: 4px;
+box-shadow: 0 0 3px 1px rgba(0,0,0,.3);
+}
+.blocklyDropDownDiv.blocklyFocused {
+box-shadow: 0 0 6px 1px rgba(0,0,0,.3);
+}
+.blocklyDropDownContent {
+max-height: 300px;
+overflow: auto;
+overflow-x: hidden;
+position: relative;
+}
+.blocklyDropDownArrow {
+position: absolute;
+left: 0;
+top: 0;
+width: 16px;
+height: 16px;
+z-index: -1;
+background-color: inherit;
+border-color: inherit;
+}
+.blocklyDropDownButton {
+display: inline-block;
+float: left;
+padding: 0;
+margin: 4px;
+border-radius: 4px;
+outline: none;
+border: 1px solid;
+transition: box-shadow .1s;
+cursor: pointer;
+}
+.blocklyArrowTop {
+border-top: 1px solid;
+border-left: 1px solid;
+border-top-left-radius: 4px;
+border-color: inherit;
+}
+.blocklyArrowBottom {
+border-bottom: 1px solid;
+border-right: 1px solid;
+border-bottom-right-radius: 4px;
+border-color: inherit;
+}
+.blocklyResizeSE {
+cursor: se-resize;
+fill: #aaa;
+}
+.blocklyResizeSW {
+cursor: sw-resize;
+fill: #aaa;
+}
+.blocklyResizeLine {
+stroke: #515A5A;
+stroke-width: 1;
+}
+.blocklyHighlightedConnectionPath {
+fill: none;
+stroke: #fc3;
+stroke-width: 4px;
+}
+.blocklyPathLight {
+fill: none;
+stroke-linecap: round;
+stroke-width: 1;
+}
+.blocklySelected>.blocklyPathLight {
+display: none;
+}
+.blocklyDraggable {
+cursor: url("/handopen.cur"), auto;
+cursor: grab;
+}
+.blocklyDragging {
+cursor: url("/handclosed.cur"), auto;
+cursor: grabbing;
+}
+.blocklyDraggable:active {
+cursor: url("/handclosed.cur"), auto;
+cursor: grabbing;
+}
+.blocklyBlockDragSurface .blocklyDraggable {
+cursor: url("/handclosed.cur"), auto;
+cursor: grabbing;
+}
+.blocklyDragging.blocklyDraggingDelete {
+cursor: url("/handdelete.cur"), auto;
+}
+.blocklyDragging>.blocklyPath,
+.blocklyDragging>.blocklyPathLight {
+fill-opacity: .8;
+stroke-opacity: .8;
+}
+.blocklyDragging>.blocklyPathDark {
+display: none;
+}
+.blocklyDisabled>.blocklyPath {
+fill-opacity: .5;
+stroke-opacity: .5;
+}
+.blocklyDisabled>.blocklyPathLight,
+.blocklyDisabled>.blocklyPathDark {
+display: none;
+}
+.blocklyInsertionMarker>.blocklyPath,
+.blocklyInsertionMarker>.blocklyPathLight,
+.blocklyInsertionMarker>.blocklyPathDark {
+fill-opacity: .2;
+stroke: none;
+}
+.blocklyMultilineText {
+font-family: monospace;
+}
+.blocklyNonEditableText>text {
+pointer-events: none;
+}
+.blocklyFlyout {
+position: absolute;
+z-index: 20;
+}
+.blocklyText text {
+cursor: default;
+}
+.blocklySvg text,
+.blocklyBlockDragSurface text {
+user-select: none;
+cursor: inherit;
+}
+.blocklyHidden {
+display: none;
+}
+.blocklyFieldDropdown:not(.blocklyHidden) {
+display: block;
+}
+.blocklyIconGroup {
+cursor: default;
+}
+.blocklyIconGroup:not(:hover),
+.blocklyIconGroupReadonly {
+opacity: .6;
+}
+.blocklyIconShape {
+fill: #00f;
+stroke: #fff;
+stroke-width: 1px;
+}
+.blocklyIconSymbol {
+fill: #fff;
+}
+.blocklyMinimalBody {
+margin: 0;
+padding: 0;
+}
+.blocklyHtmlInput {
+border: none;
+border-radius: 4px;
+height: 100%;
+margin: 0;
+outline: none;
+padding: 0;
+width: 100%;
+text-align: center;
+display: block;
+box-sizing: border-box;
+}
+.blocklyHtmlInput::-ms-clear {
+display: none;
+}
+.blocklyMainBackground {
+stroke-width: 1;
+stroke: #c6c6c6;
+}
+.blocklyMutatorBackground {
+fill: #fff;
+stroke: #ddd;
+stroke-width: 1;
+}
+.blocklyFlyoutBackground {
+fill: #ddd;
+fill-opacity: .8;
+}
+.blocklyMainWorkspaceScrollbar {
+z-index: 20;
+}
+.blocklyFlyoutScrollbar {
+z-index: 30;
+}
+.blocklyScrollbarHorizontal,
+.blocklyScrollbarVertical {
+position: absolute;
+outline: none;
+}
+.blocklyScrollbarBackground {
+opacity: 0;
+}
+.blocklyScrollbarHandle {
+fill: #ccc;
+}
+.blocklyScrollbarBackground:hover+.blocklyScrollbarHandle,
+.blocklyScrollbarHandle:hover {
+fill: #bbb;
+}
+.blocklyFlyout .blocklyScrollbarHandle {
+fill: #bbb;
+}
+.blocklyFlyout .blocklyScrollbarBackground:hover+.blocklyScrollbarHandle,
+.blocklyFlyout .blocklyScrollbarHandle:hover {
+fill: #aaa;
+}
+.blocklyInvalidInput {
+background: #faa;
+}
+.blocklyVerticalMarker {
+stroke-width: 3px;
+fill: rgba(255,255,255,.5);
+pointer-events: none;
+}
+.blocklyComputeCanvas {
+position: absolute;
+width: 0;
+height: 0;
+}
+.blocklyNoPointerEvents {
+pointer-events: none;
+}
+.blocklyContextMenu {
+border-radius: 4px;
+max-height: 100%;
+}
+.blocklyDropdownMenu {
+border-radius: 2px;
+padding: 0 !important;
+}
+.blocklyDropdownMenu .blocklyMenuItem {
+padding-left: 28px;
+}
+.blocklyDropdownMenu .blocklyMenuItemRtl {
+padding-left: 5px;
+padding-right: 28px;
+}
+.blocklyWidgetDiv .blocklyMenu {
+background: #fff;
+border: 1px solid transparent;
+box-shadow: 0 0 3px 1px rgba(0,0,0,.3);
+font: normal 13px Arial, sans-serif;
+margin: 0;
+outline: none;
+padding: 4px 0;
+position: absolute;
+overflow-y: auto;
+overflow-x: hidden;
+max-height: 100%;
+z-index: 20000;
+}
+.blocklyWidgetDiv .blocklyMenu.blocklyFocused {
+box-shadow: 0 0 6px 1px rgba(0,0,0,.3);
+}
+.blocklyDropDownDiv .blocklyMenu {
+background: inherit;
+border: inherit;
+font: normal 13px "Helvetica Neue", Helvetica, sans-serif;
+outline: none;
+position: relative;
+z-index: 20000;
+}
+.blocklyMenuItem {
+border: none;
+color: #000;
+cursor: pointer;
+list-style: none;
+margin: 0;
+min-width: 7em;
+padding: 6px 15px;
+white-space: nowrap;
+}
+.blocklyMenuItemDisabled {
+color: #ccc;
+cursor: inherit;
+}
+.blocklyMenuItemHighlight {
+background-color: rgba(0,0,0,.1);
+}
+.blocklyMenuItemCheckbox {
+height: 16px;
+position: absolute;
+width: 16px;
+}
+.blocklyMenuItemSelected .blocklyMenuItemCheckbox {
+background: url(/sprites.png) no-repeat -48px -16px;
+float: left;
+margin-left: -24px;
+position: static;
+}
+.blocklyMenuItemRtl .blocklyMenuItemCheckbox {
+float: right;
+margin-right: -24px;
+}
+.blocklyCommentTextarea {
+background-color: #fef49c;
+border: 0;
+outline: 0;
+margin: 0;
+padding: 3px;
+resize: none;
+display: block;
+}
+.blocklyFlyoutButton {
+fill: #888;
+cursor: default;
+}
+.blocklyFlyoutButtonShadow {
+fill: #666;
+}
+.blocklyFlyoutButton:hover {
+fill: #aaa;
+}
+.blocklyFlyoutLabel {
+cursor: default;
+}
+.blocklyFlyoutLabelBackground {
+opacity: 0;
+}
+.blocklyTreeRow:not(.blocklyTreeSelected):hover {
+background-color: rgba(255, 255, 255, 0.2);
+}
+.blocklyToolboxDiv[layout="h"] .blocklyToolboxCategory {
+margin: 1px 5px 1px 0;
+}
+.blocklyToolboxDiv[dir="RTL"][layout="h"] .blocklyToolboxCategory {
+margin: 1px 0 1px 5px;
+}
+.blocklyTreeRow {
+height: 22px;
+line-height: 22px;
+margin-bottom: 3px;
+padding-right: 8px;
+white-space: nowrap;
+}
+.blocklyToolboxDiv[dir="RTL"] .blocklyTreeRow {
+margin-left: 8px;
+padding-right: 0px
+}
+.blocklyTreeIcon {
+background-image: url(/sprites.png);
+height: 16px;
+vertical-align: middle;
+visibility: hidden;
+width: 16px;
+}
+.blocklyTreeIconClosed {
+background-position: -32px -1px;
+}
+.blocklyToolboxDiv[dir="RTL"] .blocklyTreeIconClosed {
+background-position: 0 -1px;
+}
+.blocklyTreeSelected>.blocklyTreeIconClosed {
+background-position: -32px -17px;
+}
+.blocklyToolboxDiv[dir="RTL"] .blocklyTreeSelected>.blocklyTreeIconClosed {
+background-position: 0 -17px;
+}
+.blocklyTreeIconOpen {
+background-position: -16px -1px;
+}
+.blocklyTreeSelected>.blocklyTreeIconOpen {
+background-position: -16px -17px;
+}
+.blocklyTreeLabel {
+cursor: default;
+font: 16px sans-serif;
+padding: 0 3px;
+vertical-align: middle;
+}
+.blocklyToolboxDelete .blocklyTreeLabel {
+cursor: url("/handdelete.cur"), auto;
+}
+.blocklyTreeSelected .blocklyTreeLabel {
+color: #fff;
+}
+.blocklyTreeSeparator {
+border-bottom: solid #e5e5e5 1px;
+height: 0;
+margin: 5px 0;
+}
+.blocklyToolboxDiv[layout="h"] .blocklyTreeSeparator {
+border-right: solid #e5e5e5 1px;
+border-bottom: none;
+height: auto;
+margin: 0 5px 0 5px;
+padding: 5px 0;
+width: 0;
+}
+.blocklyToolboxDelete {
+cursor: url("/handdelete.cur"), auto;
+}
+.blocklyToolboxGrab {
+cursor: url("/handclosed.cur"), auto;
+cursor: grabbing;
+}
+.blocklyToolboxDiv {
+background-color: #ddd;
+overflow-x: visible;
+overflow-y: auto;
+padding: 4px 0 4px 0;
+position: absolute;
+z-index: 70;
+-webkit-tap-highlight-color: transparent;
+}
+.blocklyToolboxContents {
+display: flex;
+flex-wrap: wrap;
+flex-direction: column;
+}
+.blocklyToolboxContents:focus {
+outline: none;
+}
+.blocklyZoom>image, .blocklyZoom>svg>image {
+opacity: .4;
+}
+.blocklyZoom>image:hover, .blocklyZoom>svg>image:hover {
+opacity: .6;
+}
+.blocklyZoom>image:active, .blocklyZoom>svg>image:active {
+opacity: .8;
+}
+@media screen and (prefers-color-scheme: dark) {
+body {color: #ddd; background-color: #121212}
+.applet {background-color:#606060; color: #fff}
+h2 > button {background-color:#333; color:#eee}
+h2 > button.active,h2 > button:hover {background-color:#555}
+h2 > button:after {color:#777}
+a {color: #a3d4a7}
+a:link,a:active {color: #a3d4a7}
+a:hover {color: #f5cba7}
+a:visited {color: #d7bde2}
+input, textarea {color: white; background-color: #3b3b3b}
+.blocklyCommentTextarea {color:initial}
+input:disabled {color: #808080; background-color: #606060}
+.blue, .new {color: #E0E000}
+.red {color: #00E0E0}
+}
+</style>
+<script type="text/wasmb64" id="wasmb64">
+</script>
+<noscript>
+<style>
+.applet {display:none}
+</style>
+</noscript>
+</head>
+<body>
+<div id="skip"><a href="#main">Ir al contenido principal</a></div>
+<nav aria-label="Navegación principal">
+<ul role="menubar">
+<li role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="0">Electrónica
+<ul role="menu" class="alignleft popup">
+<li role="menuitem"><a href="INTEL.HTM" title="Todos los microprocesadores de Intel desde el 4004 al Pentium">Microprocesadores Intel</a></li>
+</ul>
+</li>
+<li role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Matemáticas
+<ul role="menu" class="alignleft popup">
+<li role="menuitem"><a href="CALDORAS.HTM" title="Aplicaciones web que implementan calculadoras">Calculadoras</a></li>
+<li role="menuitem"><a href="TNUMEROS.HTM" title="Artículos y programas sobre teoría de números">Teoría de números</a></li>
+<li role="menuitem"><a href="PROBLEMAS.HTM" title="Problemas matemáticos interesantes">Problemas</a></li>
+</ul>
+</li>
+<li role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Programas
+<ul role="menu" class="alignright popup">
+<li role="menuitem"><a href="ENSAM386.HTM" title="Programas escritos en lenguaje ensamblador del 80386">Assembler 80386</a></li>
+<li role="menuitem"><a href="PROGJAVA.HTM" title="Aplicaciones web con JavaScript y WebAssembly">Aplicaciones web</a></li>
+<li role="menuitem"><a href="JUEGOS.HTM" title="Juegos en línea y para descargar">Juegos</a></li>
+</ul>
+</li>
+<li class="alignright" role="menuitem" aria-haspopup="true" aria-expanded="false" tabindex="-1">Contacto
+<ul role="menu" class="alignright popup">
+<li role="menuitem"><a href="PERSONAL.HTM" title="Información personal">Personal</a></li>
+<li role="menuitem"><a href="FORMULAR.HTM" title="Formulario para enviar comentarios">Comentarios</a></li>
+<li role="menuitem"><a href="GBOOK.HTM" title="Viejo y nuevo libro de visitas">Libro de invitados</a></li>
+<li role="menuitem"><a href="PRIVACIDAD.HTM" title="Política de privacidad">Privacidad</a></li>
+<li role="menuitem"><a href="DONACIONES.HTM" title="Donaciones al autor de este sitio Web">Donaciones</a></li>
+</ul> 
+</li>
+</ul>
+<ul class="atright"><li><a href="ECM.HTM" hreflang="en" title="This Web page in English">ENG</a></li></ul>
+</nav>
+<main id="main">
+<article>
+<h1>Calculadora de factorización de números enteros</h1>
+<div class="pad">
+<ol class="bread" vocab="https://schema.org/" typeof="BreadcrumbList">
+<li property="itemListElement" typeof="ListItem">
+<a property="item" typeof="WebPage" href="/"><span property="name">Alpertron</span></a>
+<meta property="position" content="1">
+</li>
+<li property="itemListElement" typeof="ListItem">
+<a property="item" typeof="WebPage" href="PROGJAVA.HTM"><span property="name">Aplicaciones web</span></a>
+<meta property="position" content="2">
+</li>
+<li property="itemListElement" typeof="ListItem">
+<span property="name">Calculadora de factorización de números enteros</span>
+<meta property="position" content="3">
+</li>
+</ol>
+</div>
+<noscript><p><strong>La calculadora no funciona con Javascript deshabilitado. Por favor revise la configuración de su navegador.</strong></p></noscript>
+<div class="applet" id="valueapp">
+<div id="value1">
+<label for="value">Valor</label><textarea inputmode="numeric" id="value" rows="4" class="input"></textarea>
+</div>
+<fieldset id="actions"><legend>Acciones</legend>
+<input type="button" id="more" value="Más" title="Cambiar número de curva o ingresar factor"><input type="button" id="eval" value="Solo evaluar" title="Evaluar la expresión pero no factorizar"><input type="button" id="prime" value="Primo" title="Indicar si la expresión es un número primo o no sin factorizar"><input type="button" id="factor" value="Factorizar" title="Factorizar la expresión"><input type="button" id="stop" value="Parar" title="Detener los cálculos"><input type="button" id="helpbtn" value="Ayuda" title="Mostrar el uso de la aplicación y la teoría matemática utilizada"><br><input type="button" id="config" value="Config" title="Cambiar los parámetros de uso de la aplicación"><input type="button" id="openwizard" value="Asistente" title="Facilitar el ingreso de expresiones y ciclos"><input type="button" id="fromfile" value="Desde archivo" title="Evaluar o factorizar varias expresiones contenidas en un archivo"><input type="button" id="bmode" value="Modo Blockly" title="Programar la calculadora mediante bloques"><input type="file" id="getFile" accept=".txt" aria-label="Seleccione archivo"><label for="getFile" id="lgetFile">Seleccione archivo</label>
+</fieldset>
+<fieldset id="functions"><legend>Funciones</legend>
+<label for="funccat">Categoría:</label> 
+<select id="funccat">
+<optgroup label="Funciones u operadores">
+<option value="0" selected>Matemática básica</option>
+<option value="1">Comparaciones</option>
+<option value="2">Lógica</option>
+<option value="3">Divisibilidad</option>
+<option value="4">Matemática recreativa</option>
+<option value="5">Teoría de números</option>
+<option value="6">Otros</option>
+</optgroup>
+</select>
+<span id="funcbtns">
+<button type="button">(</button><button type="button">)</button><button type="button">+</button><button type="button">-</button><button type="button">*</button><button type="button">/</button><button type="button">%</button><button type="button">^</button><button type="button">ans</button><button type="button">sqrt(</button><button type="button">iroot(</button><button type="button">Random(</button><button type="button">Abs(</button><button type="button">Sign(</button>
+</span>
+</fieldset>
+<p id="explan">Una expresión numérica o ciclo por línea. Ejemplo: x=3;x=n(x);c&lt;=100;x&#8209;1</p>
+</div>
+<div id="help" aria-live="polite">
+<p>Esta aplicación Web factoriza números o expresiones numéricas usando dos algoritmos rápidos: el método de curvas elípticas (ECM) y el de criba cuadrática (SIQS).</p>
+<p>Este programa utiliza almacenamiento local para recordar el avance de la factorización, así que puedes completar la factorización de un número grande en varias sesiones. Tu computadora recordará el estado de la factorización. Sólo debes recargar esta página.</p>
+<div class="noand">
+<p>Como todos los cálculos se realizan en tu computadora, puedes desconectarla de Internet mientras progresa la factorización. Puedes arrancar esta aplicación sin conexión de Internet después de la primera corrida.</p>
+<p>El código fuente está escrito en lenguaje de programación C y compilado en asm.js y WebAssembly, que son los lenguajes que entienden los navegadores Web. Este último es más rápido, pero no está soportado en todos los navegadores Web. Podrás ver la versión que se ejecuta al factorizar un número.</p>
+</div>
+<p>Hay una <a href="/videos/videosEcmc.htm">lista de videos</a> acerca de esta calculadora.</p>
+<p><a href="RECECM.HTM" title="récords de factorización ECM">Récords de factorización</a> para esta aplicación.</p>
+<h2><button type="button">Expresiones</button></h2>
+<div class="panel" id="exprorig">
+<p>Puedes ingresar expresiones que usen los siguientes operadores y paréntesis:</p>
+<ul>
+<li> + para suma</li>
+<li> - para resta</li>
+<li> * para multiplicación</li>
+<li> / para división entera</li>
+<li> % para el resto de la división entera</li>
+<li> ^ o ** para exponenciación (el exponente debe ser mayor o igual que cero).</li>
+<li> <strong>&lt;</strong>, <strong>==</strong>, <strong>&gt;</strong>; <strong>&lt;=</strong>, <strong>&gt;=</strong>, != para comparaciones. Los operadores devuelven cero si es falso y -1 si es verdadero.</li>
+<li> <strong>Ans</strong>: obtiene la última respuesta.</li>
+<li> <strong>AND</strong>, <strong>OR</strong>, <strong>XOR</strong>, <strong>NOT</strong> para lógica binaria. Las operaciones se hacen en binario (base 2). Se agregan infinitos ceros (unos) a la izquerda de los números positivos (negativos).</li>
+<li> <strong>SHL</strong> o <strong>&lt;&lt;</strong>: Si <var>b</var> &ge; 0, <var>a</var> SHL <var>b</var> desplaza el valor <var>a</var> a la izquierda la cantidad de bits especificada por <var>b</var>. Esto equivale a <var>a</var> &times; 2<sup><var>b</var></sup>. En caso contrario, <var>a</var> SHL <var>b</var> desplaza el valor <var>a</var> a la derecha la cantidad de bits especificada por &minus;<var>b</var>. Esto equivale a floor(<var>a</var> / 2<sup>&minus;<var>b</var></sup>). Ejemplo: 5 SHL 3 = 40.</li>
+<li> <strong>SHR</strong> o <strong>&gt;&gt;</strong>: Si <var>b</var> &ge; 0, <var>a</var> SHR <var>b</var> desplaza el valor <var>a</var> a la derecha la cantidad de bits especificada por <var>b</var>. Esto equivale a floor(<var>a</var> / 2<sup><var>b</var></sup>). En caso contrario, <var>a</var> SHR <var>b</var> desplaza el valor <var>a</var> a la izquierda la cantidad de bits especificada por &minus;<var>b</var>. Esto equivale a <var>a</var> &times; 2<sup>&minus;<var>b</var></sup>. Ejemplo: -19 SHR 2 = -5.</li>
+<li> <strong>n!</strong>: factorial (<var>n</var> debe ser mayor o igual que cero). Ejemplo: 6! = 6 &times; 5 &times; 4 &times; 3 &times; 2 = 720.</li>
+<li> <strong>n!! ... !</strong>: factorial múltiple (<var>n</var> debe ser mayor o igual que cero). Es el producto de <var>n</var> por <var>n</var> &minus; <var>k</var> por <var>n</var> &minus; <var>2k</var> ... (todos los números son mayores que cero) donde <var>k</var> es la cantidad de signos de exclamación. Ejemplo: 7!! = 7 &times; 5 &times; 3 &times; 1 = 105.</li>
+<li> <strong>p#</strong>: primorial (producto de todos los primos menores o iguales a <var>p</var>). Ejemplo: 12# = 11 &times; 7 &times; 5 &times; 3 &times; 2 = 2310.</li>
+<li> <strong>B(n)</strong>: Número probablemente primo anterior a <var>n</var>. Ejemplo: B(24) = 23.</li>
+<li> <strong>F(n)</strong>: Número de Fibonacci F<sub>n</sub> que corresponde a la secuencia 0, 1, 1, 2, 3, 5, 8, 13, 21, etc. donde cada elemento es igual a la suma de los dos anteriores. Ejemplo: F(7) = 13.</li>
+<li> <strong>L(n)</strong>: Número de Lucas L<sub>n</sub> = F<sub><var>n</var>-1</sub> + F<sub><var>n</var>+1</sub></li>
+<li> <strong>N(n)</strong>: Número probablemente primo posterior a <var>n</var>. Ejemplo: N(24) = 29.</li>
+<li> <strong>P(n)</strong>: particiones irrestrictas (cantidad de descomposiciones de <var>n</var> en sumas de números enteros sin tener en cuenta el orden). Ejemplo: P(4) = 5 porque el número 4 se puede particionar de 5 formas distintas: 4 = 3+1 = 2+2 = 2+1+1 = 1+1+1+1.</li>
+<li> <strong>Gcd(m,n, ...)</strong>: Máximo común divisor de estos números enteros. Ejemplo: GCD(12,16) = 4.</li>
+<li> <strong>Lcm(m,n, ...)</strong>: Mínimo común múltiplo de estos números enteros. Ejemplo: LCM(12,16,24) = 48.</li>
+<li> <strong>Modinv(m,n)</strong>: inverso de <var>m</var> modulo <var>n</var>, sólo válido cuando <var>m</var> y <var>n</var> son coprimos, es decir que no tienen factores en común. Ejemplo: Modinv(3,7) = 5 porque 3 &times; 5 &equiv; 1 (mod 7)</li>
+<li> <strong>Modpow(m,n,r)</strong>: halla <var>m</var><sup><var>n</var></sup> módulo <var>r</var>. Ejemplo: Modpow(3, 4, 7) = 4, porque 3<sup>4</sup> &equiv; 4 (mod 7).</li>
+<li> <strong>Totient(n)</strong>: cantidad de enteros positivos menores que <var>n</var> coprimos con <var>n</var>. Ejemplo: Totient(6) = 2 porque 1 y 5 no tienen factores en común con 6.</li>
+<li> <strong>Jacobi(m,n)</strong>: obtiene el símbolo de Jacobi de <var>m</var> y <var>n</var>. Cuando el segundo argumento es primo, el resultado es cero si <var>m</var> es múltiplo de <var>n</var>, es uno si hay una solución a <var>x</var>&sup2; &equiv; <var>m</var> (mód <var>n</var>) y es igual a &minus;1 cuando la congruencia mencionada no tiene soluciones.</li>
+<li> <strong>Random(m,n)</strong>: número entero aleatorio entre <var>m</var> y <var>n</var>.</li>
+<li> <strong>Abs(n)</strong>: valor absoluto de <var>n</var>.</li>
+<li> <strong>Sign(n)</strong>: retorna cero si <var>n</var> es zero, &minus;1 si es negativo o 1 si es positivo.</li>
+<li> <strong>IsPrime(n)</strong>: retorna cero si <var>n</var> no es un primo probable y &minus;1 si lo es. Ejemplo: IsPrime(5) = &minus;1.</li>
+<li> <strong>Sqrt(n)</strong>: parte entera de la raíz cuadrada del argumento.</li>
+<li> <strong>Iroot(n,r)</strong>: Raíz r-ésima entera del primer argumento. Ejemplo: Iroot(8, 3) = 2.</li>
+<li> <strong>NumFact(n)</strong>: cantidad de factores primos distintos de <var>n</var>. Ejemplo: NumFact(28) = 2 porque los factores primos son 2 y 7.</li>
+<li> <strong>MinFact(n)</strong>: mínimo factor primo de <var>n</var>. Ejemplo: MinFact(28) = 2 porque los factores primos son 2 y 7.</li>
+<li> <strong>MaxFact(n)</strong>: máximo factor primo de <var>n</var>. Ejemplo: MaxFact(28) = 7 porque los factores primos son 2 y 7.</li>
+<li> <strong>NumDivs(n)</strong>: cantidad de divisores positivos de <var>n</var>. Ejemplo: NumDivs(28) = 6 porque los divisores de 28 son 1, 2, 4, 7, 14 y 28.</li>
+<li> <strong>SumDivs(n)</strong>: suma de todos los divisores positivos de <var>n</var>. Ejemplo: SumDivs(28) = 56 porque 1 + 2 + 4 + 7 + 14 + 28 = 56.</li>
+<li> <strong>NumDigits(n,r)</strong>: cantidad de dígitos de <var>n</var> en base <var>r</var>. Ejemplo: NumDigits(13, 2) = 4 porque 13 en binario (base 2) se expresa como 1101.</li>
+<li> <strong>SumDigits(n,r)</strong>: suma de dígitos de <var>n</var> en base <var>r</var>. Ejemplo: SumDigits(213, 10) = 6 porque la suma de los dígitos expresados en decimal es 2+1+3 = 6.</li>
+<li> <strong>RevDigits(n,r)</strong>: halla el valor que se obtiene escribiendo para atrás los dígitos de <var>n</var> en base <var>r</var>. Ejemplo: RevDigits(213, 10) = 312.</li>
+<li> <strong>ConcatFact(m,n)</strong>: concatena los factores primos de <var>n</var> de acuerdo al modo expresado en <var>m</var> según lo indicado en la siguiente tabla:</li></ul>
+<table>
+<caption>Modos de la función ConcatFact</caption>
+<tr><th scope="col">Modo</th><th scope="col">Orden de los factores</th><th scope="col">Factores repetidos</th><th scope="col">Ejemplo</th></tr>
+<tr><td>0</td><td>Creciente</td><td>No</td><td>concatfact(0,36) = 23</td></tr>
+<tr><td>1</td><td>Decreciente</td><td>No</td><td>concatfact(1,36) = 32</td></tr>
+<tr><td>2</td><td>Creciente</td><td>Sí</td><td>concatfact(2,36) = 2233</td></tr>
+<tr><td>3</td><td>Decreciente</td><td>Sí</td><td>concatfact(3,36) = 3322</td></tr>
+</table>
+<p>Puedes usar el prefijo <em>0x</em> para números hexadecimales, por ejemplo 0x38 es igual a 56.</p>
+</div>
+<h2><button type="button">Factorización usando el método de curvas elípticas (ECM)</button></h2>
+<div class="panel">
+<p>La notación <var>k</var> &equiv; <var>m</var> (mod <var>n</var>) significa que el resto de la división de <var>k</var> dividido <var>n</var> es igual al resto de la división de <var>m</var> dividido <var>n</var>. El número <var>n</var> se denomina módulo.</p>
+<p>Este método calcula puntos en curvas elípticas, que se representan mediante fórmulas del tipo <var>y</var>&sup2; &equiv; <var>x</var>&sup3; + <var>a</var><var>x</var> + <var>b</var> (mod <var>n</var>) donde <var>n</var> es el número a factorizar.</p>
+<p>A continuación se muestran los puntos (<var>x</var>, <var>y</var>) en los que se cumple <var>y</var>&sup2; &equiv; <var>x</var>&sup3; + 4<var>x</var> + 7 (mod <var>29</var>). Las abscisas corresponden a los valores de <var>x</var> de 0 a 28 y las ordenadas a los valores de <var>y</var> en el mismo rango.
+Como los cálculos usan aritmética modular (en este caso usando el resto de la división por 29), los puntos que componen la curva elíptica no forman líneas continuas como sería el caso si operásemos con números reales.</p>
+<div class="lf"></div>
+<canvas id="ellCurve" width="313" height="313"></canvas>
+<p>Aparte de los puntos mostrados, se utiliza un punto adicional, denominado O, o punto en el infinito.</p>
+<p>Mediante complicadas fórmulas, se definen sumas de puntos. De esta manera un punto (<var>x</var><sub>3</sub>, <var>y</var><sub>3</sub>) que pertenece a la curva mencionada puede ser la suma de otros dos puntos (x<sub>1</sub>, y<sub>1</sub>) y (x<sub>2</sub>, y<sub>2</sub>) que también pertenecen a la curva.</p>
+<p>Un punto (<var>x</var>, <var>y</var>) se puede sumar varias veces consigo mismo, obteniendo un nuevo punto (<var>x<sub>4</sub></var>, <var>y</var><sub>4</sub>) que es un múltiplo de (<var>x</var>, <var>y</var>).</p>
+<p>Cuando el módulo es un número primo y no se cumple 4<var>a</var>&sup3; + 27<var>b</var>&sup2; &equiv; 0 (mod <var>p</var>), los puntos que conforman la curva elíptica (incluyendo el punto O) forman una estructura matemática llamada grupo. El orden del grupo es igual a la cantidad de puntos. En el gráfico se observan 31 puntos, por lo que el orden del grupo es 32.
+Se puede demostrar que siempre se puede obtener el punto O multiplicando cualquier punto por el orden del grupo.
+Como O + O = O, si multiplicamos cualquier punto por un múltiplo del orden del grupo obtenemos este punto O.</p>
+<p>Si bien el valor del orden del grupo es difícil de hallar, se puede demostrar que es cercano al número primo usado como módulo. Al variar la curva, se obtiene un grupo diferente, y su orden también es diferente.</p>
+<p>Para poder factorizar un número, hay que hallar un múltiplo del orden del grupo correspondiente a alguno de los factores primos.</p>
+<p>Por cada curva elíptica a procesar intentamos obtener el punto en el infinito, comenzando con un punto aleatorio (<var>x</var>, <var>y</var>) perteneciente a una curva elíptica aleatoria <var>y</var>&sup2; &equiv; <var>x</var>&sup3; + <var>a</var><var>x</var> + <var>b</var> (mód <var>n</var>). Como es muy difícil resolver ecuaciones cuadráticas o cúbicas módulo un número compuesto, conviene elegir números aleatorios para <var>x</var>, <var>y</var> y <var>a</var>. Luego podemos calcular fácilmente <var>b</var> &equiv; <var>y</var>&sup2; &minus; <var>x</var>&sup3; &minus; <var>a</var><var>x</var> (mód <var>n</var>)</p>
+<p>En el primer paso el algoritmo multiplica puntos por potencias de diferentes números primos menores que una cota denominada B1. Al calcular el máximo común divisor entre la coordenada <var>x</var> del punto hallado y el número a factorizar se puede obtener el primo buscado si todos los factores primos del orden son menores que B1.</p>
+<p>Usando el resultado del primer paso, el segundo paso obtiene múltiplos de ese punto hasta la cota máxima B2 y se van multiplicando entre sí las coordenadas x de los puntos hallados. Finalmente se calcula el máximo común divisor entre el valor obtenido y el número a factorizar. En este caso se obtiene el primo buscado si todos los factores primos del orden (excepto uno) son menores que B1 y el mayor factor primo es menor que B2.</p>
+<p>Si el máximo común divisor vale 1, hay que intentar con otra curva variando el punto inicial (<var>x</var>, <var>y</var>) y el parámetro <var>a</var>, calculando el nuevo parámetro <var>b</var> usando la fórmula.</p>
+<p>El programa usa varias optimizaciones que son demasiado técnicas como para explicarlas aquí.</p>
+<p>El tiempo de ejecución depende de la magnitud del segundo mayor factor primo y de la velocidad del equipo.</p>
+<div class="tableCurves"><table>
+<caption>Valores óptimos de B1 y cantidad de curvas esperadas</caption>
+<tr><th scope="col">Dígitos</th><th scope="col">Valores de B1</th><th scope="col">Curvas esperadas</th></tr>
+<tr><td>15</td><td>2000</td><td>25</td></tr>
+<tr><td>20</td><td>11000</td><td>90</td></tr>
+<tr><td>25</td><td>50000</td><td>300</td></tr>
+<tr><td>30</td><td>250000</td><td>700</td></tr>
+<tr><td>35</td><td>1 000000</td><td>1800</td></tr>
+<tr><td>40</td><td>3 000000</td><td>5100</td></tr>
+<tr><td>45</td><td>11 000000</td><td>10600</td></tr>
+<tr><td>50</td><td>43 000000</td><td>19300</td></tr>
+<tr><td>55</td><td>110 000000</td><td>49000</td></tr>
+<tr><td>60</td><td>260 000000</td><td>124000</td></tr>
+<tr><td>65</td><td>850 000000</td><td>210000</td></tr>
+<tr><td>70</td><td>2900 000000</td><td>340000</td></tr>
+</table></div>
+<p>El programa procesa 25 curvas con límite B1 = 2000, 300 curvas con límite B1 = 50000, 1675 curves con límite B1 = 1000000 y finalmente usa curvas con límite B1 = 11000000 hasta hallar todos los factores.</p>
+</div>
+<h2><button type="button">Factorización de un número en varias computadoras</button></h2>
+<div class="panel">
+<p>El algoritmo de factorización ECM se puede correr fácilmente en paralelo. Para hacer esto, ejecuta la factorización en la primera computadora desde la curva 1, ejecútala en la segunda computadora desde la curva 10000, en la tercera computadora desde la curva 20000, y así sucesivamente.
+Para cambiar el número de curva, aprieta el botón <strong>Más</strong>, escríbalo en la caja de entrada que se encuentra en la nueva ventana y presiona el botón <strong>Nueva curva</strong>.</p>
+<p>Cuando una de las otras máquinas descubre un nuevo factor, deberás apretar nueva el botón <strong>Más</strong>, ingresar dicho factor en la caja de entrada y finalmente  apretar el botón <strong>Factor</strong>.</p>
+</div>
+<h2><button type="button">Factorización utilizando el método de criba cuadrática (SIQS)</button></h2>
+<div class="panel">
+<p>La notación <var>k</var> &equiv; <var>m</var> (mod <var>n</var>) significa que el resto de la división de <var>k</var> dividido <var>n</var> es igual al resto de la división de <var>m</var> dividido <var>n</var>. El número <var>n</var> se denomina módulo.</p>
+<p>Sea <var>N</var> el número a factorizar. Este número no debe ser una potencia perfecta. Si hallamos de alguna manera dos números enteros <var>X</var> e <var>Y</var> tales que <var>X</var>&sup2; &equiv; <var>Y</var>&sup2; (mod <var>N</var>) y <var>X</var>&ne;<var>Y</var> (mod <var>N</var>), entonces mcd(<var>X</var>+<var>Y</var>, <var>N</var>) será un factor no trivial (ni 1 ni <var>N</var>) de <var>N</var>.</p>
+<p>Para hallar estos valores <var>X</var> e <var>Y</var>, el método busca relaciones que tienen la forma <var>t</var>&sup2; &equiv; <var>u</var> (mod <var>N</var>) donde <var>u</var> es el producto de números primos pequeños. El conjunto de estos primos es la base de factores. Estas relaciones se obtienen mediante cribas, cuya explicación se encuentra fuera del alcance de esta introducción.</p>
+<p>Las relaciones halladas se combinan mediante multiplicaciones. El miembro izquierdo siempre será un cuadrado perfecto porque es el producto de cuadrados. Nuestro objetivo es obtener un cuadrado perfecto en el miembro derecho. Un número es un cuadrado perfecto cuando todos sus factores primos aparecen una cantidad par de veces.</p>
+<p>Por ejemplo: si el número a factorizar es <var>N</var> = 1817 y hallamos las siguientes relaciones con la base de factores = {2, 7, 13}:</p>
+<p>45&sup2; &equiv; 2<sup>4</sup> &times; 7<sup>0</sup> &times; 13<sup>1</sup></p>
+<p>123&sup2; &equiv; 2<sup>10</sup> &times; 7<sup>0</sup> &times; 13<sup>1</sup></p>
+<p>En ambas relaciones el miembro derecho no es cuadrado perfecto, porque el exponente de 13 es impar. Pero multiplicándolos obtenemos:</p>
+<p>84&sup2; &equiv; 2<sup>14</sup> &times; 13&sup2;</p>
+<p>84&sup2; &equiv; (2<sup>7</sup>&times;13)&sup2;</p>
+<p>Dado que 2<sup>7</sup>&times;13 &equiv; 1664 obtenemos el factor mcd(84+1664, 1817) = 23.</p>
+<p>Qué relaciones se deben multiplicar para obtener un cuadrado perfecto en el miembro derecho es un problema de álgebra lineal y se resuelve mediante matrices.</p>
+<p>Cuando el número a factorizar tiene 31 a 95 dígitos, después de procesar algunas curvas para hallar factores pequeños, el programa ejecuta el algoritmo SIQS, que es mucho más rápido que ECM cuando el número tiene dos factores grandes.
+Como este método necesita gran cantidad de memoria de tu computadora para almacenar relaciones, si arrancas otra vez el programa, la factorización comenzará desde el principio. Para comenzar a factorizar inmediatamente mediante SIQS, deberás apretar el botón <strong>Más</strong>, ingresar el número cero en la caja de entrada y finalmente apretar el botón <strong>Nueva Curva</strong>.</p>
+<table>
+<caption>Umbral para cambio a SIQS</caption>
+<tr><th scope="row">Dígitos</th><td>31-55</td><td>56-60</td><td>61-65</td><td>66-70</td><td>71-75</td><td>76-80</td><td>81-85</td><td>86-90</td><td>91-95</td></tr>
+<tr><th scope="row">Curva</th><td>10</td><td>15</td><td>22</td><td>26</td><td>35</td><td>50</td><td>100</td><td>150</td><td>200</td></tr>
+</table>
+</div>
+<h2><button type="button">Configuración</button></h2>
+<div class="panel">
+<p>Puedes cambiar la configuración de esta aplicación apretando el botón <strong>Config</strong> mientras el programa no está factorizando. En ese momento aparecerá una nueva ventana donde puedes seleccionar los siguientes ajustes:</p>
+<ul>
+<li><strong>Dígitos por grupo</strong>: Para mejorar la legibilidad, los números grandes se separan mediante espacios formando grupos de una cantidad fija de dígitos. Con esta caja de entrada, puedes determinar la cantidad de dígitos por grupo.</li> 
+<li><strong>Información</strong>: Muestra más información con respecto a los factores hallados.</li>
+<li><strong>Impresión bonita</strong>: Si la casilla de verificación está marcada, los exponentes se muestran con superíndices y el signo de multiplicación es &quot; &times; &quot;. La aplicación muestra la cantidad de dígitos de los números que tienen más de 30 dígitos.
+Si la casilla de verificación no está marcada, los exponentes se muestran precedidos por el signo &quot; ^ &quot; y la multiplicación se indica mediante asteriscos. Además, nunca se muestra la cantidad de dígitos. Esto facilita la copia de resultados a otros programas matemáticos.</li>
+<li><strong>Salida hexadecimal</strong>: Indica que los valores mostrados en pantalla deben figurar en hexadecimal en vez de decimal, que es lo habitual.
+Para ingresar números en el formato hexadecimal es necesario que tengan los caracteres 0x adelante. Por ejemplo, 0x38 = 56. El programa muestra números en hexadecimal con tipo monoespaciado.</li>
+<li><strong>Usar tablas de Cunningham en el servidor</strong>: Si está seleccionado y el número a factorizar tiene la forma a<sup>b</sup> &pm; 1, la aplicación intentará recuperar los factores conocidos del servidor Web.
+Para reducir esa base de datos, sólo se incluyen factores primos con al menos 14 dígitos, así que la aplicación deberá hallar los factores pequeños. La fuente de estos factores es la <a href="http://myfactors.mooo.com/">lista de factores de Jonathan Crombie</a> e incluye 2674850 factores de números de Cunningham.</li>
+</ul>
+<p>La configuración se almacena en tu dispositivo, así que si arrancas nuevamente el navegador, los ajustes no se modificarán.</p>
+</div>
+<h2><button type="button">Factorización en lotes</button></h2>
+<div class="panel">
+<p>Escribe una expresión por línea, y luego aprieta el botón <strong>Sólo evaluar</strong> o <strong>Factorizar</strong>.</p>
+<p>Las líneas en blanco o de comentarios (que comienzan con el carácter numeral '#') se replicarán en la salida.</p>
+<p>Expresión para ciclos: con la siguiente sintaxis podrás factorizar o determinar si varios números son primos con sólo digitar una línea. Deberás escribir cuatro o cinco expresiones separadas por puntos y coma:</p>
+<ul>
+<li>Primera expresión: Debe comenzar con la cadena 'x=' e indica el primer valor para la variable <var>x</var>.</li>
+<li>Segunda expresión: Debe comenzar con la cadena 'x=' e indica el siguiente valor para la variable <var>x</var>.</li>
+<li>Tercera expresión: Contiene la expresión de finalización del ciclo. Si es distinto que cero (indicando verdadero) el ciclo termina, en caso contrario, continúa.</li>
+<li>Cuarta expresión: Contiene la expresión a factorizar.</li>
+<li>Quinta expresión (opcional): Si esta expresión no vale cero (indicando verdadero), se muestra o factoriza la cuarta expresión, y si es cero (indicando falso), se ignora la cuarta expresión.</li>
+</ul>
+<p>Excepto la primera expresión, las demás expresiones deben incluir la variable <var>x</var> y/o el contador <var>c</var>.</p>
+<p>Si la expresión de finalización es falsa después de procesar 1000 números, aparecerá el botón Continuar. Apretando este botón hará que el programa procese los siguientes 1000 números, y así sucesivamente.</p>
+<p>Ejemplo 1: Hallar los factores de los primeros 100 números de la forma primo impar menos 1.
+La línea a escribir es: <code>x=3;x=n(x);c&lt;=100;x-1</code>.</p>
+<p>Ejemplo 2: Hallar los números de Smith menores que 10000. Un número de Smith, de acuerdo a Wikipedia, es un número compuesto tal que, en una base dada (por defecto en base 10), la suma de sus dígitos es igual a la suma de los dígitos de su factorización en números primos.
+La línea a escribir es: <code>x=1;x=x+1;x&lt;10000;x;sumdigits(x, 10)==sumdigits(concatfact(2,x),10) and not isprime(x)</code></p>
+<p>La cuarta expresión se puede reemplazar por una cadena de formato y varias expresiones. La cadena de formato indica lo que se debe mostrar en pantalla. Dentro de esta cadena se pueden especificar cláusulas de conversión que comienzan con el carácter de porcentaje y pueden ser en minúsculas o mayúsculas:</p>
+<ul>
+<li><strong>%D</strong>: mostrar la expresión como un número en decimal.</li>
+<li><strong>%X</strong>: mostrar la expresión como un número en hexadecimal.</li>
+<li><strong>%L</strong>: mostrar <strong>sí</strong> si la expresión no es cero y <strong>no</strong> si es cero.</li>
+<li><strong>%FD</strong>: factorizar expresión y mostrar los factores en decimal.</li>
+<li><strong>%FX</strong>: factorizar expresión y mostrar los factores en hexadecimal.</li>
+</ul>
+<p>Las expresiones se escriben después de la cadena, separadas por dos puntos. También debe haber dos puntos entre la cadena y la primera expresión.</p>
+<p>Para mostrar el símbolo de procentaje, se deben usar dos símbolos de porcentaje seguidos, y la comilla se representa mediante un símbolo de porcentaje seguido por una comilla.</p>
+<p>Ejemplo 3: Por cada número entre -100 y 100, mostrar si el número es primo y luego mostrar la factorización tanto en decimal como en hexadecimal.</p>
+<p>La línea a escribir es: <code>x=-100; x=x+1; &lt;=100; &quot;%d es primo: %l, %Fd, %Fx&quot;:x:isprime(x):x:x</code>
+</div>
+<div class="noand">
+<h2><button type="button">Código fuente</button></h2>
+</div>
+<div class="panel">
+<div class="noand">
+<p>Puedes bajar el código fuente de esta aplicación y del viejo applet de factorización desde <a href="https://github.com/alpertron/calculators">GitHub</a>. El código fuente está escrito en lenguaje C, por lo que es necesario <a href="https://emscripten.org/docs/getting_started/downloads.html">Emscripten</a> para generar JavaScript.</p>
+</div>
+</div>
+<p>Escrito por Dario Alpern. Actualizado el 16 de febrero de 2024.</p>
+</div>
+<div id="helphelp"></div>
+<div id="result" aria-live="polite"></div>
+<div id="status"></div>
+<div id="sharediv" class="pad"><button id="share" type="button">¡Compartir factorización!</button></div>
+<div id="sktest" class="pad">
+<input type="button" id="skptest" value="Omitir comprobación" title="Omitir comprobación de primalidad">
+</div>
+<div id="savefile" class="pad">
+<input type="button" id="tofile" value="Escribir resultados en un archivo" title="Almacenar los resultados en un archivo externo">
+</div>
+<div id="cont" class="pad">
+<input type="button" id="continue" value="Continuar" title="Mostrar más resultados. Apretando este botón se borran los resultados antiguos.">
+</div>
+<div id="footer">
+<p><span class="new">¡Nuevo!</span> El procesamiento en lotes ahora soporta varias expresiones para cada ciclo. Más información en la ayuda.</p>
+<p>Si encuentra algún error o tiene algún comentario, por favor llene el <a href="#" id="formlink">formulario</a>.</p>
+<p>Si le gustan estas calculadoras y desea soportar el software libre sin propagandas molestas, puede <a href="https://www.PayPal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MR65QPWZM5JT6&source=url&locale.x=es_ES">donar a través de PayPal</a>.</p>
+</div>
+</article>
+</main>
+<div id="modal-more" class="modal" role="dialog" aria-labelledby="moreopt">
+<div class="modal-content">
+<div class="modal-header"><span id="close-more" aria-label="close" class="atright">×</span><p id="moreopt">Más opciones</p></div>
+<div class="modal-body">
+<div class="applet">
+<p><label for="curve">Nuevo número de curva o factor:</label></p><input type="number" id="curve" value="" class="input" min="0" step="1">
+<input type="button" id="ncurve" value="Nueva curva" title="Cambiar el número de curva para el algoritmo ECM. Ingrese cero para cambiar al algoritmo SIQS.">
+<input type="button" id="nfactor" value="Nuevo factor" title="Ingrese factor conocido">
+</div>
+</div></div></div>
+<div id="modal-config" class="modal" role="dialog" aria-labelledby="conf">
+<div class="modal-content">
+<div class="modal-header"><span id="close-config" aria-label="close" class="atright">×</span><p id="conf">Configuración</p></div>
+<div class="modal-body">
+<div class="applet">
+<fieldset>
+<legend>Parámetros de configuración</legend>
+<p><label for="digits">Dígitos por grupo</label> <input type="number" id="digits" value="6" min="0" max="10000" step="1"></p>
+<p><input type="checkbox" id="verbose"><label for="verbose">Información</label></p>
+<p><input type="checkbox" id="pretty"><label for="pretty">Impresión bonita</label></p>
+<p><input type="checkbox" id="hex"><label for="hex">Salida hexadecimal</label></p>
+<p><input type="checkbox" id="cunnin"><label for="cunnin">Usar tablas de Cunningham en el servidor</label></p>
+</fieldset>
+<p><input type="button" id="save-config" value="Aceptar" title="Almacenar la nueva configuración"><input type="button" id="cancel-config" value="Cancelar" title="Descartar los cambios hechos a la configuración"></p>
+</div>
+</div></div></div>
+<aside id="blockmode" class="pad" aria-label="Modo Blockly">
+<div id="firstRow">
+<h2>Modo Blockly</h2>
+<div class="bmodebuttons" id="BlocklyButtons">
+<button type="button" id="runBlockly">Correr</button>
+<button type="button" id="exitBlockly">Salir</button>
+<button type="button" id="deleteBlocks">Borrar bloques</button>
+<input type="text" id="bfilename" value="NombreArchivo"  title="Nombre de archivo">
+<button type="button" id="bload">Cargar</button>
+<button type="button" id="bsave">Salvar</button>
+</div>
+<div class="bmodebuttons" id="BlocklyErrors">
+<span id="berror"></span>
+<button type="button" id="berrcont">Continuar</button>
+</div>
+</div>
+<div id="blocklyArea"></div>
+<div id="blocklyDiv"></div>
+</aside>
+<aside id="wizard" class="pad" aria-label="Asistente">
+<h2 class="h2title">Asistente de factorización</h2>
+<div class="applet">
+<fieldset id="output" class="atright">
+<legend>Salida</legend>
+<input type="radio" name="output" id="decW"><label for="decW">Decimal</label><br>
+<input type="radio" name="output" id="hexW"><label for="hexW">Hexadecimal</label><br>
+</fieldset>
+<fieldset id="mode">
+<legend>Modo asistente</legend>
+<input type="radio" name="mode" id="oneexpr"><label for="oneexpr">Procesar una expresión</label><br>
+<input type="radio" name="mode" id="loop"><label for="loop">Procesar varias expresiones en un ciclo</label><br>
+</fieldset>
+<label for="wzdinput" id="wzddesc">1</label>
+<br class="newline">
+<input type="text" inputmode="numeric" id="wzdinput" value="" placeholder="Número o expresión numérica" class="input">
+<br class="newline">
+<p id="wzdexam">&nbsp;</p>
+<div>
+<input type="button" id="next" value="Siguiente" title="Siguiente paso del asistente">
+<input type="button" id="cancel" value="Cancelar" title="Salir del asistente">
+</div>
+<fieldset id="wzdfunccatblock"><legend>Funciones</legend>
+<label for="wzdfunccat">Categoría:</label> 
+<select id="wzdfunccat">
+<optgroup label="Funciones u operadores">
+<option value="0" selected>Matemática básica</option>
+<option value="1">Comparaciones</option>
+<option value="2">Lógica</option>
+<option value="3">Divisibilidad</option>
+<option value="4">Matemática recreativa</option>
+<option value="5">Teoría de números</option>
+<option value="6">Otros</option>
+</optgroup>
+</select>
+<span id="wzdfuncbtns"></span>
+</fieldset>
+</div>
+<h3>Operadores y funciones</h3>
+<div id="exprcopy"></div>
+<ul>
+<li id="C">Variable <var>C</var>: cantidad de expresiones procesadas.</li>
+<li id="X">Variable <var>X</var>: variable que cambia en cada iteración del ciclo.</li>
+</ul>
+</aside>
+<aside id="feedback" aria-label="Formulario de comentarios">
+<h2 class="h2title">Formulario de comentarios</h2>
+<form class="applet" id="formfeedback">
+<input type="hidden" name="subject" value="Comentario de calculadora de factorizacion de enteros">
+<div id="formleft">
+<div class="labels"><label for="name">Nombre:</label><input class="inputfbck" type="text" name="Nombre" maxlength="40" id="name" autocomplete="name"></div>
+<div class="labels"><label for="age">Edad:</label><input class="inputfbck" type="number" name="Edad" min="0" max="999" id="age"></div>
+<div class="labels"><label for="city">Ciudad:</label><input class="inputfbck" type="text" name="Ciudad" maxlength="70" id="city" autocomplete="address-level2"></div>
+<div class="labels"><label for="province">Provincia:</label><input class="inputfbck" type="text" name="Provincia" maxlength="70" id="province" autocomplete="address-level1"></div>
+<div class="labels"><label for="country">País:</label><input class="inputfbck" type="text" name="Pais" maxlength="70" id="country" autocomplete="country-name"></div>
+<div class="labels"><label for="reply">Su e-mail:</label><input class="inputfbck" type="email" name="Responder" maxlength="70" id="reply" autocomplete="email"></div>
+<p>Todos los campos son opcionales. Ingrese su dirección de correo electrónico si desea una respuesta del autor de esta aplicación.</p>
+<p><input type="checkbox" id="adduserdata"><label for="adduserdata">Enviar expresión a factorizar</label></p>
+<input type="hidden" name="datos" value="" id="userdata">
+</div>
+<div id="formright">
+<label for="comments">Por favor, ingrese sus comentarios o sugerencias:</label><br>
+<textarea name="Comentarios" rows="7" cols="40" id="comments"></textarea>
+<p><label for="how">¿Cómo encontró mi página?</label><br>
+<select name="Como" title="¿Cómo encontró mi página?" id="how">
+<optgroup label="Seleccione respuesta">
+<option value="Por un buscador">Por un buscador</option>
+<option value="Por un amigo">Por un amigo</option>
+<option value="Por un enlace">Por un enlace</option>
+<option value="De Wikipedia">De Wikipedia u otra referencia</option>
+<option value="Otros">Otros</option>
+</optgroup>
+</select></p>
+<fieldset><legend>¿Son instructivos los programas?</legend>
+<input type="radio" name="Instructivo" value="Si" id="insyes"><label for="insyes">Sí</label>
+<input type="radio" name="Instructivo" value="No" id="insno"><label for="insno">No</label>
+</fieldset>
+<fieldset><legend>¿Son interesantes los programas?</legend>
+<input type="radio" name="Interesante" value="Si" id="intyes"><label for="intyes">Sí</label>
+<input type="radio" name="Interesante" value="No" id="intno"><label for="intno">No</label>
+</fieldset>
+<p><input type="submit" disabled="disabled" value="Enviar el comentario" id="formsend" title="Enviar el formulario">
+<input type="reset" value="Entrar otra vez">
+<input type="button" value="Cancelar" id="formcancel" title="No enviar el formulario"></p>
+</div>
+<div class="lf"></div>
+</form>
+</aside>
+<aside id="sending">
+<p>Enviando comentario...</p>
+</aside>
+<aside id="sentOK">
+<p>Comentario enviado correctamente.</p>
+<div class="center"><button type="button" id="btnSentOK">Volver</button></div>
+</aside>
+<aside id="notSent">
+<p>No se pudo enviar el comentario.</p>
+<div class="center"><button type="button" id="btnNotSent">Volver</button></div>
+</aside>
+<script type="text/js-worker" id="worker">
+</script>
+<script>
+<!--
+//-->
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "browserRequirements": "Requires HTML5. Requires Javascript.",
+  "name": "Calculadora de factorización de números enteros",
+  "description": "Aplicación Web que factoriza números enteros utilizando los algoritmos ECM y SIQS.",
+  "image": ["https://www.alpertron.com.ar/ecmc.png"],
+  "datePublished": "2023-06-08",
+  "dateModified": "2023-06-08",
+  "operatingSystem": "Any",
+  "applicationCategory": "EducationalApplication",
+  "author": {
+    "@type": "Person",
+    "name": "Dario Alpern"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "ratingCount": "226"
+  },
+  "inLanguage": "es",
+  "license": "https://www.gnu.org/licenses/gpl-3.0.en.html",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "availability": "https://schema.org/OnlineOnly",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["MathSolver", "LearningResource"],
+  "name": "Calculadora de factorización de números enteros",
+  "url": "https://www.alpertron.com.ar/ECMC.HTM",
+  "usageInfo": "https://www.alpertron.com.ar/PRIVACIDAD.HTM",
+  "image": ["https://www.alpertron.com.ar/ecmc.png"],
+  "inLanguage": "es",
+  "potentialAction": [{
+     "@type": "SolveMathAction",
+     "target": "https://www.alpertron.com.ar/ECMC.HTM?q={math_expression_string}",
+     "mathExpression-input": "required name=math_expression_string",
+     "eduQuestionType": ["Arithmetic"]
+   }],
+  "learningResourceType": "Math solver"
+}
+</script>
+</body>
+</html>
