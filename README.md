@@ -3,7 +3,7 @@ This is a wrapper to Alperton's SIQS / NFS / ECM factorization library. It is ve
 """ To use this library, use:
     from sfactorint import p2ecm 
 
-    To build ecm, from the primality test directory, simply do
+    To build ecm, from the PyNFSFactorizationWrapper test directory, simply do
     cd calculators
     make
     cd ..
